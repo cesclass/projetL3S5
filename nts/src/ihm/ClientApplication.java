@@ -3,6 +3,7 @@ package ihm;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ClientApplication {
 	// Containers
@@ -10,6 +11,7 @@ public class ClientApplication {
 	private JPanel mainPanel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
+	private JPanel ticketTreePanel;
 	private JPanel headPanel;
 	private JPanel welcomePanel;
 	private JPanel buttonPanel;
@@ -18,12 +20,15 @@ public class ClientApplication {
 	private JScrollPane textScrollPane;
 
 	// Labels
-	private JLabel welcomeLabel = new JLabel("Bonjour, Prénom NOM");
+	private JLabel welcomeLabel;
 
 	// Buttons
-	private JButton newTicketButton = new JButton("Nouveau ticket");
-	private JButton disconectButton = new JButton("Déconnexion");
-	private JButton sendButton = new JButton("Envoyer");
+	private JButton newTicketButton;
+	private JButton disconectButton;
+	private JButton sendButton;
+
+	// Tree
+	private JTree ticketTree;
 	
 	public ClientApplication() {
 		createWindow();
@@ -41,6 +46,8 @@ public class ClientApplication {
 
 		setStyle();
 		setLayout();
+
+		mainWindow.pack();
 	}
 
 	/**
@@ -49,8 +56,8 @@ public class ClientApplication {
 	 * @see ClientApplication.buildSWINGContents()
 	 */
 	private void buildSWINGElements() {
-		buildSWINGContainers();
 		buildSWINGContents();
+		buildSWINGContainers();
 	}
 
 	/**
@@ -64,7 +71,7 @@ public class ClientApplication {
 		headPanel = new JPanel();
 		welcomePanel = new JPanel();
 		buttonPanel = new JPanel();
-		ticketTreeScrollPane = new JScrollPane();
+		ticketTreeScrollPane = new JScrollPane(ticketTree);
 		chatScrollPane = new JScrollPane();
 		textScrollPane = new JScrollPane();
 	}
@@ -80,6 +87,14 @@ public class ClientApplication {
 		newTicketButton = new JButton("Nouveau ticket");
 		disconectButton = new JButton("Déconnexion");
 		sendButton = new JButton("Envoyer");
+
+		// Tree
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(
+				"Tickets en cours");
+		DefaultMutableTreeNode test = new DefaultMutableTreeNode(
+				"Ticket 1");
+		root.add(test);
+		ticketTree = new JTree(root);
 	}
 
 	/**
@@ -90,8 +105,6 @@ public class ClientApplication {
 	private void setStyle() {
 		setMainWindowStyle();
 		setLeftPanelStyle();
-		
-		mainWindow.pack();
 	}
 
 	/**
