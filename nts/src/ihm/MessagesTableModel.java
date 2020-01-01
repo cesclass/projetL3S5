@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import communications.Message;
 
-public class messagesTableModel extends AbstractTableModel {
+public class MessagesTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
 
     private Message message;
