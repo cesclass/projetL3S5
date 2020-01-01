@@ -23,6 +23,13 @@ public class Message {
     }
 
     /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * @return the date
      */
     public Date getDate() {
@@ -41,5 +48,10 @@ public class Message {
      */
     public User getAuthor() {
         return author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Message && ((Message) o).getId() == this.id;
     }
 }

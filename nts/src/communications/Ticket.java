@@ -11,6 +11,10 @@ public class Ticket implements Comparable<Ticket> {
         messageManager = new MessageManager(firstMessage);
     }
 
+    public void addMessage(Message message) {
+        messageManager.addMessage(message);
+    }
+
     /**
      * @return the id
      */
@@ -40,6 +44,11 @@ public class Ticket implements Comparable<Ticket> {
     @Override
     public int compareTo(Ticket t) {
         return this.id - t.getId();
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }
