@@ -1,32 +1,39 @@
 package ihm;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import communications.Ticket;
+
 public class TicketTreeModel implements TreeModel {
+    private Map<String, List<Ticket>> tickets;
+
+    public TicketTreeModel(Map<String, List<Ticket>> tickets) {
+        this.tickets = tickets;
+    }
+
     @Override
     public Object getRoot() {
-        // TODO Auto-generated method stub
-        return null;
+        return "Tickets en cours";
     }
 
     @Override
     public Object getChild(Object parent, int index) {
-        // TODO Auto-generated method stub
-        return null;
+        return tickets.get((String) parent).get(index);
     }
 
     @Override
     public int getChildCount(Object parent) {
-        // TODO Auto-generated method stub
-        return 0;
+       return tickets.get((String) parent).size();
     }
 
     @Override
     public boolean isLeaf(Object node) {
-        // TODO Auto-generated method stub
-        return false;
+        return node instanceof Ticket;
     }
 
     @Override
@@ -37,8 +44,7 @@ public class TicketTreeModel implements TreeModel {
 
     @Override
     public int getIndexOfChild(Object parent, Object child) {
-        // TODO Auto-generated method stub
-        return 0;
+        return tickets.get((String) parent).indexOf((Ticket) child);
     }
 
     @Override
