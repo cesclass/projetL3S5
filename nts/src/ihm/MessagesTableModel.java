@@ -11,7 +11,7 @@ public class MessagesTableModel extends AbstractTableModel {
 
     private Message message;
 
-    public messagesTableModel(Message message) {
+    public MessagesTableModel(Message message) {
         this.message = message;
     }
 
