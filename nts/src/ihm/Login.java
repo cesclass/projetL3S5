@@ -1,5 +1,163 @@
 package ihm;
 
-public class Login {
+import java.awt.BorderLayout;
+import java.awt.Font;
 
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+
+public class Login {
+	//Constante
+	public final static int SIZEX = 275;
+	public final static int SIZEY = 275;
+	
+	//Creation fenêtre
+	JFrame frame = new JFrame("Login");
+	
+	//Creation bouton et Label
+	JButton button = new JButton("Connexion");
+	JLabel title = new JLabel("neOCampus ticket service");
+	JLabel login = new JLabel("       login");
+	JLabel password = new JLabel("password");
+	
+	//Creation zone de mot de passe et de saisie
+	JTextField id = new JTextField();
+	JPasswordField mdp = new JPasswordField();
+
+	//Constructeur
+	public Login() {
+		showWindow(createWindow());
+	}
+
+
+	// ************************************************************************
+	// * 
+	// *	BUILD
+	// * 
+	// ************************************************************************
+	
+	/**
+	 * Creation de la fenêtre
+	 */
+	private JFrame createWindow() {
+		//On initialise la taille de la fenêtre
+		frame.setSize(SIZEX, SIZEY);
+		//Mise en place de l'evenement de fermeture de la fenêtre
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Positionnement au centre du titre
+		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setVerticalAlignment(JLabel.CENTER);
+		
+		frame = setFrameLayout();
+		
+		//Mise en place de la police/taille d'écriture
+		title.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 20));
+		login.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
+		password.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
+		
+		//Paramétrage position
+		frame.setLocationRelativeTo(null);
+		
+		//On empêche la l'agrandissement et rétrécissement de la fenêtre
+		frame.setResizable(false);
+		
+		return frame;
+	}
+	
+	/**
+	 * Creation Panel central
+	 */
+	private Box setCenter() {
+		//Creation de Box et de Panel
+		Box root = new Box(BoxLayout.Y_AXIS);
+		JPanel logPanel = new JPanel();
+
+		setLogPanelLayout(logPanel);
+
+		//Creation de glue
+		root.add(Box.createVerticalGlue());
+		root.add(logPanel);
+		root.add(Box.createVerticalGlue());
+
+
+		return root;
+	}
+
+
+	// ************************************************************************
+	// * 
+	// *	Layout
+	// * 
+	// ************************************************************************
+
+	/**
+	 * Mise en place du layout du panel principal
+	 */
+	private JFrame setFrameLayout() {
+		//Creation Border Layout
+		BorderLayout layout = new BorderLayout();
+		
+		//Creation de panel
+		JPanel root = new JPanel(layout);
+		Box centerBox = setCenter();
+		frame.setContentPane(root);
+		
+		
+		//Comportement Border Layout
+		root.add(title, BorderLayout.PAGE_START);
+		root.add(centerBox, BorderLayout.CENTER);
+		root.add(button, BorderLayout.PAGE_END);
+		
+		return frame;
+	}
+
+	/**
+	 * Mise en place du layout du panel de la box
+	 */
+	private void setLogPanelLayout(JPanel logPanel) {
+		GroupLayout layout = new GroupLayout(logPanel);
+		logPanel.setLayout(layout);
+		
+		//Comportement Horizontal
+		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
+		hGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.TRAILING)
+				.addComponent(login)
+				.addComponent(password));
+		hGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.LEADING)
+				.addComponent(id)
+				.addComponent(mdp));
+		layout.setHorizontalGroup(hGroup);
+		
+		//Comportement Vertical
+		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
+		vGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.BASELINE)
+				.addComponent(login)
+				.addComponent(id));
+		vGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.BASELINE)
+				.addComponent(password)
+				.addComponent(mdp));
+		layout.setVerticalGroup(vGroup);
+	}
+	
+
+	// ************************************************************************
+	// * 
+	// *	VIEW
+	// * 
+	// ************************************************************************
+	
+	/**
+	 * Affichage de la fenêtre
+	 */
+	private void showWindow(JFrame frame) {
+		frame.setVisible(true);
+	}
+	
+	
+	
 }
