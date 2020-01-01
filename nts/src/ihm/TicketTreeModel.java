@@ -4,7 +4,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-public class ticketTreeModel implements TreeModel {
+public class TicketTreeModel implements TreeModel {
     @Override
     public Object getRoot() {
         // TODO Auto-generated method stub
