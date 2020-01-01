@@ -9,9 +9,11 @@ import user.User;
 
 public class TicketManager {
     private Map<String, List<Ticket>> tickets;
+    private Ticket current;
 
     public TicketManager() {
         this.tickets = new TreeMap<>();
+        current = null;
     }
 
     public void addTicket(String group, Ticket ticket) {
@@ -23,5 +25,24 @@ public class TicketManager {
 
             tickets.put(group, ticketList);
         }
+        current = ticket;
+    }
+
+    public void selectTicket(Ticket ticket) {
+        current = ticket;
+    }
+
+    /**
+     * @return the tickets
+     */
+    public Map<String, List<Ticket>> getAllTickets() {
+        return tickets;
+    }
+
+    /**
+     * @return the current
+     */
+    public Ticket getCurrent() {
+        return current;
     }
 }
