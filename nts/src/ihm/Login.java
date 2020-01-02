@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
 
 import communications.TicketManager;
 
@@ -46,7 +45,7 @@ public class Login {
 	private JFrame createWindow() {
 		//On initialise la taille de la fenêtre
 		frame.setSize(SIZEX, SIZEY);
-		//Mise en place de l'evenement de fermeture de la fenêtre
+		//Mise en place de l'évènement de fermeture de la fenêtre
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//Positionnement au centre du titre

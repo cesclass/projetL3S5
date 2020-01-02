@@ -3,9 +3,11 @@ package ihm;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.*;
 
+import communications.TicketManager;
 import user.Group;
 
 public class NewTicketWindow {
@@ -38,8 +40,9 @@ public class NewTicketWindow {
 
     // data
     JFrame parent;
+    TicketManager tm;
 
-    public NewTicketWindow(JFrame parent) {
+    public NewTicketWindow(JFrame parent, TicketManager tm) {
         this.parent = parent;
 
         createWindow();
@@ -110,7 +113,7 @@ public class NewTicketWindow {
         messageLabel = new JLabel("Message");
 
         // ComboBox
-        groupCombo = new JComboBox<>();
+        groupCombo = new JComboBox<>(new Vector<Group>(tm.getAllGroups()));
 
         // Text
         titleField = new JTextField();

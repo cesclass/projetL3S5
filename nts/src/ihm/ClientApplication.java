@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import communications.TicketManager;
 
@@ -57,7 +56,7 @@ public class ClientApplication {
 		setLayout();
 		
 		//Set Event
-		this.addEventListeners();
+		this.addEventListeners(tm);
 		
 		mainWindow.pack();
 	}
@@ -332,18 +331,17 @@ public class ClientApplication {
 	// * 
 	// ************************************************************************
 	
-	private void addEventListeners() {
-		this.addEventListenerNewTicketButton();
+	private void addEventListeners(TicketManager tm) {
+		this.addEventListenerNewTicketButton(tm);
 	}
 	
-	private void addEventListenerNewTicketButton() {
+	private void addEventListenerNewTicketButton(TicketManager tm) {
 		this.newTicketButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				NewTicketWindow ntw = new NewTicketWindow(mainWindow);
+				NewTicketWindow ntw = new NewTicketWindow(mainWindow, tm);
 				mainWindow.setEnabled(false);
-			}
-			
+			}	
 		});
 	}
 }

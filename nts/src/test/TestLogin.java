@@ -1,6 +1,5 @@
 package test;
 
-import javax.swing.*;
 import ihm.Login; 
 
 public class TestLogin {
