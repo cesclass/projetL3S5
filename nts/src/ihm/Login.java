@@ -67,7 +67,7 @@ public class Login {
 		frame.setResizable(false);
 		
 		//On ajoute les évènements
-		this.setEvent();
+		this.addEventListeners();
 		
 		return frame;
 	}
@@ -174,7 +174,7 @@ public class Login {
 	/**
 	 * Creation des évènements
 	 */
-	private void setEvent(){
+	private void addEventListeners(){
 		
 		this.addEventListenerOpenMainWindow();
 		
