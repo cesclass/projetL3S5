@@ -1,11 +1,10 @@
 package communications;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import user.User;
 
 public class TicketManager {
     private Map<String, List<Ticket>> tickets;
@@ -33,16 +32,41 @@ public class TicketManager {
     }
 
     /**
-     * @return the tickets
-     */
-    public Map<String, List<Ticket>> getAllTickets() {
-        return tickets;
-    }
-
-    /**
      * @return the current
      */
     public Ticket getCurrent() {
         return current;
     }
+
+	public Object getTicket(String group, int index) {
+        return tickets.get(group).get(index);
+	}
+
+	public int getNbTicket(String group) {
+        return tickets.get(group).size();
+		
+	}
+
+	public int getTicketNum(String group, Ticket ticket) {
+        if (tickets.containsKey(group) && tickets.get(group).contains(ticket)) {
+            return tickets.get(group).indexOf(ticket);
+        } else {
+            return -1;
+        }
+	}
+
+	public int getNbGroup() {
+        return tickets.size();
+	}
+
+	public Object getGroup(int index) {
+        int i = 0;
+        String group = "";
+
+		for (Iterator<String> iter = tickets.keySet().iterator(); i <= index; i++) {
+            group = iter.next();
+        }
+
+        return group;
+	}
 }

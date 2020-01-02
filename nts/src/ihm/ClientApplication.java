@@ -5,6 +5,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import communications.TicketManager;
+
 public class ClientApplication {
 	// Containers
 	private JFrame mainWindow;
@@ -34,16 +36,17 @@ public class ClientApplication {
 	// Tree
 	private JTree ticketTree;
 	
-	public ClientApplication() {
-		createWindow();
+	public ClientApplication(TicketManager tm) {
+		createWindow(tm);
 		showWindow();
 	}
 	
 	/**
 	 * Create the window
+	 * @param tm : gestionnaire de tickets
 	 */
-	private void createWindow() {
-		buildSWINGElements();
+	private void createWindow(TicketManager tm) {
+		buildSWINGElements(tm);
 
 		mainWindow.setContentPane(mainPanel);
 		mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -69,11 +72,12 @@ public class ClientApplication {
 
 	/**
 	 * Call all buildSWING methods to build graphic elements
+	 * @param tm : gestionnaire de tickets
 	 * @see ClientApplication.buildSWINGContainers()
 	 * @see ClientApplication.buildSWINGContents()
 	 */
-	private void buildSWINGElements() {
-		buildSWINGContents();
+	private void buildSWINGElements(TicketManager tm) {
+		buildSWINGContents(tm);
 		buildSWINGContainers();
 	}
 
@@ -98,7 +102,7 @@ public class ClientApplication {
 	/**
 	 * Build all SWING contents
 	 */
-	private void buildSWINGContents() {
+	private void buildSWINGContents(TicketManager tm) {
 		// Labels
 		welcomeLabel = new JLabel("Bonjour, Prénom NOM");
 
@@ -111,9 +115,8 @@ public class ClientApplication {
 		sendButton = new JButton("Envoyer");
 
 		// Tree
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(
-				"Tickets en cours");
-		ticketTree = new JTree(root);
+		TicketTreeModel model = new TicketTreeModel(tm);
+		ticketTree = new JTree(model);
 	}
 
 	// ************************************************************************
@@ -309,5 +312,11 @@ public class ClientApplication {
 				.addComponent(textScrollPane)
 				.addComponent(sendButton));
 		layout.setVerticalGroup(vGroup);
+	}
+
+	public void majGUI() {
+		System.out.println(ticketTree.getModel().getChildCount(ticketTree.getModel().getRoot()));
+		ticketTree.revalidate();
+		mainWindow.pack();
 	}
 }

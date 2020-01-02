@@ -1,8 +1,5 @@
 package interfaces;
 
-import java.util.List;
-import java.util.Map;
-
 import communications.Message;
 import communications.Ticket;
 import communications.TicketManager;
@@ -29,7 +26,10 @@ public class UserInterface {
         ticketManager.getCurrent().addMessage(message);
     }
 
-    public Map<String, List<Ticket>> getAllTickets() {
-        return ticketManager.getAllTickets();
+    /**
+     * @return the ticketManager
+     */
+    public TicketManager getTicketManager() {
+        return ticketManager;
     }
 }

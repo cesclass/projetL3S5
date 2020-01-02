@@ -1,19 +1,16 @@
 package ihm;
-
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import communications.Ticket;
+import communications.TicketManager;
 
 public class TicketTreeModel implements TreeModel {
-    private Map<String, List<Ticket>> tickets;
+    private TicketManager tm;
 
-    public TicketTreeModel(Map<String, List<Ticket>> tickets) {
-        this.tickets = tickets;
+    public TicketTreeModel(TicketManager tm) {
+        this.tm = tm;
     }
 
     @Override
@@ -23,12 +20,20 @@ public class TicketTreeModel implements TreeModel {
 
     @Override
     public Object getChild(Object parent, int index) {
-        return tickets.get((String) parent).get(index);
+        if (parent == getRoot()) {
+            return tm.getGroup(index);
+        } else {
+            return tm.getTicket((String) parent, index);
+        }
     }
 
     @Override
     public int getChildCount(Object parent) {
-       return tickets.get((String) parent).size();
+        if (parent == getRoot()) {
+            return tm.getNbGroup();
+        } else {
+            return tm.getNbTicket((String) parent);
+        }
     }
 
     @Override
@@ -38,13 +43,13 @@ public class TicketTreeModel implements TreeModel {
 
     @Override
     public void valueForPathChanged(TreePath path, Object newValue) {
+        
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public int getIndexOfChild(Object parent, Object child) {
-        return tickets.get((String) parent).indexOf((Ticket) child);
+        return tm.getTicketNum((String) parent, (Ticket) child);
     }
 
     @Override
@@ -58,5 +63,4 @@ public class TicketTreeModel implements TreeModel {
         // TODO Auto-generated method stub
 
     }
-    
 }
