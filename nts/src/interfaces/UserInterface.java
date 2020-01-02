@@ -19,7 +19,7 @@ public class UserInterface {
         Message message = new Message(this.user, firstMessage);
         Ticket ticket = new Ticket(group, name, message);
 
-        ticketManager.addTicket(group, ticket);
+        ticketManager.addTicket(ticket);
     }
 
     public void sendMessage(String content) {

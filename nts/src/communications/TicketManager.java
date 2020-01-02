@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import user.Group;
 
@@ -18,14 +19,14 @@ public class TicketManager {
         current = null;
     }
 
-    public void addTicket(Group group, Ticket ticket) {
-        if (tickets.containsKey(group)) {
-            tickets.get(group).add(ticket);
+    public void addTicket(Ticket ticket) {
+        if (tickets.containsKey(ticket.getGroup())) {
+            tickets.get(ticket.getGroup()).add(ticket);
         } else {
             List<Ticket> ticketList = new ArrayList<>();
             ticketList.add(ticket);
 
-            tickets.put(group, ticketList);
+            tickets.put(ticket.getGroup(), ticketList);
         }
         current = ticket;
     }
@@ -74,6 +75,6 @@ public class TicketManager {
 	}
 
 	public Set<Group> getAllGroups() {
-		return tickets.keySet();
+        return tickets.keySet();
 	}
 }

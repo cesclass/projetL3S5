@@ -34,6 +34,13 @@ public class Ticket implements Comparable<Ticket> {
     }
 
     /**
+     * @return the group
+     */
+    public Group getGroup() {
+        return group;
+    }
+
+    /**
      * @return the messageManager
      */
     public MessageManager getMessageManager() {
