@@ -64,6 +64,13 @@ public class ClientApplication {
 		mainWindow.setVisible(true);
 	}
 
+	/**
+	 * Update Graphic user interface
+	 */
+	public void majGUI() {
+		ticketTree.updateUI();
+	}
+
 	// ************************************************************************
 	// * 
 	// *	BUILD
@@ -314,9 +321,9 @@ public class ClientApplication {
 		layout.setVerticalGroup(vGroup);
 	}
 
-	public void majGUI() {
-		System.out.println(ticketTree.getModel().getChildCount(ticketTree.getModel().getRoot()));
-		ticketTree.revalidate();
-		mainWindow.pack();
-	}
+	// ************************************************************************
+	// * 
+	// *	EVENTS
+	// * 
+	// ************************************************************************
 }
