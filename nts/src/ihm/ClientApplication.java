@@ -152,7 +152,8 @@ public class ClientApplication {
 	 * Define the mainWindow Properties
 	 */
 	private void setMainWindowProperties() {
-		mainWindow.setMinimumSize(new Dimension(700, 400));
+		mainWindow.setMinimumSize(new Dimension(800, 500));
+		mainWindow.setLocationRelativeTo(null);
 	}
 
 	/**

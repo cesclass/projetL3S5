@@ -140,8 +140,9 @@ public class NewTicketWindow {
     }
 
     private void setNewTicketFrameProperties() {
-        newTicketFrame.setMinimumSize(new Dimension(300, 400));
+        newTicketFrame.setMinimumSize(new Dimension(500, 400));
         newTicketFrame.setUndecorated(true);
+        newTicketFrame.setLocationRelativeTo(null);
     }
 
     // ************************************************************************
