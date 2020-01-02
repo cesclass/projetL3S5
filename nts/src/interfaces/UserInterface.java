@@ -3,6 +3,7 @@ package interfaces;
 import communications.Message;
 import communications.Ticket;
 import communications.TicketManager;
+import user.Group;
 import user.User;
 
 public class UserInterface {
@@ -14,9 +15,9 @@ public class UserInterface {
         ticketManager = new TicketManager();
     }
 
-    public void createTicket(String group, String name, String firstMessage) {
+    public void createTicket(Group group, String name, String firstMessage) {
         Message message = new Message(this.user, firstMessage);
-        Ticket ticket = new Ticket(name, message);
+        Ticket ticket = new Ticket(group, name, message);
 
         ticketManager.addTicket(group, ticket);
     }

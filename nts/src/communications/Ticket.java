@@ -8,9 +8,10 @@ public class Ticket implements Comparable<Ticket> {
     private Group group;
     private MessageManager messageManager;
 
-    public Ticket(String name, Message firstMessage) {
+    public Ticket(Group group, String name, Message firstMessage) {
         this.id = -1;
         this.name = name;
+        this.group = group;
         messageManager = new MessageManager(firstMessage);
     }
 

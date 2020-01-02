@@ -6,6 +6,7 @@ import javax.swing.tree.TreePath;
 
 import communications.Ticket;
 import communications.TicketManager;
+import user.Group;
 
 public class TicketTreeModel implements TreeModel {
     private TicketManager tm;
@@ -24,7 +25,7 @@ public class TicketTreeModel implements TreeModel {
         if (parent == getRoot()) {
             return tm.getGroup(index);
         } else {
-            return tm.getTicket((String) parent, index);
+            return tm.getTicket((Group) parent, index);
         }
     }
 
@@ -33,7 +34,7 @@ public class TicketTreeModel implements TreeModel {
         if (parent == getRoot()) {
             return tm.getNbGroup();
         } else {
-            return tm.getNbTicket((String) parent);
+            return tm.getNbTicket((Group) parent);
         }
     }
 
@@ -50,7 +51,7 @@ public class TicketTreeModel implements TreeModel {
 
     @Override
     public int getIndexOfChild(Object parent, Object child) {
-        return tm.getTicketNum((String) parent, (Ticket) child);
+        return tm.getTicketNum((Group) parent, (Ticket) child);
     }
 
     @Override

@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import user.Group;
+
 public class TicketManager {
-    private Map<String, List<Ticket>> tickets;
+    private Map<Group, List<Ticket>> tickets;
     private Ticket current;
 
     public TicketManager() {
@@ -15,7 +17,7 @@ public class TicketManager {
         current = null;
     }
 
-    public void addTicket(String group, Ticket ticket) {
+    public void addTicket(Group group, Ticket ticket) {
         if (tickets.containsKey(group)) {
             tickets.get(group).add(ticket);
         } else {
@@ -38,16 +40,16 @@ public class TicketManager {
         return current;
     }
 
-	public Object getTicket(String group, int index) {
+	public Object getTicket(Group group, int index) {
         return tickets.get(group).get(index);
 	}
 
-	public int getNbTicket(String group) {
+	public int getNbTicket(Group group) {
         return tickets.get(group).size();
 		
 	}
 
-	public int getTicketNum(String group, Ticket ticket) {
+	public int getTicketNum(Group group, Ticket ticket) {
         if (tickets.containsKey(group) && tickets.get(group).contains(ticket)) {
             return tickets.get(group).indexOf(ticket);
         } else {
@@ -61,9 +63,9 @@ public class TicketManager {
 
 	public Object getGroup(int index) {
         int i = 0;
-        String group = "";
+        Group group = null;
 
-		for (Iterator<String> iter = tickets.keySet().iterator(); i <= index; i++) {
+		for (Iterator<Group> iter = tickets.keySet().iterator(); i <= index; i++) {
             group = iter.next();
         }
 

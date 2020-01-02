@@ -8,9 +8,8 @@ import user.Group;
 public class GroupManager {
 	private List<Group> groupes;
 	
-    public GroupManager(Group groupe) {
+    public GroupManager() {
         groupes = new ArrayList<>();
-        groupes.add(groupe);
     }
     
     public void addGroup(Group groupe) {
