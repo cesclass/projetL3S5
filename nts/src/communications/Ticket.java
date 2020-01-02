@@ -1,8 +1,11 @@
 package communications;
 
+import user.Group;
+
 public class Ticket implements Comparable<Ticket> {
     private int id;
     private String name;
+    private Group group;
     private MessageManager messageManager;
 
     public Ticket(String name, Message firstMessage) {
