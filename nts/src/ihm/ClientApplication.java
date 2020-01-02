@@ -1,6 +1,8 @@
 package ihm;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -53,7 +55,10 @@ public class ClientApplication {
 
 		setProperties();
 		setLayout();
-
+		
+		//Set Event
+		this.addEventListeners();
+		
 		mainWindow.pack();
 	}
 
@@ -326,4 +331,19 @@ public class ClientApplication {
 	// *	EVENTS
 	// * 
 	// ************************************************************************
+	
+	private void addEventListeners() {
+		this.addEventListenerNewTicketButton();
+	}
+	
+	private void addEventListenerNewTicketButton() {
+		this.newTicketButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				NewTicketWindow ntw = new NewTicketWindow(mainWindow);
+				mainWindow.setEnabled(false);
+			}
+			
+		});
+	}
 }
