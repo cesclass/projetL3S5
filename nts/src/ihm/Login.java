@@ -2,14 +2,18 @@ package ihm;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+import communications.TicketManager;
+
 public class Login {
 	//Constante
 	public final static int SIZEX = 275;
-	public final static int SIZEY = 275;
+	public final static int SIZEY = 150;
 	
 	//Creation fenêtre
 	JFrame frame = new JFrame("Login");
@@ -61,6 +65,9 @@ public class Login {
 		
 		//On empêche la l'agrandissement et rétrécissement de la fenêtre
 		frame.setResizable(false);
+		
+		//On ajoute les évènements
+		this.setEvent();
 		
 		return frame;
 	}
@@ -158,6 +165,34 @@ public class Login {
 		frame.setVisible(true);
 	}
 	
+	// ************************************************************************
+	// * 
+	// *	EVENTS
+	// * 
+	// ************************************************************************
 	
+	/**
+	 * Creation des évènements
+	 */
+	private void setEvent(){
+		
+		this.addEventListenerOpenMainWindow();
+		
+	}
+	
+	/**
+	 * Ouverture fenêtre principale
+	 */
+    private void addEventListenerOpenMainWindow() {
+        this.button.addActionListener(new ActionListener() {
+            
+			public void actionPerformed(ActionEvent arg0) {
+				ClientApplication mainWindow = new ClientApplication(new TicketManager());
+				frame.setEnabled(false);
+				frame.setVisible(false);
+			}
+            
+        });
+    }
 	
 }
