@@ -1,11 +1,14 @@
 package ihm;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
+import communications.Ticket;
 import communications.TicketManager;
 
 public class ClientApplication {
@@ -34,21 +37,23 @@ public class ClientApplication {
 	private JButton disconectButton;
 	private JButton sendButton;
 
-	// Tree
+	// DataStructures
 	private JTree ticketTree;
+	private JTable messageTable;
 
 	// Data
-	TicketManager tm;
-	
+	private TicketManager tm;
+
 	public ClientApplication(TicketManager tm) {
 		this.tm = tm;
 
 		createWindow();
 		showWindow();
 	}
-	
+
 	/**
 	 * Create the window
+	 * 
 	 * @param tm : gestionnaire de tickets
 	 */
 	private void createWindow() {
@@ -59,10 +64,10 @@ public class ClientApplication {
 
 		setProperties();
 		setLayout();
-		
-		//Set Event
+
+		// Set Event
 		this.addEventListeners();
-		
+
 		mainWindow.pack();
 	}
 
@@ -81,13 +86,14 @@ public class ClientApplication {
 	}
 
 	// ************************************************************************
-	// * 
-	// *	BUILD
-	// * 
+	// *
+	// * BUILD
+	// *
 	// ************************************************************************
 
 	/**
 	 * Call all buildSWING methods to build graphic elements
+	 * 
 	 * @param tm : gestionnaire de tickets
 	 * @see ClientApplication.buildSWINGContainers()
 	 * @see ClientApplication.buildSWINGContents()
@@ -111,7 +117,7 @@ public class ClientApplication {
 		chatPanel = new JPanel();
 		sendPanel = new JPanel();
 		ticketTreeScrollPane = new JScrollPane(ticketTree);
-		chatScrollPane = new JScrollPane(chatPanel);
+		chatScrollPane = new JScrollPane(messageTable);
 		textScrollPane = new JScrollPane(textArea);
 	}
 
@@ -133,16 +139,18 @@ public class ClientApplication {
 		// Tree
 		TicketTreeModel model = new TicketTreeModel(tm);
 		ticketTree = new JTree(model);
+		messageTable = new JTable();
 	}
 
 	// ************************************************************************
-	// * 
-	// *	PROPERTIES
-	// * 
+	// *
+	// * PROPERTIES
+	// *
 	// ************************************************************************
 
 	/**
 	 * Call all setProperties methods to define properties
+	 * 
 	 * @see ClientApplication.setMainWindowProperties()
 	 * @see ClientApplication.setLeftPanelProperties()
 	 * @see ClientApplication.setTextAreaProperties()
@@ -166,11 +174,9 @@ public class ClientApplication {
 	 */
 	private void setLeftPanelProperties() {
 		// Border
-		leftPanel.setBorder(BorderFactory.createMatteBorder(
-				0, 0, 0, 1, Color.black));
+		leftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.black));
 		// Max size
-		leftPanel.setMaximumSize(new Dimension(
-				400, (int) mainPanel.getMaximumSize().getHeight()));
+		leftPanel.setMaximumSize(new Dimension(400, (int) mainPanel.getMaximumSize().getHeight()));
 	}
 
 	private void setTextAreaProperties() {
@@ -180,13 +186,14 @@ public class ClientApplication {
 	}
 
 	// ************************************************************************
-	// * 
-	// *	LAYOUT
-	// * 
+	// *
+	// * LAYOUT
+	// *
 	// ************************************************************************
 
 	/**
 	 * Call all setLayout methods to define layouts
+	 * 
 	 * @see ClientApplication.setMainPanelLayout()
 	 * @see ClientApplication.setLeftPanelLayout()
 	 * @see ClientApplication.setHeadPanelLayout()
@@ -204,30 +211,26 @@ public class ClientApplication {
 		setRightPanelLayout();
 		setSendPanelLayout();
 	}
-	
+
 	/**
 	 * Define the mainPanel Layout
 	 */
 	private void setMainPanelLayout() {
 		GroupLayout layout = new GroupLayout(mainPanel);
 		mainPanel.setLayout(layout);
-		
+
 		// Horizontal groups
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-		hGroup.addGroup(layout.createParallelGroup()
-				.addComponent(leftPanel));
-		hGroup.addGroup(layout.createParallelGroup()
-				.addComponent(rightPanel));
+		hGroup.addGroup(layout.createParallelGroup().addComponent(leftPanel));
+		hGroup.addGroup(layout.createParallelGroup().addComponent(rightPanel));
 		layout.setHorizontalGroup(hGroup);
-		
+
 		// Vertical group
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-		vGroup.addGroup(layout.createParallelGroup()
-				.addComponent(leftPanel)
-				.addComponent(rightPanel));
+		vGroup.addGroup(layout.createParallelGroup().addComponent(leftPanel).addComponent(rightPanel));
 		layout.setVerticalGroup(vGroup);
 	}
-	
+
 	/**
 	 * Define the leftPanel Layout
 	 */
@@ -248,18 +251,14 @@ public class ClientApplication {
 
 		// Horizontal group
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-		hGroup.addGroup(layout.createParallelGroup(
-				GroupLayout.Alignment.CENTER)
-				.addComponent(welcomePanel)
+		hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(welcomePanel)
 				.addComponent(buttonPanel));
 		layout.setHorizontalGroup(hGroup);
 
 		// Vertical groups
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-		vGroup.addGroup(layout.createParallelGroup().
-				addComponent(welcomePanel));
-		vGroup.addGroup(layout.createParallelGroup()
-				.addComponent(buttonPanel));
+		vGroup.addGroup(layout.createParallelGroup().addComponent(welcomePanel));
+		vGroup.addGroup(layout.createParallelGroup().addComponent(buttonPanel));
 		layout.setVerticalGroup(vGroup);
 	}
 
@@ -283,17 +282,13 @@ public class ClientApplication {
 
 		// Horizontal groups
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-		hGroup.addGroup(layout.createParallelGroup()
-				.addComponent(newTicketButton));
-		hGroup.addGroup(layout.createParallelGroup()
-				.addComponent(disconectButton));
+		hGroup.addGroup(layout.createParallelGroup().addComponent(newTicketButton));
+		hGroup.addGroup(layout.createParallelGroup().addComponent(disconectButton));
 		layout.setHorizontalGroup(hGroup);
 
 		// Vertical group
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-		vGroup.addGroup(layout.createParallelGroup()
-				.addComponent(newTicketButton)
-				.addComponent(disconectButton));
+		vGroup.addGroup(layout.createParallelGroup().addComponent(newTicketButton).addComponent(disconectButton));
 		layout.setVerticalGroup(vGroup);
 	}
 
@@ -317,37 +312,65 @@ public class ClientApplication {
 
 		// Horizontal groups
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-		hGroup.addGroup(layout.createParallelGroup()
-				.addComponent(textScrollPane));
-		hGroup.addGroup(layout.createParallelGroup()
-				.addComponent(sendButton));
+		hGroup.addGroup(layout.createParallelGroup().addComponent(textScrollPane));
+		hGroup.addGroup(layout.createParallelGroup().addComponent(sendButton));
 		layout.setHorizontalGroup(hGroup);
 
 		// Vertical group
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-		vGroup.addGroup(layout.createParallelGroup()
-				.addComponent(textScrollPane)
-				.addComponent(sendButton));
+		vGroup.addGroup(layout.createParallelGroup().addComponent(textScrollPane).addComponent(sendButton));
 		layout.setVerticalGroup(vGroup);
 	}
 
 	// ************************************************************************
-	// * 
-	// *	EVENTS
-	// * 
+	// *
+	// * EVENTS
+	// *
 	// ************************************************************************
-	
+
 	private void addEventListeners() {
 		this.addEventListenerNewTicketButton();
+		addEventListenerTicketTree();
 	}
-	
+
 	private void addEventListenerNewTicketButton() {
 		this.newTicketButton.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				NewTicketWindow ntw = new NewTicketWindow(mainWindow, tm);
 				mainWindow.setEnabled(false);
-			}	
+			}
+		});
+	}
+
+	private void addEventListenerTicketTree() {
+		this.ticketTree.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TreeModel treeModel = ticketTree.getModel();
+				TreePath selPath = ticketTree.getPathForLocation(e.getX(), e.getY());
+
+				if (treeModel.isLeaf(selPath.getLastPathComponent())) {
+					Ticket ticket = (Ticket) selPath.getLastPathComponent();
+					TableModel tableModel = new MessagesTableModel(
+							ticket.getMessageManager());
+					messageTable.setModel(tableModel);
+					mainWindow.pack();
+				}
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
 		});
 	}
 }
