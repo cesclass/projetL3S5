@@ -11,6 +11,7 @@ import javax.swing.tree.TreePath;
 
 import communications.Ticket;
 import communications.TicketManager;
+import interfaces.UserInterface;
 
 public class ClientApplication {
 	// Containers
@@ -43,9 +44,11 @@ public class ClientApplication {
 
 	// Data
 	private TicketManager tm;
+	private UserInterface ui;
 
-	public ClientApplication(TicketManager tm) {
-		this.tm = tm;
+	public ClientApplication(UserInterface ui) {
+		this.ui = ui;
+		this.tm = ui.getTicketManager();
 
 		createWindow();
 		showWindow();
@@ -339,10 +342,12 @@ public class ClientApplication {
 
 
 	private void addEventListenerNewTicketButton() {
+		ClientApplication me = this;
+		UserInterface param_ui = this.ui;
 		this.newTicketButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				NewTicketWindow ntw = new NewTicketWindow(mainWindow, tm);
+				NewTicketWindow ntw = new NewTicketWindow(me, tm, ui);
 				mainWindow.setEnabled(false);
 			}
 		});

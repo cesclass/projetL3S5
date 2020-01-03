@@ -15,7 +15,7 @@ public class TestClientApplication {
 				+ "en U3-208\n"
 				+ "Merci d'en prendre compte");
 
-		ClientApplication app = new ClientApplication(ui.getTicketManager());
+		ClientApplication app = new ClientApplication(ui);
 
 		ui.createTicket(new Group("L2-INFO-TDA4", "groupe L2-INFO-TDA4"),
 				"changement de salle",

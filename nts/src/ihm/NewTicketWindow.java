@@ -10,6 +10,7 @@ import javax.swing.*;
 import communications.Message;
 import communications.Ticket;
 import communications.TicketManager;
+import interfaces.UserInterface;
 import user.Group;
 import user.User;
 
@@ -42,12 +43,14 @@ public class NewTicketWindow {
     private JButton cancelButton;
 
     // data
-    JFrame parent;
+    ClientApplication parent;
     TicketManager tm;
+    UserInterface ui;
 
-    public NewTicketWindow(JFrame parent, TicketManager tm) {
+    public NewTicketWindow(ClientApplication parent, TicketManager tm,  UserInterface ui) {
         this.parent = parent;
         this.tm = tm;
+        this.ui = ui;
 
         createWindow();
         showWindow();
@@ -299,8 +302,10 @@ public class NewTicketWindow {
             	String msg = messageArea.getText();
             	if(!title.isEmpty() && !msg.isEmpty()) {
             		//On créer le nouveau ticket
-            		tm.addTicket(new Ticket((Group) groupCombo.getSelectedItem(), title, 
-            				new Message(new User("", "NOM", "Prenom"), msg)));
+            		ui.createTicket((Group) groupCombo.getSelectedItem(),
+            						title, 
+            						msg);
+            		parent.majGUI();
             		
             		//On efface les infos
             		titleField.setText("");
@@ -309,7 +314,7 @@ public class NewTicketWindow {
             		//On gère nos fenêtre
             		newTicketFrame.setEnabled(false);
             		newTicketFrame.setVisible(false);
-            		parent.setEnabled(true);
+            		parent.getMainWindow().setEnabled(true);
             	}else {
             		JOptionPane.showMessageDialog(newTicketFrame, "<html>Erreur<br><b>titre</b> ou <b>message</b> vide</html>", "Erreur", JOptionPane.ERROR_MESSAGE);
             	}
@@ -331,7 +336,7 @@ public class NewTicketWindow {
         		
         		newTicketFrame.setEnabled(false);
         		newTicketFrame.setVisible(false);
-        		parent.setEnabled(true);
+        		parent.getMainWindow().setEnabled(true);
             }
     	});
     }

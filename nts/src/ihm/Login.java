@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import communications.TicketManager;
+import interfaces.UserInterface;
 
 public class Login {
 	//Constante
@@ -191,7 +192,7 @@ public class Login {
 				}else {
 					id.setText("");
 					mdp.setText("");
-					ClientApplication mainWindow = new ClientApplication(new TicketManager());
+					ClientApplication mainWindow = new ClientApplication(new UserInterface());
 					frame.setEnabled(false);
 					frame.setVisible(false);
 				}
