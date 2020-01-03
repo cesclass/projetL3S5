@@ -7,8 +7,11 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import communications.Message;
+import communications.Ticket;
 import communications.TicketManager;
 import user.Group;
+import user.User;
 
 public class NewTicketWindow {
     // Containers
@@ -290,10 +293,25 @@ public class NewTicketWindow {
         this.sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                newTicketFrame.setEnabled(false);
-                newTicketFrame.setVisible(false);
-                parent.setEnabled(true);
-
+            	//Si les infos sont bien remplis
+            	String title = titleField.getText();
+            	String msg = messageArea.getText();
+            	if(!title.isEmpty() && !msg.isEmpty()) {
+            		//On créer le nouveau ticket
+            		tm.addTicket(new Ticket((Group) groupCombo.getSelectedItem(), title, 
+            				new Message(new User("", "NOM", "Prenom"), msg)));
+            		
+            		//On efface les infos
+            		titleField.setText("");
+            		messageArea.setText("");
+            		
+            		//On gère nos fenêtre
+            		newTicketFrame.setEnabled(false);
+            		newTicketFrame.setVisible(false);
+            		parent.setEnabled(true);
+            	}else {
+            		JOptionPane.showMessageDialog(newTicketFrame, "<html>Erreur<br><b>titre</b> ou <b>message</b> vide</html>", "Erreur", JOptionPane.ERROR_MESSAGE);
+            	}
             }
             
         });
