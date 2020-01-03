@@ -36,9 +36,14 @@ public class ClientApplication {
 
 	// Tree
 	private JTree ticketTree;
+
+	// Data
+	TicketManager tm;
 	
 	public ClientApplication(TicketManager tm) {
-		createWindow(tm);
+		this.tm = tm;
+
+		createWindow();
 		showWindow();
 	}
 	
@@ -46,8 +51,8 @@ public class ClientApplication {
 	 * Create the window
 	 * @param tm : gestionnaire de tickets
 	 */
-	private void createWindow(TicketManager tm) {
-		buildSWINGElements(tm);
+	private void createWindow() {
+		buildSWINGElements();
 
 		mainWindow.setContentPane(mainPanel);
 		mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,7 +61,7 @@ public class ClientApplication {
 		setLayout();
 		
 		//Set Event
-		this.addEventListeners(tm);
+		this.addEventListeners();
 		
 		mainWindow.pack();
 	}
@@ -87,8 +92,8 @@ public class ClientApplication {
 	 * @see ClientApplication.buildSWINGContainers()
 	 * @see ClientApplication.buildSWINGContents()
 	 */
-	private void buildSWINGElements(TicketManager tm) {
-		buildSWINGContents(tm);
+	private void buildSWINGElements() {
+		buildSWINGContents();
 		buildSWINGContainers();
 	}
 
@@ -113,7 +118,7 @@ public class ClientApplication {
 	/**
 	 * Build all SWING contents
 	 */
-	private void buildSWINGContents(TicketManager tm) {
+	private void buildSWINGContents() {
 		// Labels
 		welcomeLabel = new JLabel("Bonjour, Prénom NOM");
 
@@ -332,11 +337,11 @@ public class ClientApplication {
 	// * 
 	// ************************************************************************
 	
-	private void addEventListeners(TicketManager tm) {
-		this.addEventListenerNewTicketButton(tm);
+	private void addEventListeners() {
+		this.addEventListenerNewTicketButton();
 	}
 	
-	private void addEventListenerNewTicketButton(TicketManager tm) {
+	private void addEventListenerNewTicketButton() {
 		this.newTicketButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
