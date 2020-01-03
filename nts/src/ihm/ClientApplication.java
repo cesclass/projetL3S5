@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -20,7 +21,6 @@ public class ClientApplication {
 	private JPanel headPanel;
 	private JPanel welcomePanel;
 	private JPanel buttonPanel;
-	private JPanel chatPanel;
 	private JPanel sendPanel;
 	private JScrollPane ticketTreeScrollPane;
 	private JScrollPane chatScrollPane;
@@ -114,7 +114,6 @@ public class ClientApplication {
 		headPanel = new JPanel();
 		welcomePanel = new JPanel();
 		buttonPanel = new JPanel();
-		chatPanel = new JPanel();
 		sendPanel = new JPanel();
 		ticketTreeScrollPane = new JScrollPane(ticketTree);
 		chatScrollPane = new JScrollPane(messageTable);
@@ -348,15 +347,18 @@ public class ClientApplication {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				TreeModel treeModel = ticketTree.getModel();
 				TreePath selPath = ticketTree.getPathForLocation(e.getX(), e.getY());
 
-				if (treeModel.isLeaf(selPath.getLastPathComponent())) {
+				if (selPath != null && 
+						selPath.getLastPathComponent() instanceof Ticket) {
 					Ticket ticket = (Ticket) selPath.getLastPathComponent();
 					TableModel tableModel = new MessagesTableModel(
 							ticket.getMessageManager());
 					messageTable.setModel(tableModel);
-					mainWindow.pack();
+
+					TableCellRenderer renderer = new MessagesTableCellRenderer();
+					messageTable.getColumnModel().getColumn(0).setCellRenderer(renderer);
+					//mainWindow.pack();
 				}
 			}
 
