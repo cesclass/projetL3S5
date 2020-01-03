@@ -1,24 +1,21 @@
 package ihm;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import javax.swing.table.AbstractTableModel;
 
-import communications.Message;
+import communications.MessageManager;
 
 public class MessagesTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
 
-    private Message message;
+    private MessageManager mm;
 
-    public MessagesTableModel(Message message) {
-        this.message = message;
+    public MessagesTableModel(MessageManager mm) {
+        this.mm = mm;
     }
 
     @Override
     public int getRowCount() {
-        // message + author/date
-        return 2;
+        return mm.getMessagesCount();
     }
 
     @Override
@@ -28,21 +25,6 @@ public class MessagesTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (rowIndex) {
-            case 0: // Message
-                return message.getContent();
-            
-            case 1: // Author + date
-                String authorName = message.getAuthor().getFirstName() 
-                        + message.getAuthor().getLastName();
-                DateFormat dateFormat = new SimpleDateFormat(
-                        "yyyy-mm-dd hh:mm:ss");
-                String date = dateFormat.format(message.getDate());
-                return authorName + ", " + date;
-
-            default:
-                return null;
-        }
+        return mm.getMessage(rowIndex);
     }
-
 }

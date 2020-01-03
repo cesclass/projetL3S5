@@ -20,4 +20,12 @@ public class MessageManager implements Iterable<Message> {
     public Iterator<Message> iterator() {
         return messages.iterator();
     }
+
+	public int getMessagesCount() {
+		return messages.size();
+	}
+
+	public Message getMessage(int rowIndex) {
+        return messages.get(rowIndex);
+	}
 }
