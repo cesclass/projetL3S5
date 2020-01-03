@@ -330,6 +330,7 @@ public class ClientApplication {
 	private void addEventListeners() {
 		this.addEventListenerNewTicketButton();
 		addEventListenerTicketTree();
+		addEventListenerDisconectButton();
 	}
 
 	private void addEventListenerNewTicketButton() {
@@ -374,5 +375,17 @@ public class ClientApplication {
 			@Override
 			public void mouseExited(MouseEvent e) {}
 		});
+	}
+	
+	private void addEventListenerDisconectButton() {
+		this.disconectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainWindow.setEnabled(false);
+				mainWindow.setVisible(false);
+				
+				Login login = new Login();
+			}
+		});
+		
 	}
 }
