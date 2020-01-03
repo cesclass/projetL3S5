@@ -186,9 +186,15 @@ public class Login {
         this.button.addActionListener(new ActionListener() {
             
 			public void actionPerformed(ActionEvent arg0) {
-				ClientApplication mainWindow = new ClientApplication(new TicketManager());
-				frame.setEnabled(false);
-				frame.setVisible(false);
+				if(id.getText().isEmpty() || String.valueOf(mdp.getPassword()).isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "<html>Erreur<br><b>login</b> ou <b>password</b> incorrect</html>", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}else {
+					id.setText("");
+					mdp.setText("");
+					ClientApplication mainWindow = new ClientApplication(new TicketManager());
+					frame.setEnabled(false);
+					frame.setVisible(false);
+				}
 			}
             
         });
