@@ -283,13 +283,14 @@ public class NewTicketWindow {
     // ************************************************************************
 
     private void addEventListeners() {
-        addEventListenerClose();
+        addEventListenerSend();
+        addEventListenerDenied();
     }
 
     /**
      * Add actionPerformed event listener on sendButton
      */
-    private void addEventListenerClose() {
+    private void addEventListenerSend() {
         this.sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -315,5 +316,23 @@ public class NewTicketWindow {
             }
             
         });
+    }
+    
+    /**
+     * Add actionPerformed event listener on cancelButton
+     */
+    private void addEventListenerDenied() {
+    	this.cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		//On efface les infos
+        		titleField.setText("");
+        		messageArea.setText("");
+        		
+        		newTicketFrame.setEnabled(false);
+        		newTicketFrame.setVisible(false);
+        		parent.setEnabled(true);
+            }
+    	});
     }
 }
