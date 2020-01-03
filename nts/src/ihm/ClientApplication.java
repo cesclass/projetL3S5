@@ -50,6 +50,10 @@ public class ClientApplication {
 		createWindow();
 		showWindow();
 	}
+	
+	public JFrame getMainWindow() {
+		return mainWindow;
+	}
 
 	/**
 	 * Create the window
@@ -332,6 +336,7 @@ public class ClientApplication {
 		addEventListenerTicketTree();
 		addEventListenerDisconectButton();
 	}
+
 
 	private void addEventListenerNewTicketButton() {
 		this.newTicketButton.addActionListener(new ActionListener() {
