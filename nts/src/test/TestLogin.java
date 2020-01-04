@@ -1,6 +1,6 @@
 package test;
 
-import ihm.Login; 
+import gui.Login; 
 
 public class TestLogin {
 

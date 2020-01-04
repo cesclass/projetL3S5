@@ -1,6 +1,6 @@
 package test;
 
-import ihm.ServerApplication;
+import gui.ServerApplication;
 
 public class TestServerApplication {
 	

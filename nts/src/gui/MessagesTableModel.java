@@ -1,4 +1,4 @@
-package ihm;
+package gui;
 
 import javax.swing.table.AbstractTableModel;
 

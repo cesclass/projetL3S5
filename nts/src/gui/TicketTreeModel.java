@@ -1,4 +1,4 @@
-package ihm;
+package gui;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;

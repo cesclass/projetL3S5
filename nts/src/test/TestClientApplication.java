@@ -1,6 +1,6 @@
 package test;
 
-import ihm.ClientApplication;
+import gui.ClientApplication;
 import interfaces.UserInterface;
 import user.Group;
 
