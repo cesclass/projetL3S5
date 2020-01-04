@@ -1,0 +1,73 @@
+{
+  /***************************************
+   * Donnees de controle
+   */
+
+   "control": {
+     "type": "TYPE",  // enum ContentType()
+     "other": null    // something...
+   },
+
+   "identity": {
+     "login": "abc1234x",       // String()
+     "passwd": "!p4Ss",         // String()
+   },
+
+  /***************************************
+   * Charge utile 
+   */
+
+  // ArrayList<User> OR User[]
+  "users": [
+    {
+      "id" : 0,               // Integer() OR int
+      "first_name": "first",  // String()
+      "last_name": "last"     // String()
+    },
+    { /*User*/ }
+  ],
+
+  // ArrayList<Group> OR Groups[]
+  "groups": [
+    {
+      "id": 0,                // Integer() OR int
+      "name": "name",         // String()
+      "info" : "description"  // String()
+    },
+    { /*Group*/ }
+  ],
+
+  // ArrayList<Ticket> OR Ticket[]
+  "tickets":[ 
+    {
+      "id": 0,          // Integer() OR int
+      "title": "ab",    // String()
+      "date": "DMYhms", // Date()
+      "group": "name"   // String()
+    },
+    { /*Ticket*/ }
+  ],
+
+  // ArrayList<Message> OR Message[]
+  "messages": [
+    {
+      "id": 0,            // Integer() OR int
+      "author": 0,        // Integer() OR int
+      "ticket": 0,        // Integer() OR int
+      "date" : "DMYhms",  // String() OR Date()
+      "content" : "text"  // String()
+    },
+    { /*Message*/ }
+  ],
+
+  // ArrayList<Status> OR Status[]
+  "statuses": [
+    {
+      "first_name": "first",  // String()
+      "last_name" : "last",   // String()
+      "status": 0             // val(enum StatusType())
+    },
+    { /*Status*/ }
+  ]
+
+}

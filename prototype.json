@@ -1,0 +1,62 @@
+{
+   "control": {
+     "type": "TYPE",
+     "other": null
+   },
+
+   "identity": {
+     "login": "abc1234x",
+     "passwd": "!p4Ss",
+     "token" : "a_weird_string"
+   },
+
+  "users": [
+    {
+      "id" : 0,
+      "first_name": "first",
+      "last_name": "last"
+    },
+    {  }
+  ],
+
+  "groups": [
+    {
+      "id": 0,
+      "name": "name",
+      "info" : "description"
+    },
+    { }
+  ],
+
+  "tickets":[ 
+    {
+      "id": 0,
+      "title": "ab",
+      "date": "DMYhms",
+      "group": "name"
+    },
+    { }
+  ],
+
+  "messages": [
+    {
+      "id": 0,
+      "author": 0,
+      "ticket": 0,
+      "date" : "DMYhms",
+      "content" : "text"
+    },
+    { }
+  ],
+
+
+  "statuses": [
+    {
+      "first_name": "first",
+      "last_name" : "last",
+      "status": 0
+    },
+    { }
+  ]
+
+}
