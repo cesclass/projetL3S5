@@ -1,6 +1,6 @@
 package communications;
 
-public enum Status {
+public enum StatusType {
 	WAITING,
 	RECEIVED,
 	READ,
