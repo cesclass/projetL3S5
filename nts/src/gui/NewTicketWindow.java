@@ -7,12 +7,9 @@ import java.util.Vector;
 
 import javax.swing.*;
 
-import communications.Message;
-import communications.Ticket;
 import communications.TicketManager;
 import interfaces.UserInterface;
 import user.Group;
-import user.User;
 
 public class NewTicketWindow {
     // Containers

@@ -6,7 +6,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import communications.Ticket;
@@ -343,11 +342,10 @@ public class ClientApplication {
 
 	private void addEventListenerNewTicketButton() {
 		ClientApplication me = this;
-		UserInterface param_ui = this.ui;
 		this.newTicketButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				NewTicketWindow ntw = new NewTicketWindow(me, tm, ui);
+				new NewTicketWindow(me, tm, ui);
 				mainWindow.setEnabled(false);
 			}
 		});
@@ -393,7 +391,7 @@ public class ClientApplication {
 				mainWindow.setEnabled(false);
 				mainWindow.setVisible(false);
 				
-				Login login = new Login();
+				new Login();
 			}
 		});
 		
