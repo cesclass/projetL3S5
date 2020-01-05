@@ -12,6 +12,13 @@ public class User {
     }
 
     /**
+     * @return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
      * @return the firstName
      */
     public String getFirstName() {

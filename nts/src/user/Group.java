@@ -4,6 +4,11 @@ public class Group implements Comparable<Group> {
     private String name;
     private String description;
 
+    /**
+     * Group constructor (minimal)
+     * @param name
+     * @param description
+     */
     public Group(String name, String description) {
         this.name = name;
         this.description = description;
