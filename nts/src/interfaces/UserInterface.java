@@ -8,12 +8,22 @@ import user.User;
 
 public class UserInterface {
     private User user;
-    private TicketManager ticketManager;
+
+	private TicketManager ticketManager;
 
     public UserInterface() {
         user = new User("crd1789a", "Dylan", "CARON");
         ticketManager = new TicketManager();
     }
+    
+    public UserInterface(User user) {
+        this.user = user;
+        ticketManager = new TicketManager();
+    }
+    
+    public User getUser() {
+		return user;
+	}
 
     public void createTicket(Group group, String name, String firstMessage) {
         Message message = new Message(this.user, firstMessage);

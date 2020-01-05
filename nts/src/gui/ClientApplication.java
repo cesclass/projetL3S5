@@ -131,7 +131,7 @@ public class ClientApplication {
 	 */
 	private void buildSWINGContents() {
 		// Labels
-		welcomeLabel = new JLabel("Bonjour, Prénom NOM");
+		setWelcome();
 
 		// TextArea
 		textArea = new JTextArea();
@@ -146,6 +146,7 @@ public class ClientApplication {
 		ticketTree = new JTree(model);
 		messageTable = new JTable();
 	}
+	
 
 	// ************************************************************************
 	// *
@@ -188,6 +189,13 @@ public class ClientApplication {
 		textArea.setRows(5);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+	}
+	
+	/**
+	 * Set the Welcome Label
+	 */
+	private void setWelcome() {
+		welcomeLabel = new JLabel("Bonjour, " + ui.getUser().getFirstName() + " " + ui.getUser().getLastName());
 	}
 
 	// ************************************************************************

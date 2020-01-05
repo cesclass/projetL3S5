@@ -4,10 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import exchange.ComData;
+import exchange.ComType;
 
 import javax.swing.*;
 
 import interfaces.UserInterface;
+import user.User;
 
 public class Login {
 	//Constante
@@ -189,9 +192,18 @@ public class Login {
 				if(id.getText().isEmpty() || String.valueOf(mdp.getPassword()).isEmpty()) {
 					JOptionPane.showMessageDialog(frame, "<html>Erreur<br><b>login</b> ou <b>password</b> incorrect</html>", "Erreur", JOptionPane.ERROR_MESSAGE);
 				}else {
+					String log = id.getText();
+					String mdpValue = String.valueOf(mdp.getPassword());
 					id.setText("");
 					mdp.setText("");
-					new ClientApplication(new UserInterface());
+					
+					//Creation Identity
+					ComData identity = new ComData(null, null, log, mdpValue);
+					
+					//Creation UserInterface
+					UserInterface ui = new UserInterface(new User(log, log, mdpValue));
+					
+					new ClientApplication(ui);
 					frame.setEnabled(false);
 					frame.setVisible(false);
 				}
