@@ -58,6 +58,13 @@ public class Ticket implements Comparable<Ticket> {
     }
 
     /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
      * @return the group
      */
     public Group getGroup() {
