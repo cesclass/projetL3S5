@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.text.DateFormat;
@@ -20,10 +21,12 @@ public class MessagesTableCellRenderer
         extends Box 
         implements TableCellRenderer {
     private static final long serialVersionUID = 1L;
+    
 
     private JPanel messagePanel;
     private JTextArea messageArea;
     private JLabel infosLabel;
+    private int count = 0;
     
     public MessagesTableCellRenderer() {
         super(BoxLayout.X_AXIS);
@@ -34,15 +37,19 @@ public class MessagesTableCellRenderer
             boolean isSelected, boolean hasFocus, int row, int column) {
 
         buildSWINGComponents((Message) value);
-        setMessagePanelLayout();
+        
+        
+        if(count == 0) {
+        	setMessagePanelLayout();
+        	count++;
+        }
 
         add(messagePanel);
         add(Box.createHorizontalGlue());
+        
 
         table.setRowHeight(200);
         table.setTableHeader(null);
-        messagePanel.setMinimumSize(new Dimension(300, 300));
-        
         return this;
     }
 
@@ -59,8 +66,10 @@ public class MessagesTableCellRenderer
         infos += format.format(message.getDate());
 
         infosLabel = new JLabel(infos);
+        
     }
 
+    
     private void setMessagePanelLayout() {
         GroupLayout layout = new GroupLayout(messagePanel);
         messagePanel.setLayout(layout);
