@@ -45,8 +45,7 @@ public class TicketTreeModel implements TreeModel {
 
     @Override
     public void valueForPathChanged(TreePath path, Object newValue) {
-        
-        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -56,13 +55,11 @@ public class TicketTreeModel implements TreeModel {
 
     @Override
     public void addTreeModelListener(TreeModelListener l) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void removeTreeModelListener(TreeModelListener l) {
-        // TODO Auto-generated method stub
 
     }
 }
