@@ -41,7 +41,7 @@ public class TicketManager {
         return current;
     }
 
-	public Object getTicket(Group group, int index) {
+	public Ticket getTicket(Group group, int index) {
         return tickets.get(group).get(index);
 	}
 
@@ -62,7 +62,7 @@ public class TicketManager {
         return tickets.size();
 	}
 
-	public Object getGroup(int index) {
+	public Group getGroup(int index) {
         int i = 0;
         Group group = null;
 

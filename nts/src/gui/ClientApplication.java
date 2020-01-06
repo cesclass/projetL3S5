@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
@@ -372,10 +371,12 @@ public class ClientApplication {
 					TableModel tableModel = new MessagesTableModel(
 							ticket.getMessageManager());
 					messageTable.setModel(tableModel);
+					messageTable.getColumnModel().getColumn(0).setHeaderValue(null);
 
-					TableCellRenderer renderer = new MessagesTableCellRenderer();
-					messageTable.getColumnModel().getColumn(0).setCellRenderer(renderer);
-					//mainWindow.pack();
+					for (int i = 0; i < messageTable.getRowCount(); i++) {
+						int taille = messageTable.getValueAt(i, 0).toString().split("<br>").length;
+						messageTable.setRowHeight(i, (taille + 1) * 16);
+					}
 				}
 			}
 

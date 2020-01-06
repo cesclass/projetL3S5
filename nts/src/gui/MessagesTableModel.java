@@ -15,7 +15,7 @@ public class MessagesTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return mm.getMessagesCount();
+        return mm.getMessagesCount() * 2;
     }
 
     @Override
@@ -25,6 +25,10 @@ public class MessagesTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return mm.getMessage(rowIndex);
+        return rowIndex%2 == 0 ?
+                "<html>" + 
+                mm.getMessage(rowIndex/2).getContent().replace("\n", "<br>") + 
+                "</html>" :
+                mm.getMessage((rowIndex-1)/2).getAuthor();
     }
 }
