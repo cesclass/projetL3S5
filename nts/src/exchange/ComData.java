@@ -7,64 +7,6 @@ import user.*;
 
 public class ComData {
 
-    private class Control {
-        private ComType type = null;
-        private String other = null;
-
-        /**
-         * Control constructor
-         * @param type
-         * @param other
-         */
-        public Control(ComType type, String other) {
-            this.type = type;
-            this.other = other;
-        }
-
-        /**
-         * @return the type
-         */
-        public ComType getType() {
-            return type;
-        }
-
-        /**
-         * @return the other
-         */
-        public String getOther() {
-            return other;
-        }
-    }
-
-    private class Identity {
-        private String login = null;
-        private String password = null;
-
-        /**
-         * Identity constructor
-         * @param login
-         * @param password
-         */
-        public Identity(String login, String password) {
-            this.login = login;
-            this.password = password;
-        }
-
-        /**
-         * @return the login
-         */
-        public String getLogin() {
-            return login;
-        }
-
-        /**
-         * @return the password
-         */
-        public String getPassword() {
-            return password;
-        }
-    }
-
     private class Status {
         private User user;
         private StatusType status;
@@ -89,8 +31,8 @@ public class ComData {
         }
     }
 
-    private Control control = null;
-    private Identity identity = null;
+    private ComType type = null;
+    private ComLogin login = null;
     private List<User> users = null;
     private List<Group> groups = null;
     private List<Ticket> tickets = null;
@@ -104,11 +46,9 @@ public class ComData {
      * @param identity_login
      * @param identity_password
      */
-    public ComData(ComType control_type, String control_other, 
-            String identity_login, String identity_password) 
-    {
-        this.control = new Control(control_type, control_other);
-        this.identity = new Identity(identity_login, identity_password);
+    public ComData(ComType comType, ComLogin login) {
+        this.type = comType;
+        this.login = login;
         this.users = new ArrayList<>();
         this.groups = new ArrayList<>();
         this.tickets = new ArrayList<>();
@@ -117,17 +57,17 @@ public class ComData {
     }
 
     /**
-     * @return the control
+     * @return the type
      */
-    public Control getControl() {
-        return control;
+    public ComType getType() {
+        return type;
     }
 
     /**
-     * @return the identity
+     * @return the login
      */
-    public Identity getIdentity() {
-        return identity;
+    public ComLogin getLogin() {
+        return login;
     }
 
     /**
