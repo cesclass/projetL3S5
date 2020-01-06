@@ -27,7 +27,7 @@ public class UserInterface {
 
     public void createTicket(Group group, String name, String firstMessage) {
         Message message = new Message(this.user, firstMessage);
-        Ticket ticket = new Ticket(group, name, message);
+        Ticket ticket = new Ticket(name, group, message);
 
         ticketManager.addTicket(ticket);
     }

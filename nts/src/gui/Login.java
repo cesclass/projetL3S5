@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import exchange.ComData;
-import exchange.ComType;
 
 import javax.swing.*;
 
@@ -23,7 +21,7 @@ public class Login {
 	//Creation bouton et Label
 	JButton button = new JButton("Connexion");
 	JLabel title = new JLabel("neOCampus ticket service");
-	JLabel login = new JLabel("       login");
+	JLabel login = new JLabel("login");
 	JLabel password = new JLabel("password");
 	
 	//Creation zone de mot de passe et de saisie
@@ -196,9 +194,6 @@ public class Login {
 					String mdpValue = String.valueOf(mdp.getPassword());
 					id.setText("");
 					mdp.setText("");
-					
-					//Creation Identity
-					ComData identity = new ComData(null, null, log, mdpValue);
 					
 					//Creation UserInterface
 					UserInterface ui = new UserInterface(new User(log, log, mdpValue));
