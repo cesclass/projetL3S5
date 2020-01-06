@@ -12,7 +12,7 @@ public class UserInterface {
 	private TicketManager ticketManager;
 
     public UserInterface() {
-        user = new User("crd1789a", "Dylan", "CARON");
+        user = new User("Dylan", "CARON");
         ticketManager = new TicketManager();
     }
     

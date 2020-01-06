@@ -1,21 +1,12 @@
 package user;
 
 public class User {
-    private String login;
     private String firstName;
     private String lastName;
 
-    public User(String login, String firstName, String lastName) {
-        this.login = login;
+    public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    /**
-     * @return the login
-     */
-    public String getLogin() {
-        return login;
     }
 
     /**

@@ -196,7 +196,7 @@ public class Login {
 					mdp.setText("");
 					
 					//Creation UserInterface
-					UserInterface ui = new UserInterface(new User(log, log, mdpValue));
+					UserInterface ui = new UserInterface(new User(log, mdpValue));
 					
 					new ClientApplication(ui);
 					frame.setEnabled(false);
