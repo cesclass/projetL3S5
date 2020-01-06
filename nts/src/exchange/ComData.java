@@ -7,30 +7,6 @@ import user.*;
 
 public class ComData {
 
-    private class Status {
-        private User user;
-        private StatusType status;
-
-        public Status(User user, StatusType status) {
-            this.user = user;
-            this.status = status;
-        }
-
-        /**
-         * @return the user
-         */
-        public User getUser() {
-            return user;
-        }
-
-        /**
-         * @return the status
-         */
-        public StatusType getStatus() {
-            return status;
-        }
-    }
-
     private ComType type = null;
     private ComLogin login = null;
     private List<User> users = null;
