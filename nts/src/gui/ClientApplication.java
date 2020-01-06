@@ -4,9 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
+import communications.Message;
 import communications.Ticket;
 import communications.TicketManager;
 import interfaces.UserInterface;
@@ -344,6 +346,7 @@ public class ClientApplication {
 		this.addEventListenerNewTicketButton();
 		addEventListenerTicketTree();
 		addEventListenerDisconectButton();
+		addEventListenerSendButton();
 	}
 
 
@@ -404,5 +407,24 @@ public class ClientApplication {
 			}
 		});
 		
+	}
+	
+	private void addEventListenerSendButton() {
+		this.sendButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!textArea.getText().isEmpty()) {
+					//Envoi du nouveau message dans le ticket courant
+					ui.getTicketManager().getCurrent().addMessage(new Message(ui.getUser(), textArea.getText()));
+					textArea.setText("");
+					AbstractTableModel model = (AbstractTableModel) messageTable.getModel();
+					model.fireTableRowsInserted(model.getRowCount()-2, model.getRowCount()-1);
+					
+					for (int i = model.getRowCount()-2 ; i < messageTable.getRowCount(); i++) {
+						int taille = messageTable.getValueAt(i, 0).toString().split("<br>").length;
+						messageTable.setRowHeight(i, (taille + 1) * 16);
+					}
+				}
+			}
+		});
 	}
 }
