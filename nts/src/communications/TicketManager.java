@@ -10,8 +10,8 @@ import java.util.TreeMap;
 import user.Group;
 
 /**
- * UserInterface have a TicketManager to manage its Tickets and sort them
- * by participant group
+ * UserInterface have a TicketManager to manage its Tickets 
+ * and sort them by participant group
  * 
  * UserInterface use its TicketManager to :
  *  - add a Ticket,
@@ -21,11 +21,11 @@ import user.Group;
  *  - get informations about Groups and Tickets (number and count)
  */
 public class TicketManager {
-    // ************************************************************************
+    // *****************************************************************
 	// *
-	// * ATTRIBUTE
+	// * ATTRIBUTES
 	// *
-    // ************************************************************************
+    // *****************************************************************
     
     /**
      * Ticket map, sorted by Group
@@ -36,11 +36,11 @@ public class TicketManager {
      */
     private Ticket current;
 
-    // ************************************************************************
+    // *****************************************************************
 	// *
 	// * CONSTRUCTOR
 	// *
-	// ************************************************************************
+	// *****************************************************************
     
     /**
      * Constructor for standard TicketManager
@@ -50,11 +50,11 @@ public class TicketManager {
         current = null;
     }
 
-    // ************************************************************************
+    // *****************************************************************
 	// *
 	// * METHODS
 	// *
-	// ************************************************************************
+	// *****************************************************************
 
     /**
      * Accessor for the current attribute

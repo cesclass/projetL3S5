@@ -6,14 +6,15 @@ import user.Group;
 
 /**
  * Ticket is a discussion with a name, a last update date,
- * a group of participants and a MessageManager to represent Ticket messages
+ * a group of participants and a MessageManager to represent
+ * Ticket messages
  */
 public class Ticket implements Comparable<Ticket> {
-    // ************************************************************************
+    // *****************************************************************
 	// *
 	// * ATTRIBUTES
 	// *
-    // ************************************************************************
+    // *****************************************************************
     
     /**
      * The identifier of the Ticket, same as database
@@ -36,11 +37,11 @@ public class Ticket implements Comparable<Ticket> {
      */
     private MessageManager messageManager;
 
-    // ************************************************************************
+    // *****************************************************************
 	// *
 	// * CONSTRUCTORS
 	// *
-	// ************************************************************************
+	// *****************************************************************
 
     /**
      * Constructor for standard Ticket.
@@ -71,11 +72,11 @@ public class Ticket implements Comparable<Ticket> {
         this.group = group;
     }
 
-    // ************************************************************************
+    // *****************************************************************
 	// *
 	// * METHODS
 	// *
-	// ************************************************************************
+	// *****************************************************************
 
     /**
      * Accessor for the id attribute

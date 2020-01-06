@@ -6,7 +6,8 @@ package communications;
 public enum StatusType {
 	/**
 	 * Server did not received the Message
-	 * (Or User did not received it, in case of status for a specific User)
+	 * (Or User did not received it, 
+	 * 	in case of status for a specific User)
 	 */
 	WAITING,
 	/**
