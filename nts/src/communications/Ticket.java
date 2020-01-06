@@ -4,20 +4,51 @@ import java.util.Date;
 
 import user.Group;
 
+/**
+ * Ticket is a discussion with a name, a last update date,
+ * a group of participants and a MessageManager to represent Ticket messages
+ */
 public class Ticket implements Comparable<Ticket> {
+    // ************************************************************************
+	// *
+	// * ATTRIBUTES
+	// *
+    // ************************************************************************
+    
+    /**
+     * The identifier of the Ticket, same as database
+     */
     private int id;
+    /**
+     * Ticket name (discussion topic)
+     */
     private String name;
+    /**
+     * Ticket last update
+     */
     private Date date;
+    /**
+     * Ticket participants
+     */
     private Group group;
+    /**
+     * Message manager (represent Ticket messages)
+     */
     private MessageManager messageManager;
 
+    // ************************************************************************
+	// *
+	// * CONSTRUCTORS
+	// *
+	// ************************************************************************
+
     /**
-     * 
-     * @param group
-     * @param name
+     * Constructor for standard Ticket.
+     * @param name of the Ticket
+     * @param group of participants
      * @param firstMessage
      */
-    public Ticket(Group group, String name, Message firstMessage) {
+    public Ticket(String name, Group group, Message firstMessage) {
         this.id = -1;
         this.name = name;
         this.date = firstMessage.getDate();
@@ -26,11 +57,12 @@ public class Ticket implements Comparable<Ticket> {
     }
 
     /**
-     * 
-     * @param id
-     * @param name
-     * @param date
-     * @param group
+     * Constructor with more parameters.
+     * Create a personalized Ticket with more options.
+     * @param id of the Ticket
+     * @param name of the Ticket
+     * @param date of Ticket last update
+     * @param group of participants
      */
     public Ticket(int id, String name, Date date, Group group) {
         this.id = id;
@@ -39,11 +71,14 @@ public class Ticket implements Comparable<Ticket> {
         this.group = group;
     }
 
-    public void addMessage(Message message) {
-        messageManager.addMessage(message);
-    }
+    // ************************************************************************
+	// *
+	// * METHODS
+	// *
+	// ************************************************************************
 
     /**
+     * Accessor for the id attribute
      * @return the id
      */
     public int getId() {
@@ -51,6 +86,7 @@ public class Ticket implements Comparable<Ticket> {
     }
 
     /**
+     * Accessor for the name attribute
      * @return the name
      */
     public String getName() {
@@ -58,26 +94,40 @@ public class Ticket implements Comparable<Ticket> {
     }
 
     /**
-     * @return the date
+     * Accessor for the date attribute
+     * @return Message last update date
      */
     public Date getDate() {
         return date;
     }
 
     /**
+     * Accessor for the group attribute
      * @return the group
+     * @see Group
      */
     public Group getGroup() {
         return group;
     }
 
     /**
+     * Accessor for the messageManager attribute
      * @return the messageManager
+     * @see MessageManager
      */
     public MessageManager getMessageManager() {
         return messageManager;
     }
 
+    /**
+     * Add a message to the discussion with the Ticket MessageManager
+     * @param message to add
+     * @see MessageManager
+     */
+    public void addMessage(Message message) {
+        messageManager.addMessage(message);
+    }
+    
     @Override
     public boolean equals(Object o) {
         return o instanceof Ticket && ((Ticket) o).getId() == this.id;
