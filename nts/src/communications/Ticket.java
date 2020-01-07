@@ -24,6 +24,8 @@ public class Ticket implements Comparable<Ticket> {
     private Date date;
     /** Ticket participants*/
     private Group group;
+    /** Unread Messages count */
+    private int unreadCount;
     /** Message manager (represent Ticket messages) */
     private MessageManager messageManager;
 
@@ -44,6 +46,7 @@ public class Ticket implements Comparable<Ticket> {
         this.name = name;
         this.date = firstMessage.getDate();
         this.group = group;
+        this.unreadCount = 0;
         messageManager = new MessageManager(firstMessage);
     }
 
@@ -54,12 +57,16 @@ public class Ticket implements Comparable<Ticket> {
      * @param name of the Ticket
      * @param date of Ticket last update
      * @param group of participants
+     * @param unreadCount of Messages
      */
-    public Ticket(int id, String name, Date date, Group group) {
+    public Ticket(int id, String name, Date date, Group group, 
+            int unreadCount) 
+    {
         this.id = id;
         this.name = name;
         this.date = date;
         this.group = group;
+        this.unreadCount = unreadCount;
     }
 
     // *****************************************************************
@@ -131,7 +138,10 @@ public class Ticket implements Comparable<Ticket> {
 
     @Override
     public String toString() {
-        return name;
+        return name +
+                (unreadCount > 0 ?
+                " (" + unreadCount + ")" :
+                "");
     }
 
 }
