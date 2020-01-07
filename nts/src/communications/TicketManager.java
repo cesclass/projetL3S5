@@ -38,9 +38,7 @@ public class TicketManager {
 	// *
 	// *****************************************************************
     
-    /**
-     * Constructor for standard TicketManager
-     */
+    /** Constructor for standard TicketManager */
     public TicketManager() {
         this.tickets = new TreeMap<>();
         current = null;
