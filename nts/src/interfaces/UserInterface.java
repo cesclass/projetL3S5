@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.Set;
+
 import communications.Message;
 import communications.Ticket;
 import communications.TicketManager;
@@ -89,4 +91,20 @@ public class UserInterface {
         Message message = new Message(this.user, content);
         ticketManager.getCurrent().addMessage(message);
     }
+
+    /**
+     * Select the Ticket in TicketManager
+     * @param ticket to select
+     */
+	public void selectTicket(Ticket ticket) {
+        ticketManager.selectTicket(ticket);
+	}
+
+    /**
+     * Return all Groups in the TicketManager
+     * @return Group Set
+     */
+	public Set<Group> getAllGroups() {
+		return ticketManager.getAllGroups();
+	}
 }

@@ -28,7 +28,7 @@ public class TestClientApplication {
 				+ "en U3-208\n"
 				+ "Merci d'en prendre compte");
 		
-		app.majGUI();
+		app.updateUI();
 	}
 	
 }

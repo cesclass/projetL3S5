@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,11 +8,17 @@ import java.util.Vector;
 
 import javax.swing.*;
 
-import communications.TicketManager;
 import interfaces.UserInterface;
 import user.Group;
 
+/** New Ticket window of Client application */
 public class NewTicketWindow {
+    // *****************************************************************
+	// *
+	// * ATTRIBUTES (SWING)
+	// *
+    // *****************************************************************
+    
     // Containers
     private JFrame newTicketFrame;
     private JPanel newTicketPanel;
@@ -39,51 +46,49 @@ public class NewTicketWindow {
     private JButton sendButton;
     private JButton cancelButton;
 
-    // data
+    // *****************************************************************
+	// *
+	// * ATTRIBUTES (DATA)
+	// *
+    // *****************************************************************
+    
+    /** Main window of client application */
     ClientApplication parent;
-    TicketManager tm;
+    /** UserInterface allows to communicate with the User/application */
     UserInterface ui;
 
-    public NewTicketWindow(ClientApplication parent, TicketManager tm,  UserInterface ui) {
-        this.parent = parent;
-        this.tm = tm;
-        this.ui = ui;
-
-        createWindow();
-        showWindow();
-    }
+    // *****************************************************************
+	// *
+	// * CONSTRUCTOR
+	// *
+	// *****************************************************************
 
     /**
-     * Create the window
+     * Constructor for NewTicketWindow
+     * @param parent Main window of Client application
+     * @param ui (UserInterface)
      */
-    public void createWindow() {
+    public NewTicketWindow(ClientApplication parent, UserInterface ui) {
+        this.parent = parent;
+        this.ui = ui;
+
         buildSWINGElements();
-
-        newTicketFrame.setContentPane(newTicketPanel);
-
         setProperties();
         setLayout();
         addEventListeners();
 
         newTicketFrame.pack();
-    }
-
-    /**
-     * Show the main window
-     */
-    public void showWindow() {
         newTicketFrame.setVisible(true);
     }
 
-    // ************************************************************************
+    // *****************************************************************
     // *
     // * BUILD
     // *
-    // ************************************************************************
+    // *****************************************************************
 
     /**
      * Call all buildSWING methods to build graphic elements
-     * 
      * @see NewTicketWindow.buildSWINGContainers()
      * @see NewTicketWindow.buildSWINGContents()
      */
@@ -92,9 +97,7 @@ public class NewTicketWindow {
         buildSWINGContainers();
     }
 
-    /**
-     * Build all SWING containers
-     */
+    /** Build all SWING containers */
     private void buildSWINGContainers() {
         newTicketFrame = new JFrame();
         newTicketPanel = new JPanel();
@@ -104,9 +107,7 @@ public class NewTicketWindow {
         buttonsPanel = new JPanel();
     }
 
-    /**
-     * Build all SWING contents
-     */
+    /** Build all SWING contents */
     private void buildSWINGContents() {
         // Labels
         headerLabel = new JLabel("Nouveau ticket");
@@ -117,9 +118,9 @@ public class NewTicketWindow {
         messageLabel = new JLabel("Message");
 
         // ComboBox
-        groupCombo = new JComboBox<>(new Vector<Group>(tm.getAllGroups()));
+        groupCombo = new JComboBox<>(new Vector<Group>(ui.getAllGroups()));
 
-        // Text
+        // TextField/Area
         titleField = new JTextField();
         messageArea = new JTextArea();
 
@@ -128,34 +129,45 @@ public class NewTicketWindow {
         cancelButton = new JButton("Annuler");
     }
 
-    // ************************************************************************
+    // *****************************************************************
     // *
     // * PROPERTIES
     // *
-    // ************************************************************************
+    // *****************************************************************
 
     /**
-     * Call all setProperties methods to define properties
+     * Call all setProperties methods
+     *  to define SWING properties
+     * @see NewTicketWindow#setNewTicketFrameProperties()
+     * @see NewTicketWindow#setNewTicketPanelProperties()
      */
     private void setProperties() {
         setNewTicketFrameProperties();
+        setNewTicketPanelProperties();
     }
 
+    /** Define the newTicketFrame SWING Properties */
     private void setNewTicketFrameProperties() {
+        newTicketFrame.setContentPane(newTicketPanel);
         newTicketFrame.setMinimumSize(new Dimension(500, 400));
         newTicketFrame.setUndecorated(true);
         newTicketFrame.setLocationRelativeTo(null);
     }
 
-    // ************************************************************************
+    /** Define the newTicketPanel SWING Properties */
+    private void setNewTicketPanelProperties() {
+        newTicketPanel.setBorder(BorderFactory
+                .createMatteBorder(1, 1, 1, 1, Color.BLACK));
+    }
+
+    // *****************************************************************
     // *
     // * LAYOUT
     // *
-    // ************************************************************************
+    // *****************************************************************
 
     /**
-     * Call all setLayout methods to define layouts
-     * 
+     * Call all setLayout methods to define SWING layouts
      * @see NewTicketWindow.setNewTicketPanelLayout()
      * @see NewTicketWindow.setGroupPanelLayout()
      * @see NewTicketWindow.setTitlePanelLayout()
@@ -170,150 +182,201 @@ public class NewTicketWindow {
         setButtonsPanelLayout();
     }
 
-    /**
-     * Define the newTicketPanel Layout
-     */
+    /** Define the newTicketPanel SWING Layout */
     private void setNewTicketPanelLayout() {
         GroupLayout layout = new GroupLayout(newTicketPanel);
         newTicketPanel.setLayout(layout);
+
+        // Add padding
         layout.setAutoCreateGaps(true);
 
+        // Horizontal group
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(headerLabel)
-                .addComponent(groupPanel).addComponent(titlePanel).addComponent(messagePanel)
+        hGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.CENTER)
+                .addComponent(headerLabel)
+                .addComponent(groupPanel)
+                .addComponent(titlePanel)
+                .addComponent(messagePanel)
                 .addComponent(buttonsPanel));
         layout.setHorizontalGroup(hGroup);
 
+        // Vertical groups
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup().addComponent(headerLabel));
-        vGroup.addGroup(layout.createParallelGroup().addComponent(groupPanel));
-        vGroup.addGroup(layout.createParallelGroup().addComponent(titlePanel));
-        vGroup.addGroup(layout.createParallelGroup().addComponent(messagePanel));
-        vGroup.addGroup(layout.createParallelGroup().addComponent(buttonsPanel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(headerLabel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(groupPanel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(titlePanel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(messagePanel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(buttonsPanel));
         layout.setVerticalGroup(vGroup);
     }
 
-    /**
-     * Define the groupLPanel Layout
-     */
+    /** Define the groupPanel SWING Layout */
     private void setGroupPanelLayout() {
         GroupLayout layout = new GroupLayout(groupPanel);
         groupPanel.setLayout(layout);
+
+        // Add padding
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        // Horizontal groups
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addComponent(groupLabel)
+        hGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.TRAILING)
+                .addComponent(groupLabel)
                 .addComponent(descritpionLabel));
-        hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(groupCombo)
+        hGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.LEADING)
+                .addComponent(groupCombo)
                 .addComponent(descriptionContentLabel));
         layout.setHorizontalGroup(hGroup);
 
+        // Vertical groups
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(groupLabel)
+        vGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.BASELINE)
+                .addComponent(groupLabel)
                 .addComponent(groupCombo));
-        vGroup.addGroup(
-                layout.createParallelGroup().addComponent(descritpionLabel).addComponent(descriptionContentLabel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(descritpionLabel)
+                .addComponent(descriptionContentLabel));
         layout.setVerticalGroup(vGroup);
     }
 
-    /**
-     * Define the titlePanel Layout
-     */
+    /** Define the titlePanel SWING Layout */
     private void setTitlePanelLayout() {
         GroupLayout layout = new GroupLayout(titlePanel);
         titlePanel.setLayout(layout);
+
+        // Add padding
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        // Horizontal group
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(titleLabel)
+        hGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.LEADING)
+                .addComponent(titleLabel)
                 .addComponent(titleField));
         layout.setHorizontalGroup(hGroup);
 
+        // Vertical groups
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup().addComponent(titleLabel));
-        vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(titleField));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(titleLabel));
+        vGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.BASELINE)
+                .addComponent(titleField));
         layout.setVerticalGroup(vGroup);
     }
 
-    /**
-     * Define the messagePanel Layout
-     */
+    /** Define the messagePanel Layout */
     private void setMessagePanelLayout() {
         GroupLayout layout = new GroupLayout(messagePanel);
         messagePanel.setLayout(layout);
+
+        // Add padding
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        // Horizontal group
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(messageLabel)
+        hGroup.addGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.LEADING)
+                .addComponent(messageLabel)
                 .addComponent(messageArea));
         layout.setHorizontalGroup(hGroup);
 
+        // Vertical groups
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup().addComponent(messageLabel));
-        vGroup.addGroup(layout.createParallelGroup().addComponent(messageArea));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(messageLabel));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(messageArea));
         layout.setVerticalGroup(vGroup);
     }
 
-    /**
-     * Define the buttonsPanel Layout
-     */
+    /** Define the buttonsPanel Layout */
     private void setButtonsPanelLayout() {
         GroupLayout layout = new GroupLayout(buttonsPanel);
         buttonsPanel.setLayout(layout);
+
+        // Add padding
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        // Horizontal groups
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup().addComponent(sendButton));
-        hGroup.addGroup(layout.createParallelGroup().addComponent(cancelButton));
+        hGroup.addGroup(layout.createParallelGroup()
+                .addComponent(sendButton));
+        hGroup.addGroup(layout.createParallelGroup()
+                .addComponent(cancelButton));
         layout.setHorizontalGroup(hGroup);
 
+        // Vertical group
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup().addComponent(sendButton).addComponent(cancelButton));
+        vGroup.addGroup(layout.createParallelGroup()
+                .addComponent(sendButton)
+                .addComponent(cancelButton));
         layout.setVerticalGroup(vGroup);
     }
 
-    // ************************************************************************
+    // *****************************************************************
     // *
     // * EVENTS
     // *
-    // ************************************************************************
+    // *****************************************************************
 
+    /**
+	 * Call all addEventListener methods to define event
+	 * @see NewTicketWindow#addEventListenerSendButton()
+	 * @see NewTicketWindow#addEventListenerCancelButton()
+	 */
     private void addEventListeners() {
-        addEventListenerSend();
-        addEventListenerDenied();
+        addEventListenerSendButton();
+        addEventListenerCancelButton();
     }
 
     /**
-     * Add actionPerformed event listener on sendButton
-     */
-    private void addEventListenerSend() {
+	 * Add a new Event listener on sendButton
+	 * It will create a new Ticket
+	 */
+    private void addEventListenerSendButton() {
         this.sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	//Si les infos sont bien remplis
             	String title = titleField.getText();
-            	String msg = messageArea.getText();
+                String msg = messageArea.getText();
+
+                // if title/message are not empty
             	if(!title.isEmpty() && !msg.isEmpty()) {
-            		//On créer le nouveau ticket
+            		// Ticket creation
             		ui.createTicket((Group) groupCombo.getSelectedItem(),
             						title, 
             						msg);
-            		parent.majGUI();
             		
-            		//On efface les infos
+            		// Clear title/message fields
             		titleField.setText("");
-            		messageArea.setText("");
-            		
-            		//On gère nos fenêtre
-            		newTicketFrame.setEnabled(false);
-            		newTicketFrame.setVisible(false);
-            		parent.getMainWindow().setEnabled(true);
-            	}else {
-            		JOptionPane.showMessageDialog(newTicketFrame, "<html>Erreur<br><b>titre</b> ou <b>message</b> vide</html>", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    messageArea.setText("");
+                    
+                    // GUI update (to correctly show the TicketTree)
+                    parent.updateUI();
+
+                    parent.getMainWindow().setEnabled(true);
+                    newTicketFrame.dispose();
+                } else {
+                    // Show error message dialog
+            		JOptionPane.showMessageDialog(
+                            newTicketFrame, 
+                            "<html><b>titre</b> ou <b>message</b> vide</html>", 
+                            "Erreur", 
+                            JOptionPane.ERROR_MESSAGE);
             	}
             }
             
@@ -321,19 +384,15 @@ public class NewTicketWindow {
     }
     
     /**
-     * Add actionPerformed event listener on cancelButton
-     */
-    private void addEventListenerDenied() {
+	 * Add a new Event listener on cancelButton
+	 * It will close this window and enable the main window
+	 */
+    private void addEventListenerCancelButton() {
     	this.cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		//On efface les infos
-        		titleField.setText("");
-        		messageArea.setText("");
-        		
-        		newTicketFrame.setEnabled(false);
-        		newTicketFrame.setVisible(false);
-        		parent.getMainWindow().setEnabled(true);
+                parent.getMainWindow().setEnabled(true);
+                newTicketFrame.dispose();
             }
     	});
     }

@@ -8,11 +8,10 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
-import communications.Message;
 import communications.Ticket;
-import communications.TicketManager;
 import interfaces.UserInterface;
 
+/** Main window of Client application */
 public class ClientApplication {
 	// *****************************************************************
 	// *
@@ -50,14 +49,12 @@ public class ClientApplication {
 
 	// *****************************************************************
 	// *
-	// * ATTRIBUTES (DATA)
+	// * ATTRIBUTE (DATA)
 	// *
 	// *****************************************************************
 
 	/** UserInterface allows to communicate with the User/application */
 	private UserInterface ui;
-	/** TicketManager of ui (UserInterface attribute) */
-	private TicketManager tm;
 
 	// *****************************************************************
 	// *
@@ -68,12 +65,11 @@ public class ClientApplication {
 	/** Constructor for ClientApplication */
 	public ClientApplication(UserInterface ui) {
 		this.ui = ui;
-		this.tm = ui.getTicketManager();
 
 		buildSWINGElements();
 		setProperties();
 		setLayout();
-		this.addEventListeners();
+		addEventListeners();
 
 		mainWindow.pack();
 		mainWindow.setVisible(true);
@@ -94,7 +90,7 @@ public class ClientApplication {
 	}
 
 	/** Update Graphic user interface */
-	public void majGUI() {
+	public void updateUI() {
 		ticketTree.updateUI();
 		messageTable.updateUI();
 	}
@@ -381,8 +377,9 @@ public class ClientApplication {
 		ClientApplication app = this;
 
 		this.newTicketButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new NewTicketWindow(app, tm, ui);
+				new NewTicketWindow(app, ui);
 				mainWindow.setEnabled(false);
 			}
 		});
@@ -394,7 +391,6 @@ public class ClientApplication {
 	 */
 	private void addEventListenerTicketTree() {
 		this.ticketTree.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				TreePath selPath = ticketTree.getPathForLocation(
@@ -405,7 +401,7 @@ public class ClientApplication {
 				{
 					// Get actual selected Ticket
 					Ticket ticket = (Ticket) selPath.getLastPathComponent();
-					tm.selectTicket(ticket);
+					ui.selectTicket(ticket);
 
 					// Set messageTable model
 					TableModel tableModel = new MessagesTableModel(
@@ -449,6 +445,7 @@ public class ClientApplication {
 	 */
 	private void addEventListenerDisconnectButton() {
 		this.disconectButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				mainWindow.dispose();
 				new Login();
@@ -463,6 +460,7 @@ public class ClientApplication {
 	 */
 	private void addEventListenerSendButton() {
 		this.sendButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(!textArea.getText().isEmpty()) {
 					// Send message
