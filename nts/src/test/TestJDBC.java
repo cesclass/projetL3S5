@@ -8,7 +8,7 @@ public class TestJDBC {
 	static PreparedStatement myStmt = null;
 	static ResultSet myRs = null;
 
-	static String bdd = "jdbc:mysql://10.11.12.50:3306/nts";
+	static String bdd = "jdbc:mysql://cyandev.ovh:3306/nts";
 	static String id = "neocampus";
 	static String mdp = "neocampus";
 
