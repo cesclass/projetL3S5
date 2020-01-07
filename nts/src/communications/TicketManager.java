@@ -81,6 +81,8 @@ public class TicketManager {
 
             tickets.put(ticket.getGroup(), ticketList);
         }
+
+        current = ticket;
     }
 
     /**

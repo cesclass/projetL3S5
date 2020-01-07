@@ -7,6 +7,7 @@ import user.Group;
 public class TestClientApplication {
 		public static void main(String[] args) {
 		UserInterface ui = new UserInterface();
+		ui.connect("crd1789a", "01001011");
 		Group g = new Group("L3-INFO-TDA4", "groupe L3-INFO-TDA4");
 		ui.createTicket(g, 
 				"changement de salle",
@@ -14,10 +15,9 @@ public class TestClientApplication {
 				+ "Je vous signale que le cours de Graphe aura lieu "
 				+ "en U3-208\n"
 				+ "Merci d'en prendre compte");
-		ui.getTicketManager().getTicket(g, 0).addMessage(
-				new communications.Message(ui.getUser(),
+		ui.sendMessage(
 				"Changement de salle annulé.\n" +
-				"Le cours aura lieux demain..."));	
+				"Le cours aura lieux demain...");	
 
 		ClientApplication app = new ClientApplication(ui);
 
