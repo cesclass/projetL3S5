@@ -21,9 +21,7 @@ public class MessageManager implements Iterable<Message> {
 	// *
     // *****************************************************************
     
-    /**
-     * List of Message
-     */
+    /** List of Message */
     private List<Message> messages;
 
     // *****************************************************************

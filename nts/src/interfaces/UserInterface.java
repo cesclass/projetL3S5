@@ -25,18 +25,14 @@ public class UserInterface {
 	// *
     // *****************************************************************
 
-    /**
-     * Currently connected User
-     */
+    /** Currently connected User */
     private User user;
     /**
      * TicketManager which contain all Groups and Tickets
      * and allow to interact with them;
      */
     private TicketManager ticketManager = new TicketManager();
-    /**
-     * ServerInterface which allow to interact with the server
-     */
+    /** ServerInterface which allow to interact with the server */
     // UNCOMMENT THIS // private ServerInterface serverInterface = new ServerInterface();
 
     // *****************************************************************

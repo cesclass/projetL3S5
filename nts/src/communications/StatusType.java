@@ -12,11 +12,13 @@ public enum StatusType {
 	WAITING,
 	/**
 	 * Server just received the Message
+	 * (Or User just received it,
+	 * 	in case of status for a specific User)
 	 */
 	RECEIVED,
 	/**
 	 * All Users read the Message
-	 * (Or User did not read it, in case of status for a specific User)
+	 * (Or User read it, in case of status for a specific User)
 	 */
 	READ,
 	/**

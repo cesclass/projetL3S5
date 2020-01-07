@@ -15,21 +15,13 @@ public class Message {
 	// *
 	// *****************************************************************
 
-    /**
-     * The identifier of the Message, same as database.
-     */
+    /** Identifier of the Message, same as database */
     private int id;
-    /**
-     * Message creation date.
-     */
+    /** Message creation date */
     private Date date;
-    /**
-     * Message content
-     */
+    /** Message content */
     private String content;
-    /**
-     * Message author
-     */
+    /** Message author */
     private User author;
 
     // *****************************************************************
