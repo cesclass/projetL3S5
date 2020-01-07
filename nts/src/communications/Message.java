@@ -23,6 +23,8 @@ public class Message {
     private String content;
     /** Message author */
     private User author;
+    /** Message status */
+    private StatusType status;
 
     // *****************************************************************
 	// *
@@ -40,6 +42,7 @@ public class Message {
         this.content = content;
         this.date = Calendar.getInstance().getTime();
         this.id = -1;
+        status = StatusType.WAITING;
     }
 
     /**
@@ -53,12 +56,16 @@ public class Message {
      * @param date of Message creation
      * @param author of the Message
      * @param content of the Message
+     * @param status of the Message
      */
-    public Message(int id, Date date, User author, String content) {
+    public Message(int id, Date date, User author, String content,
+            StatusType status) 
+    {
         this.id = id;
         this.date = date;
         this.author = author;
         this.content = content;
+        this.status = status;
     }
 
     // *****************************************************************
@@ -98,6 +105,14 @@ public class Message {
      */
     public User getAuthor() {
         return author;
+    }
+
+    /**
+     * Accessor for the status attribute
+     * @return Message status
+     */
+    public StatusType getStatus() {
+        return status;
     }
 
     @Override
