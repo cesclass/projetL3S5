@@ -20,6 +20,14 @@ public class ComData {
     /**
      * 
      * @param type
+     */
+    public ComData(ComType type) {
+        this.type = type;
+    }
+    
+    /**
+     * 
+     * @param type
      * @param login
      */
     public ComData(ComType type, ComLogin login) {
@@ -32,17 +40,10 @@ public class ComData {
      * @param type
      * @param user
      */
-    public ComData(ComType type, User user) {
+    public ComData(ComType type, ComLogin login, User user) {
         this.type = type;
+        this.login = login;
         this.user = user;
-    }
-
-    /**
-     * 
-     * @param type
-     */
-    public ComData(ComType type) {
-        this.type = type;
     }
 
     /**
