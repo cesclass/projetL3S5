@@ -10,6 +10,7 @@ public class User {
     }
 
     /**
+     * Accessor for the first name attribute
      * @return the firstName
      */
     public String getFirstName() {
@@ -17,6 +18,7 @@ public class User {
     }
 
     /**
+     * Accessor for the last name attribute
      * @return the lastName
      */
     public String getLastName() {

@@ -9,8 +9,13 @@ import communications.TicketManager;
 import user.Group;
 
 public class TicketTreeModel implements TreeModel {
+	/** Use  to get groups and tickets */
     private TicketManager tm;
 
+    /**
+     * Constructor for standard TicketManager
+     * @param the ticket manager of the ticket tree model
+     */
     public TicketTreeModel(TicketManager tm) {
         this.tm = tm;
     }

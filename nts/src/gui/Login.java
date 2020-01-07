@@ -12,54 +12,30 @@ import interfaces.UserInterface;
 public class Login {
     // *****************************************************************
 	// *
-	// * ATTRIBUTE
+	// * CONSTANTS
 	// *
     // *****************************************************************
 	
-	/**
-	 * Constant width of the window
-	 */
+	/** Width of the window */
 	public final static int SIZEX = 275;
-	
-	/**
-	 * Constant height of the window
-	 */
+	/** Height of the window */
 	public final static int SIZEY = 150;
 	
-	/**
-	 * Main Frame
-	 */
-	JFrame frame = new JFrame("Login");
+    // *****************************************************************
+	// *
+	// * ATTRIBUTES
+	// *
+    // *****************************************************************
 	
-	/**
-	 * Button to connect to the Client Application
-	 */
-	JButton button = new JButton("Connexion");
 	
-	/**
-	 * Title of the login window
-	 */
-	JLabel title = new JLabel("neOCampus ticket service");
-	
-	/**
-	 * Label next to the text field to write an id
-	 */
-	JLabel login = new JLabel("login");
-	
-	/**
-	 * Label next to the text field to write a password
-	 */
-	JLabel password = new JLabel("password");
-	
-	/**
-	 * Text field to write an id
-	 */
-	JTextField id = new JTextField();
-	
-	/**
-	 * Text field to write a password
-	 */
-	JPasswordField mdp = new JPasswordField();
+	JFrame frame;
+	JButton button;
+	JLabel title;
+	JLabel login;
+	JLabel password;
+	JTextField id;
+	JPasswordField mdp;
+	Box box;
 
     // *****************************************************************
 	// *
@@ -67,11 +43,25 @@ public class Login {
 	// *
 	// *****************************************************************
 	
-	/**
-	 * Constructor for standard Login window
-	 */
+	/** Constructor for standard Login window */
 	public Login() {
 		showWindow(createWindow());
+	}
+	
+	/**
+	 * Creation of the window
+	 * @return main frame
+	 */
+	private JFrame createWindow() {
+		buildSWINGElements();
+		
+		setMainFrame();
+		
+		setFrameFont();
+		
+		//On ajoute les évènements
+		this.addEventListeners();
+		return frame;
 	}
 
 
@@ -82,10 +72,41 @@ public class Login {
 	// ************************************************************************
 	
 	/**
-	 * Creation of the window
-	 * @return main frame
+	 * Call all buildSWING methods to build graphic elements
+	 * 
+	 * @see Login.buildSWINGContainers()
+	 * @see Login.buildSWINGContents()
 	 */
-	private JFrame createWindow() {
+	private void buildSWINGElements() {
+		buildSWINGContainers();
+		buildSWINGContents();
+	}
+	
+	/** Build all SWING containers */
+	private void buildSWINGContainers() {
+		frame = new JFrame("Login");
+		box = new Box(BoxLayout.Y_AXIS);
+	}
+
+	/** Build all SWING contents */
+	private void buildSWINGContents() {
+		button = new JButton("Connexion");
+		title = new JLabel("neOCampus ticket service");
+		login = new JLabel("login");
+		password = new JLabel("password");
+		id = new JTextField();
+		mdp = new JPasswordField();
+	}
+	
+	
+	// ************************************************************************
+	// *
+	// * PROPERTIES
+	// *
+	// ************************************************************************
+	
+	/** Set the main frame properties */
+	private void setMainFrame() {
 		//On initialise la taille de la fenêtre
 		frame.setSize(SIZEX, SIZEY);
 		//Mise en place de l'évènement de fermeture de la fenêtre
@@ -97,43 +118,49 @@ public class Login {
 		
 		frame = setFrameLayout();
 		
-		//Mise en place de la police/taille d'écriture
-		title.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 20));
-		login.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
-		password.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
+	
 		
 		//Paramétrage position
 		frame.setLocationRelativeTo(null);
 		
 		//On empêche la l'agrandissement et rétrécissement de la fenêtre
 		frame.setResizable(false);
-		
-		//On ajoute les évènements
-		this.addEventListeners();
-		
-		return frame;
+	}
+	
+	/** Set the main frame font properties */
+	private void setFrameFont() {
+		//Mise en place de la police/taille d'écriture
+		title.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 20));
+		login.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
+		password.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
 	}
 	
 	/**
 	 * Creation of the central Box
 	 * @return the central Box
 	 */
-	private Box setCenter() {
+	private Box createCenterBox() {
 		//Creation de Box et de Panel
-		Box root = new Box(BoxLayout.Y_AXIS);
 		JPanel logPanel = new JPanel();
 
+		setCenter(box, logPanel);
+
+		return box;
+	}
+	
+	/**
+	 * Set the Box properties
+	 * @param the box
+	 * @param the panel who contain the component for the login
+	 */
+	private void setCenter(Box root, JPanel logPanel) {
 		setLogPanelLayout(logPanel);
 
 		//Creation de glue
 		root.add(Box.createVerticalGlue());
 		root.add(logPanel);
 		root.add(Box.createVerticalGlue());
-
-
-		return root;
 	}
-
 
 	// ************************************************************************
 	// * 
@@ -142,7 +169,7 @@ public class Login {
 	// ************************************************************************
 
 	/**
-	 * Set up of the main panel's layout
+	 * Set up of the main panel layout
 	 * @return the main frame
 	 */
 	private JFrame setFrameLayout() {
@@ -151,7 +178,7 @@ public class Login {
 		
 		//Creation de panel
 		JPanel root = new JPanel(layout);
-		Box centerBox = setCenter();
+		Box centerBox = createCenterBox();
 		frame.setContentPane(root);
 		
 		
@@ -217,18 +244,14 @@ public class Login {
 	// * 
 	// ************************************************************************
 	
-	/**
-	 * Set up of all the events
-	 */
+	/** Set up of all the events */
 	private void addEventListeners(){
 		
 		this.addEventListenerOpenMainWindow();
 		
 	}
 	
-	/**
-	 * Add an event on the connexion button
-	 */
+	/** Add an event on the connection button */
     private void addEventListenerOpenMainWindow() {
         this.button.addActionListener(new ActionListener() {
             
