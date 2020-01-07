@@ -15,6 +15,7 @@ public class Group implements Comparable<Group> {
     }
 
     /**
+     * Accessor for the name attribute
      * @return the name
      */
     public String getName() {
@@ -22,6 +23,7 @@ public class Group implements Comparable<Group> {
     }
 
     /**
+     * Accessor for the description attribute
      * @return the description
      */
     public String getDescription() {
