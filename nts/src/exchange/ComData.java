@@ -8,28 +8,41 @@ import user.*;
 public class ComData {
 
     private ComType type = null;
+
     private ComLogin login = null;
-    private List<User> users = null;
-    private List<Group> groups = null;
-    private List<Ticket> tickets = null;
-    private List<Message> messages = null;
-    private List<Status> statuses = null;
+    private User user = null;
+
+    private List<Group> groups = new ArrayList<>();
+    private List<Ticket> tickets = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
+    private List<Status> statuses = new ArrayList<>();
 
     /**
-     * ComData constructor
-     * @param control_type
-     * @param control_other
-     * @param identity_login
-     * @param identity_password
+     * 
+     * @param type
+     * @param login
      */
-    public ComData(ComType comType, ComLogin login) {
-        this.type = comType;
+    public ComData(ComType type, ComLogin login) {
+        this.type = type;
         this.login = login;
-        this.users = new ArrayList<>();
-        this.groups = new ArrayList<>();
-        this.tickets = new ArrayList<>();
-        this.messages = new ArrayList<>();
-        this.statuses = new ArrayList<>();
+    }
+
+    /**
+     * 
+     * @param type
+     * @param user
+     */
+    public ComData(ComType type, User user) {
+        this.type = type;
+        this.user = user;
+    }
+
+    /**
+     * 
+     * @param type
+     */
+    public ComData(ComType type) {
+        this.type = type;
     }
 
     /**
@@ -47,10 +60,10 @@ public class ComData {
     }
 
     /**
-     * @return the users
+     * @return the user
      */
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
     /**
@@ -79,5 +92,17 @@ public class ComData {
      */
     public List<Status> getStatuses() {
         return statuses;
+    }
+
+    @Override
+    public String toString() {
+        String ts =
+            "Type: " + this.type + "\n" +
+            "Login: " + this.login + "\n" +
+            "groups: " + this.groups.size() + " elements\n" +
+            "tickets: " + this.tickets.size() + " elements\n" +
+            "messages: " + this.messages.size() + " elements\n" +
+            "statuses: " + this.statuses.size() + " elements" ;
+        return ts;
     }
 }

@@ -3,6 +3,7 @@ package exchange;
 public class ComLogin {
     private String login = null;
     private String password = null;
+    private int id = -1;
 
     /**
      * Identity constructor
@@ -12,6 +13,14 @@ public class ComLogin {
     public ComLogin(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+
+    /**
+     * 
+     * @param id
+     */
+    public ComLogin(int id) {
+        this.id = id;
     }
 
     /**
@@ -26,5 +35,20 @@ public class ComLogin {
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        String ts = "login: " + this.login + 
+                "; password: " + this.password +
+                "; id: " + this.id;
+        return ts;
     }
 }
