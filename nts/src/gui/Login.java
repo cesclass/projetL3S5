@@ -8,27 +8,68 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import interfaces.UserInterface;
-import user.User;
 
 public class Login {
-	//Constante
+    // *****************************************************************
+	// *
+	// * ATTRIBUTE
+	// *
+    // *****************************************************************
+	
+	/**
+	 * Constant width of the window
+	 */
 	public final static int SIZEX = 275;
+	
+	/**
+	 * Constant height of the window
+	 */
 	public final static int SIZEY = 150;
 	
-	//Creation fenêtre
+	/**
+	 * Main Frame
+	 */
 	JFrame frame = new JFrame("Login");
 	
-	//Creation bouton et Label
+	/**
+	 * Button to connect to the Client Application
+	 */
 	JButton button = new JButton("Connexion");
+	
+	/**
+	 * Title of the login window
+	 */
 	JLabel title = new JLabel("neOCampus ticket service");
+	
+	/**
+	 * Label next to the text field to write an id
+	 */
 	JLabel login = new JLabel("login");
+	
+	/**
+	 * Label next to the text field to write a password
+	 */
 	JLabel password = new JLabel("password");
 	
-	//Creation zone de mot de passe et de saisie
+	/**
+	 * Text field to write an id
+	 */
 	JTextField id = new JTextField();
+	
+	/**
+	 * Text field to write a password
+	 */
 	JPasswordField mdp = new JPasswordField();
 
-	//Constructeur
+    // *****************************************************************
+	// *
+	// * CONSTRUCTOR
+	// *
+	// *****************************************************************
+	
+	/**
+	 * Constructor for standard Login window
+	 */
 	public Login() {
 		showWindow(createWindow());
 	}
@@ -41,7 +82,8 @@ public class Login {
 	// ************************************************************************
 	
 	/**
-	 * Creation de la fenêtre
+	 * Creation of the window
+	 * @return main frame
 	 */
 	private JFrame createWindow() {
 		//On initialise la taille de la fenêtre
@@ -73,7 +115,8 @@ public class Login {
 	}
 	
 	/**
-	 * Creation Panel central
+	 * Creation of the central Box
+	 * @return the central Box
 	 */
 	private Box setCenter() {
 		//Creation de Box et de Panel
@@ -99,7 +142,8 @@ public class Login {
 	// ************************************************************************
 
 	/**
-	 * Mise en place du layout du panel principal
+	 * Set up of the main panel's layout
+	 * @return the main frame
 	 */
 	private JFrame setFrameLayout() {
 		//Creation Border Layout
@@ -120,7 +164,8 @@ public class Login {
 	}
 
 	/**
-	 * Mise en place du layout du panel de la box
+	 * Set up of the center Box layout
+	 * @param panel who contain the component for the login
 	 */
 	private void setLogPanelLayout(JPanel logPanel) {
 		GroupLayout layout = new GroupLayout(logPanel);
@@ -159,7 +204,8 @@ public class Login {
 	// ************************************************************************
 	
 	/**
-	 * Affichage de la fenêtre
+	 * Set the window visible
+	 * @param the main frame
 	 */
 	private void showWindow(JFrame frame) {
 		frame.setVisible(true);
@@ -172,7 +218,7 @@ public class Login {
 	// ************************************************************************
 	
 	/**
-	 * Creation des évènements
+	 * Set up of all the events
 	 */
 	private void addEventListeners(){
 		
@@ -181,7 +227,7 @@ public class Login {
 	}
 	
 	/**
-	 * Ouverture fenêtre principale
+	 * Add an event on the connexion button
 	 */
     private void addEventListenerOpenMainWindow() {
         this.button.addActionListener(new ActionListener() {
@@ -196,7 +242,8 @@ public class Login {
 					mdp.setText("");
 					
 					//Creation UserInterface
-					UserInterface ui = new UserInterface(new User(log, mdpValue));
+					UserInterface ui = new UserInterface();
+					ui.connect(log, mdpValue);
 					
 					new ClientApplication(ui);
 					frame.setEnabled(false);
