@@ -1,5 +1,7 @@
 package gui;
 
+import java.text.SimpleDateFormat;
+
 import javax.swing.table.AbstractTableModel;
 
 import communications.MessageManager;
@@ -26,9 +28,9 @@ public class MessagesTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return rowIndex%2 == 0 ?
-                "<html>" + 
-                mm.getMessage(rowIndex/2).getContent().replace("\n", "<br>") + 
-                "</html>" :
-                mm.getMessage((rowIndex-1)/2).getAuthor();
+                mm.getMessage(rowIndex/2) :
+                mm.getMessage((rowIndex-1)/2).getAuthor() + ", "
+                + (new SimpleDateFormat("dd/MM/YYYY HH:mm"))
+                        .format(mm.getMessage((rowIndex-1)/2).getDate());
     }
 }

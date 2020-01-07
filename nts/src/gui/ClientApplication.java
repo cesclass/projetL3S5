@@ -162,6 +162,7 @@ public class ClientApplication {
 	 * @see ClientApplication#setTextAreaProperties()
 	 * @see ClientApplication#setSendButtonProperties()
 	 * @see ClientApplication#setWelcomeLabelProperties()
+	 * @see ClientApplication#setMessageTableProperties()
 	 */
 	private void setProperties() {
 		setMainWindowProperties();
@@ -169,6 +170,7 @@ public class ClientApplication {
 		setTextAreaProperties();
 		setSendButtonProperties();
 		setWelcomeLabelProperties();
+		setMessageTableProperties();
 	}
 
 	/** Define the mainWindow SWING Properties*/
@@ -210,6 +212,11 @@ public class ClientApplication {
 				+ ui.getUser().getFirstName() 
 				+ " " 
 				+ ui.getUser().getLastName());
+	}
+
+	/** Set the tableMessage SWING Properties */
+	private void setMessageTableProperties() {
+		messageTable.setShowGrid(false);
 	}
 
 	// *****************************************************************
@@ -407,6 +414,10 @@ public class ClientApplication {
 					TableModel tableModel = new MessagesTableModel(
 							ticket.getMessageManager());
 					messageTable.setModel(tableModel);
+
+					// Set cell renderer
+					messageTable.getColumnModel().getColumn(0)
+							.setCellRenderer(new MessagesTableCellRenderer());
 
 					// Set messageTable headers to null
 					messageTable.getColumnModel().getColumn(0)

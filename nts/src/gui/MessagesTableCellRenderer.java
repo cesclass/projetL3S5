@@ -1,89 +1,48 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import communications.Message;
 
-public class MessagesTableCellRenderer 
-        extends Box 
-        implements TableCellRenderer {
+public class MessagesTableCellRenderer extends DefaultTableCellRenderer {
     private static final long serialVersionUID = 1L;
-    
-
-    private JPanel messagePanel;
-    private JTextArea messageArea;
-    private JLabel infosLabel;
-    private int count = 0;
-    
-    public MessagesTableCellRenderer() {
-        super(BoxLayout.X_AXIS);
-    }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, 
-            boolean isSelected, boolean hasFocus, int row, int column) {
+            boolean isSelected, boolean hasFocus, int row, int column) 
+    {
+        DefaultTableCellRenderer defaultRenderer = 
+                new DefaultTableCellRenderer();
+        Component c = defaultRenderer.getTableCellRendererComponent(
+                table, value, isSelected, hasFocus, row, column);
 
-        buildSWINGComponents((Message) value);
-        
-        
-        if(count == 0) {
-        	setMessagePanelLayout();
-        	count++;
+        if (row%2 == 0) {
+            if (((Message) value).getStatus() == null) {
+                c.setBackground(new Color(150, 150, 150, 100));
+            } else {
+                switch (((Message) value).getStatus()) {
+                    case WAITING:
+                        c.setBackground(new Color(150, 0, 0, 100));
+                        break;
+    
+                    case RECEIVED:
+                        c.setBackground(new Color(225, 125, 0, 100));
+                        break;
+    
+                    case READ:
+                        c.setBackground(new Color(0, 125, 0, 100));
+                        break;
+    
+                    default:
+                        break;
+                }
+            }
         }
 
-        add(messagePanel);
-        add(Box.createHorizontalGlue());
-        
-
-        table.setRowHeight(200);
-        table.setTableHeader(null);
-        return this;
-    }
-
-    private void buildSWINGComponents(Message message) {
-        messagePanel = new JPanel();
-        messageArea = new JTextArea(message.getContent());
-        
-		messageArea.setLineWrap(true);
-		messageArea.setWrapStyleWord(true);
-
-        String infos = "";
-        infos += message.getAuthor() +", ";
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        infos += format.format(message.getDate());
-
-        infosLabel = new JLabel(infos);
-        
-    }
-
-    
-    private void setMessagePanelLayout() {
-        GroupLayout layout = new GroupLayout(messagePanel);
-        messagePanel.setLayout(layout);
-        layout.setAutoCreateContainerGaps(true);
-
-        GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup()
-                .addComponent(messageArea)
-                .addComponent(infosLabel));
-        layout.setHorizontalGroup(hGroup);
-
-        GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup()
-                .addComponent(messageArea));
-        vGroup.addGroup(layout.createParallelGroup()        
-                .addComponent(infosLabel));
-        layout.setVerticalGroup(vGroup);
+        return c;
     }
 }

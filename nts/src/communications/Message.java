@@ -42,7 +42,7 @@ public class Message {
         this.content = content;
         this.date = Calendar.getInstance().getTime();
         this.id = -1;
-        status = StatusType.WAITING;
+        status = null;
     }
 
     /**
@@ -113,6 +113,13 @@ public class Message {
      */
     public StatusType getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "<html>" + 
+                content.replace("\n", "<br>") + 
+                "</html>";
     }
 
     @Override
