@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import communications.TicketManager;
 import interfaces.UserInterface;
+import interfaces.UserNotConnectedException;
 import user.Group;
 
 public class NewTicketWindow {
@@ -44,7 +45,7 @@ public class NewTicketWindow {
     TicketManager tm;
     UserInterface ui;
 
-    public NewTicketWindow(ClientApplication parent, TicketManager tm,  UserInterface ui) {
+    public NewTicketWindow(ClientApplication parent, TicketManager tm, UserInterface ui) {
         this.parent = parent;
         this.tm = tm;
         this.ui = ui;
@@ -294,14 +295,17 @@ public class NewTicketWindow {
         this.sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	//Si les infos sont bien remplis
-            	String title = titleField.getText();
-            	String msg = messageArea.getText();
-            	if(!title.isEmpty() && !msg.isEmpty()) {
-            		//On créer le nouveau ticket
-            		ui.createTicket((Group) groupCombo.getSelectedItem(),
-            						title, 
-            						msg);
+                // Si les infos sont bien remplis
+                String title = titleField.getText();
+                String msg = messageArea.getText();
+                if (!title.isEmpty() && !msg.isEmpty()) {
+                    // On créer le nouveau ticket
+                    try {
+                        ui.createTicket((Group) groupCombo.getSelectedItem(),
+                                title, msg);
+                    } catch (UserNotConnectedException e1) {
+                        e1.printStackTrace();
+                    }
             		parent.majGUI();
             		
             		//On efface les infos

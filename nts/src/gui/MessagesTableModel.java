@@ -15,6 +15,10 @@ public class MessagesTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
+        if (mm == null) {
+            return 0;
+        }
+        
         return mm.getMessagesCount() * 2;
     }
 
