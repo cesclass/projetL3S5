@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import interfaces.UserInterface;
+import user.User;
 
 public class Login {
 	//Constante
@@ -195,8 +196,7 @@ public class Login {
 					mdp.setText("");
 					
 					//Creation UserInterface
-					UserInterface ui = new UserInterface();
-					ui.connect(log, mdpValue);
+					UserInterface ui = new UserInterface(new User(log, mdpValue));
 					
 					new ClientApplication(ui);
 					frame.setEnabled(false);

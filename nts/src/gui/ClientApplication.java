@@ -12,7 +12,6 @@ import communications.Message;
 import communications.Ticket;
 import communications.TicketManager;
 import interfaces.UserInterface;
-import interfaces.UserNotConnectedException;
 
 public class ClientApplication {
 	// Containers
@@ -54,7 +53,7 @@ public class ClientApplication {
 		createWindow();
 		showWindow();
 	}
-
+	
 	public JFrame getMainWindow() {
 		return mainWindow;
 	}
@@ -148,6 +147,7 @@ public class ClientApplication {
 		ticketTree = new JTree(model);
 		messageTable = new JTable();
 	}
+	
 
 	// ************************************************************************
 	// *
@@ -191,17 +191,12 @@ public class ClientApplication {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 	}
-
+	
 	/**
 	 * Set the Welcome Label
 	 */
 	private void setWelcome() {
-		welcomeLabel = new JLabel();
-		try {
-			welcomeLabel.setText("Bonjour, " + ui.getUser().getFirstName() + " " + ui.getUser().getLastName());
-		} catch (UserNotConnectedException e) {
-			e.printStackTrace();
-		}
+		welcomeLabel = new JLabel("Bonjour, " + ui.getUser().getFirstName() + " " + ui.getUser().getLastName());
 	}
 
 	// ************************************************************************
@@ -419,12 +414,7 @@ public class ClientApplication {
 			public void actionPerformed(ActionEvent arg0) {
 				if(!textArea.getText().isEmpty()) {
 					//Envoi du nouveau message dans le ticket courant
-					try {
-						ui.getTicketManager().getCurrent().addMessage(new Message(ui.getUser(), textArea.getText()));
-					} catch (UserNotConnectedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					ui.getTicketManager().getCurrent().addMessage(new Message(ui.getUser(), textArea.getText()));
 					textArea.setText("");
 					AbstractTableModel model = (AbstractTableModel) messageTable.getModel();
 					model.fireTableRowsInserted(model.getRowCount()-2, model.getRowCount()-1);
