@@ -2,27 +2,56 @@ package interfaces;
 
 import java.io.*;
 import java.net.*;
-// import java.util.*;
+import java.util.*;
+
+import database.*;
+import exchange.*;
 
 public class ClientInterface implements Runnable {
 
-    // static Map<Integer, Socket> client_table = new HashMap<>();
+    private static Map<Integer, Socket> clientTable = new HashMap<>();
+    private static DBManager dbm = new DBManager();
 
     private Socket client = null;
-    // private PrintWriter writer = null;
-    // private BufferedInputStream reader = null;
+    private ComLogin clientID = null;    
+    private boolean working = true;
+    private BufferedReader reader = null;
+    private BufferedWriter writer = null;
+    private String recvStr = null;
+    private String emitStr = null;
+    private ComData recvObj = null;
+    private ComData emitObj = null;
 
     public ClientInterface(Socket client) {
-        // client_table.put(client.getPort(), client);
         this.client = client;
+        try {
+            this.reader = new BufferedReader( new InputStreamReader(
+                    client.getInputStream())
+            );
+            this.writer = new BufferedWriter( new OutputStreamWriter(
+                    client.getOutputStream())
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void run() {
+
         try {
-            Thread.sleep(3000);
-            System.out.println("client port: " + client.getPort());
-        } catch (InterruptedException e) {
+            while(working) {
+                recvStr = reader.readLine();
+                recvObj = Serializer.deserialize(recvStr);
+    
+                emitObj = handling(recvObj);
+    
+                emitStr = Serializer.serialize(emitObj);
+                writer.write(emitStr);
+                writer.newLine();
+                writer.flush();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -30,9 +59,58 @@ public class ClientInterface implements Runnable {
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
-        // } finally {
-        //     client_table.remove(client.getPort());
+        } finally {
+            reader = null;
+            writer = null;
         }
     }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData handling(ComData req) {
+        switch (req.getType()) {
+            case CONNECT_RQ:
+                return login(req);
+
+            case TICKETS_LIST_RQ:
+                return ticketList(req);
+                
+            default:
+                return new ComData(ComType.ERROR_INVALID_REQUEST);
+        }
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData login(ComData req) {
+        ComData res = dbm.login(req);
+        if(res.getType() == ComType.CONNECT_OK) {
+            if(clientTable.containsKey(res.getLogin().getId())) {
+                return new ComData(ComType.ERROR_ALREADY_CONNECTED);
+            } else {
+                synchronized(this) {
+                    this.clientID = res.getLogin();
+                    clientTable.put(new Integer(clientID.getId()), client);
+                }
+            }
+        }
+        return res;
+    }
+    
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData ticketList(ComData req) {
+        return null;
+    }
+    
     
 }

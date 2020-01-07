@@ -27,22 +27,27 @@ public class DBManager {
 
     public ComData login(ComData data) {
         ComData res = null;
-        Statement stmt = null;        
+        PreparedStatement stmt = null;        
         ResultSet set = null;
-        String query =  
-                "SELECT * FROM users WHERE login = " +
-                data.getLogin().getLogin() + " AND password = " +
-                data.getLogin().getPassword();
+        String query = "SELECT * FROM users WHERE login = ? AND password = ?";
 
         try {
-             stmt = bdd.createStatement();
-             set = stmt.executeQuery(query);
-             if(set.next()) {
-                res = new ComData(ComType.CONNECT_OK, new User(
-                    set.getString("first_name"),
-                    set.getString("last_name")
-                ));
-             }
+            stmt = bdd.prepareStatement(query);
+            stmt.setString(1, data.getLogin().getLogin());
+            stmt.setString(2, data.getLogin().getPassword());
+            set = stmt.executeQuery();
+
+            if(set.next()) {
+                ComLogin login = new ComLogin(set.getInt("id"));
+                User user = new User(
+                        set.getString("first_name"),
+                        set.getString("last_name")
+                );
+
+                res = new ComData(ComType.CONNECT_OK, login, user);
+            } else {
+                res = new ComData(ComType.CONNECT_KO);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
