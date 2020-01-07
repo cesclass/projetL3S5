@@ -27,13 +27,9 @@ public class TicketManager {
 	// *
     // *****************************************************************
     
-    /**
-     * Ticket map, sorted by Group
-     */
+    /** Ticket map, sorted by Group */
     private Map<Group, List<Ticket>> tickets;
-    /**
-     * Currently selected Ticket
-     */
+    /** Currently selected Ticket */
     private Ticket current;
 
     // *****************************************************************

@@ -16,25 +16,15 @@ public class Ticket implements Comparable<Ticket> {
 	// *
     // *****************************************************************
     
-    /**
-     * The identifier of the Ticket, same as database
-     */
+    /** The identifier of the Ticket, same as database */
     private int id;
-    /**
-     * Ticket name (discussion topic)
-     */
+    /** Ticket name (discussion topic)*/
     private String name;
-    /**
-     * Ticket last update
-     */
+    /** Ticket last update*/
     private Date date;
-    /**
-     * Ticket participants
-     */
+    /** Ticket participants*/
     private Group group;
-    /**
-     * Message manager (represent Ticket messages)
-     */
+    /** Message manager (represent Ticket messages) */
     private MessageManager messageManager;
 
     // *****************************************************************

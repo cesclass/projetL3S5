@@ -12,13 +12,9 @@ public class Status {
 	// *
 	// *****************************************************************
     
-    /**
-     * User linked to a StatusType
-     */
+    /** User linked to a StatusType */
     private User user;
-    /**
-     * StatusType linked to a User
-     */
+    /** StatusType linked to a User */
     private StatusType status;
 
     // *****************************************************************
