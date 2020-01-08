@@ -199,6 +199,7 @@ public class ClientApplication {
 		textArea.setRows(5);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
 	}
 
 	/** Define the sendButton SWING Properties */
