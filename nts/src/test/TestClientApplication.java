@@ -1,11 +1,12 @@
 package test;
-
+/*
 import gui.ClientApplication;
 import interfaces.UserInterface;
 import user.Group;
-
+*/
 public class TestClientApplication {
-		public static void main(String[] args) {
+	/*	
+	public static void main(String[] args) {
 		UserInterface ui = new UserInterface();
 		ui.connect("crd1789a", "01001011");
 		Group g = new Group("L3-INFO-TDA4", "groupe L3-INFO-TDA4");
@@ -30,5 +31,5 @@ public class TestClientApplication {
 		
 		app.updateUI();
 	}
-	
+	*/	
 }
