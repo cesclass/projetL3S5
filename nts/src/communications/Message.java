@@ -11,6 +11,15 @@ import user.User;
 public class Message {
     // *****************************************************************
 	// *
+	// * CONSTANTS
+	// *
+    // *****************************************************************
+	/** Max character on a line */
+	public final static int MAX_CHAR = 70;
+	
+	
+    // *****************************************************************
+	// *
 	// * ATTRIBUTES
 	// *
 	// *****************************************************************
@@ -117,10 +126,55 @@ public class Message {
 
     @Override
     public String toString() {
-        return "<html>" + 
-                content.replace("\n", "<br>") + 
-                "</html>";
+    	String chaine = "<html>";
+    	int count = MAX_CHAR;
+    	String tab[] = this.content.split("\n");
+    	
+    	for(String sousChaine : tab) {
+    		for(String mot : sousChaine.split(" ")) {
+	    		/*
+	    		Case when the character size is bigger 
+	    		than the maximum number of character on a line
+	    		*/
+	    		if(mot.length() > MAX_CHAR) {
+	    			chaine = splitString(chaine, mot);
+	    		}else { //Default behavior
+					int currentSize = mot.length();
+					
+					if(count < currentSize) {
+						chaine += "<br>";
+						count = MAX_CHAR;
+					}
+					
+					chaine += mot;
+					count -= currentSize;
+					
+					if(count != 0) {
+						chaine += " ";
+						count--;
+					}
+	    		}
+    		}
+    		chaine += "<br>";
+    	}
+    	chaine += "</html>";
+    	return chaine;
     }
+
+	private String splitString(String chaine, String mot) {
+		char temp[] = mot.toCharArray();
+		int count = MAX_CHAR;
+		for(char c : temp) {
+			if(count == 1) {
+				chaine += "-" + "<br>";
+				count = MAX_CHAR;
+			}
+			chaine += c;
+			count--;
+		}
+		chaine += " ";
+		return chaine;
+	}
 
     @Override
     public boolean equals(Object o) {
