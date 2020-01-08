@@ -46,14 +46,18 @@ public class ClientInterface implements Runnable {
         try {
             while(working) {
                 recvStr = reader.readLine();
-                recvObj = Serializer.deserialize(recvStr);
-    
-                emitObj = handling(recvObj);
-    
-                emitStr = Serializer.serialize(emitObj);
-                writer.write(emitStr);
-                writer.newLine();
-                writer.flush();
+                if(recvStr != null) {
+                    recvObj = Serializer.deserialize(recvStr);
+        
+                    emitObj = handling(recvObj);
+        
+                    emitStr = Serializer.serialize(emitObj);
+                    writer.write(emitStr);
+                    writer.newLine();
+                    writer.flush();
+                } else {
+                    logout()
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,13 +97,13 @@ public class ClientInterface implements Runnable {
 
             case NEW_MESSAGE_CLI:
                 return newMessage(req);
-            
-            case UPDATE_MESSAGE_STATUS_CLI:
-                return updateMsgStatus(req);
-            
+                
             case STATUSES_RQ:
                 return dbm.statuses(req);
                 
+            case UPDATE_STATUS_CLI:
+                return updateStatus(req);
+
             default:
                 return new ComData(ComType.ERROR_INVALID_REQUEST);
         }
@@ -162,16 +166,13 @@ public class ClientInterface implements Runnable {
      * @param req
      * @return
      */
-    private ComData updateMsgStatus(ComData req) {
+    private ComData updateStatus(ComData req) {
+        dbm.updateStatus(req);
         return null;
     }
 
-    /**
-     * 
-     * @param req
-     * @return
-     */
-    private ComData statuses(ComData req) {
-        return null;
+    private void spreadMsgStatus() {
+
     }
+
 }

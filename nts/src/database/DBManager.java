@@ -41,7 +41,7 @@ public class DBManager {
                 "AND messages.status != 'READ') "+
             "AND statuses.status IN ('WAITING','RECEIVED')";
     private static String sqlGetTicket =
-            "SELECT * FROM tickets "+
+            "SELECT * FROM messages "+
             "WHERE tickets.id = ?";
     private static String sqlGetUser = 
             "SELECT users.first_name, users.last_name FROM users "+
@@ -207,6 +207,31 @@ public class DBManager {
         }
 
         return res;
+    }
+
+    /**
+     * 
+     * @param data
+     * @return
+     */
+    public ComData updateStatus(ComData data) {
+        ComData res = new ComData(ComType.UPDATE_STATUS_RP);
+        PreparedStatement stmtS = null;
+        PreparedStatement stmtU = null;
+        ResultSet setS = null;
+        ResultSet setU = null;
+
+        return res;
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    public ComData updateMsgStatus(ComData data) {
+
+        return null;
     }
 
     /**
