@@ -56,7 +56,7 @@ public class ClientInterface implements Runnable {
                     writer.newLine();
                     writer.flush();
                 } else {
-                    logout()
+                    logout();
                 }
             }
         } catch (IOException e) {
