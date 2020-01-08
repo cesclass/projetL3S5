@@ -68,6 +68,7 @@ public class ClientApplication {
 	/** Constructor for ClientApplication */
 	public ClientApplication(UserInterface ui) {
 		this.ui = ui;
+		ui.pullTickets();
 
 		buildSWINGElements();
 		setProperties();
@@ -372,6 +373,7 @@ public class ClientApplication {
 	 * @see ClientApplication#addEventListenerDisconnectButton()
 	 * @see ClientApplication#addEventListenerSendButton()
 	 * @see ClientApplication#addEventListenerMessageTable()
+	 * @see ClientApplication#addEventListenerMainWindow()
 	 */
 	private void addEventListeners() {
 		addEventListenerNewTicketButton();
@@ -379,6 +381,7 @@ public class ClientApplication {
 		addEventListenerDisconnectButton();
 		addEventListenerSendButton();
 		addEventListenerMessageTable();
+		addEventListenerMainWindow();
 	}
 
 	/**
@@ -463,6 +466,7 @@ public class ClientApplication {
 		this.disconectButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				ui.disconnect();
 				mainWindow.dispose();
 				new Login();
 			}
@@ -541,6 +545,16 @@ public class ClientApplication {
 
 			@Override
 			public void mouseExited(MouseEvent e) {}
+		});
+	}
+
+	private void addEventListenerMainWindow() {
+		mainWindow.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				ui.disconnect();
+				mainWindow.dispose();
+			}
 		});
 	}
 }

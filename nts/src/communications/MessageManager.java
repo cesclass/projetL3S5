@@ -39,13 +39,18 @@ public class MessageManager implements Iterable<Message> {
         messages.add(message);
     }
 
+    /** Constructor for MessageManager without Message */
+    public MessageManager() {
+        messages = new ArrayList<>();
+	}
+
     // *****************************************************************
 	// *
 	// * METHODS
 	// *
 	// *****************************************************************
 
-    /**
+	/**
      * Add a Message to the discussion
      * @param message to add
      */

@@ -18,7 +18,7 @@ public class Serveur {
             public void run() {
                 try {
                     server = new ServerSocket(port);
-                    System.out.println("Start serv on port " + port);
+                    System.out.println("Start server on port " + port);
                     while (true) {
                         client = server.accept();
                         new Thread(new ClientInterface(client)).start();

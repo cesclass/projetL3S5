@@ -1,5 +1,147 @@
 package interfaces;
 
-public class ServerInterface {
+import java.io.*;
+import java.net.Socket;
 
+import communications.Ticket;
+import exchange.*;
+import gui.ClientApplication;
+import gui.Login;
+
+public class ServerInterface implements Runnable {
+    // *****************************************************************
+    // *
+    // * CONSTANTS
+    // *
+    // *****************************************************************
+
+    /** Host address for Socket */
+    private final static String HOST = "127.0.0.1";
+    /** Port for Socket */
+    private final static int PORT = 55842;
+
+    // *****************************************************************
+    // *
+    // * ATTRIBUTES
+    // *
+    // *****************************************************************
+
+    private Socket sock;
+    private BufferedReader reader;
+    private BufferedWriter writer;
+    private boolean working;
+    private UserInterface ui;
+    private Object app;
+
+    // *****************************************************************
+    // *
+    // * CONSTRUCTOR
+    // *
+    // *****************************************************************
+
+    public ServerInterface(UserInterface ui, Login app) {
+        this.ui = ui;
+        this.app = app;
+
+        try {
+            sock = new Socket(HOST, PORT);
+            reader = new BufferedReader( new InputStreamReader(
+                    sock.getInputStream()
+            ));
+            writer = new BufferedWriter( new OutputStreamWriter(
+                    sock.getOutputStream()
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        working = true;
+    }
+
+    @Override
+    public void run() {
+        String recv;
+        try {
+            while (working) {
+                recv = reader.readLine();
+                handling(Serializer.deserialize(recv));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handling(ComData data) {
+        switch (data.getType()) {
+            case CONNECT_RP:
+                ui.recvConnect(data);
+                app = ((Login) app).successConnect();
+                break;
+
+            case ERROR_BAD_LOGIN:
+                ((Login) app).errorBadLogin();
+                break;
+            
+            case ERROR_ALREADY_CONNECTED:
+                ((Login) app).errorAlreadyConnected();
+                break;
+
+            case TICKET_LIST_RP:
+                for (Ticket ticket : data.getTickets()) {
+                    ui.addTicket(ticket);
+                }
+                ((ClientApplication) app).updateUI();
+                break;
+
+            case DISCONNECT_SRV:
+                working = false;
+                try {
+                    sock.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        
+            default:
+                // err, bad type
+                break;
+        }
+    }
+
+    // *****************************************************************
+    // *
+    // * METHODS
+    // *
+    // *****************************************************************
+
+    public void tryConnect(ComLogin cl) {
+        ComData conRQ = new ComData(ComType.CONNECT_RQ, cl);
+        String conRQ_s = Serializer.serialize(conRQ);
+
+        send(conRQ_s);  
+    }
+
+    public void disconnect() {
+        ComData disRQ = new ComData(ComType.DISCONNECT_CLI);
+        String disRQ_s = Serializer.serialize(disRQ);
+
+        send(disRQ_s);
+    }
+    
+    
+	public void pullTickets(ComLogin cl) {
+        ComData tikRQ = new ComData(ComType.TICKET_LIST_RQ, cl);
+        String tikRQ_s = Serializer.serialize(tikRQ);
+
+        send(tikRQ_s);
+	}
+
+    private void send(String data) {
+        try {
+            writer.write(data);
+            writer.newLine();
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

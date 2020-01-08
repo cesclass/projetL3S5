@@ -67,6 +67,7 @@ public class Ticket implements Comparable<Ticket> {
         this.date = date;
         this.group = group;
         this.unreadCount = unreadCount;
+        messageManager = new MessageManager();
     }
 
     // *****************************************************************
