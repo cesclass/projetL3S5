@@ -43,6 +43,12 @@ public class DBManager {
     private static String sqlGetTicket =
             "SELECT * FROM tickets "+
             "WHERE tickets.id = ?";
+    private static String sqlGetUser = 
+            "SELECT users.first_name, users.last_name FROM users "+
+            "WHERE users.id = ?";
+    private static String sqlStatuses = 
+            "SELECT * FROM statuses "+
+            "WHERE statuses.message_id = ?";
     
 
     public DBManager() {
@@ -161,25 +167,80 @@ public class DBManager {
         return res;
     }
 
+    /**
+     * 
+     * @param data
+     * @return
+     */
     public ComData ticket(ComData data) {
         ComData res = new ComData(ComType.TICKET_RP);
-        PreparedStatement stmt = null;
-        ResultSet set = null;
+        PreparedStatement stmtM = null;
+        PreparedStatement stmtU = null;
+        ResultSet setM = null;
+        ResultSet setU = null;
 
         try {
-            stmt = bdd.prepareStatement(sqlGetTicket);
-            stmt.setInt(1, data.getTickets().get(0).getId());
-            set = stmt.executeQuery();
-            while(set.next()) {
-                res.getMessages().add(new Message())
-            }
+            res.getTickets().add(data.getTickets().get(0));
+            stmtU = bdd.prepareStatement(sqlGetUser);
+            stmtM = bdd.prepareStatement(sqlGetTicket);
+            stmtM.setInt(1, data.getTickets().get(0).getId());
+            setM = stmtM.executeQuery();
 
+            while(setM.next()) {
+                stmtU.setInt(1, setM.getInt("author_id"));
+                setU = stmtU.executeQuery();
+                setU.first();
+
+                res.getMessages().add( new Message(
+                    setM.getInt("id"), 
+                    new java.util.Date(setM.getDate("date").getTime()), 
+                    new User(
+                            setU.getString("first_name"), 
+                            setU.getString("last_name")
+                    ),
+                    setM.getString("content"), 
+                    StatusType.valueOf(setM.getString("status"))
+                ));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        data.getTickets().get(0);
+        return res;
+    }
 
+    /**
+     * 
+     * @param data
+     * @return
+     */
+    public ComData statuses(ComData data) {
+        ComData res = new ComData(ComType.STATUSES_RP);
+        PreparedStatement stmtS = null;
+        PreparedStatement stmtU = null;
+        ResultSet setS = null;
+        ResultSet setU = null;
+
+        try {
+            stmtU = bdd.prepareStatement(sqlGetUser);
+            stmtS = bdd.prepareStatement(sqlStatuses);
+            stmtS.setInt(1, data.getMessages().get(0).getId());
+            setS = stmtS.executeQuery();
+
+            while (setS.next()) {
+                stmtU.setInt(1, setS.getInt("user_id"));
+                setU = stmtU.executeQuery();
+                res.getStatuses().add(new Status(
+                        new User(
+                                setU.getString("first_name"), 
+                                setU.getString("last_name")
+                        ),
+                        StatusType.valueOf(setS.getString("status"))
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 }

@@ -86,8 +86,7 @@ public class ClientInterface implements Runnable {
                 return dbm.ticketsList(req);
             
             case TICKET_RQ:
-                // return dbm.ticket(req);
-                return null;
+                return dbm.ticket(req);
 
             case NEW_TICKET_CLI:
                 return newTicket(req);
@@ -95,8 +94,11 @@ public class ClientInterface implements Runnable {
             case NEW_MESSAGE_CLI:
                 return newMessage(req);
             
+            case UPDATE_MESSAGE_STATUS_CLI:
+                return updateMsgStatus(req);
+            
             case STATUSES_RQ:
-                return statuses(req);
+                return dbm.statuses(req);
                 
             default:
                 return new ComData(ComType.ERROR_INVALID_REQUEST);
@@ -152,6 +154,15 @@ public class ClientInterface implements Runnable {
      * @return
      */
     private ComData newMessage(ComData req) {
+        return null;
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData updateMsgStatus(ComData req) {
         return null;
     }
 
