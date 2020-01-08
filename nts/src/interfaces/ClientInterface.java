@@ -22,6 +22,10 @@ public class ClientInterface implements Runnable {
     private ComData recvObj = null;
     private ComData emitObj = null;
 
+    /**
+     * 
+     * @param client
+     */
     public ClientInterface(Socket client) {
         this.client = client;
         try {
@@ -79,8 +83,19 @@ public class ClientInterface implements Runnable {
                 return groupList();
 
             case TICKETS_LIST_RQ:
-                return ticketList(req);
+                return ticketsList(req);
+            
+            case TICKET_RQ:
+                return ticket(req);
 
+            case NEW_TICKET_CLI:
+                return newTicket(req);
+
+            case NEW_MESSAGE_CLI:
+                return newMessage(req);
+            
+            case STATUSES_RQ:
+                return statuses(req);
                 
             default:
                 return new ComData(ComType.ERROR_INVALID_REQUEST);
@@ -116,7 +131,7 @@ public class ClientInterface implements Runnable {
             clientTable.remove(new Integer(clientID.getId()));
         }
         working = false;
-        return new ComData(ComType.DISCONNECT_SRV);
+        return new ComData(ComType.DISCONNECT_CLI);
     }
     
     /**
@@ -124,7 +139,24 @@ public class ClientInterface implements Runnable {
      * @return
      */
     private ComData groupList() {
-        // TODO groupList dbm.(SELECT * FROM groups)
+        return dbm.groupList();
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData ticketsList(ComData req) {
+        return dbm.ticketsList(req);
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData ticket(ComData req) {
         return null;
     }
 
@@ -133,12 +165,25 @@ public class ClientInterface implements Runnable {
      * @param req
      * @return
      */
-    private ComData ticketList(ComData req) {
-        // TODO ticketList dbm.(SELECT * FROM ticket WHERE "user")
+    private ComData newTicket(ComData req) {
         return null;
     }
 
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData newMessage(ComData req) {
+        return null;
+    }
 
-    
-
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private ComData statuses(ComData req) {
+        return null;
+    }
 }

@@ -17,6 +17,31 @@ public class DBManager {
     private static String user = "neocampus";
     private static String password = "neocampus";
 
+    private static String sqlLogin = 
+            "SELECT * FROM users "  +
+            "WHERE users.login = ? " +
+            "AND users.password = ?";
+    private static String sqlGroupList = 
+            "SELECT * FROM groups";
+    private static String sqlGetGroup =
+            "SELECT * FROM groups"+
+            "WHERE groups.name = ?";
+    private static String sqlTicketList = 
+            "SELECT * FROM tickets " +
+            "WHERE tickets.author_id = ? " +
+            "OR tickets.group_id IN (" +
+                "SELECT members.group_id FROM members" +
+                "WHERE members.user_id = ?)";
+    private static String sqlCountUnreadMessages = 
+            "SELECT COUNT(statuses.message_id) FROM statuses "+
+            "WHERE statuses.user_id = ? "+
+            "AND statuses.message_id IN ("+
+                "SELECT messages.id FROM messages "+
+                "WHERE messages.ticket_id = ? "+
+                "AND messages.status != 'READ') "+
+            "AND statuses.status IN ('WAITING','RECEIVED')";
+    
+
     public DBManager() {
         try {
             this.bdd = DriverManager.getConnection(url, user, password);
@@ -25,14 +50,18 @@ public class DBManager {
         }
     }
 
+    /**
+     * 
+     * @param data
+     * @return
+     */
     public ComData login(ComData data) {
         ComData res = null;
         PreparedStatement stmt = null;        
         ResultSet set = null;
-        String query = "SELECT * FROM users WHERE login = ? AND password = ?";
 
         try {
-            stmt = bdd.prepareStatement(query);
+            stmt = bdd.prepareStatement(sqlLogin);
             stmt.setString(1, data.getLogin().getLogin());
             stmt.setString(2, data.getLogin().getPassword());
             set = stmt.executeQuery();
@@ -53,4 +82,88 @@ public class DBManager {
         }
         return res;
     }
+
+    /**
+     * 
+     * @return
+     */
+    public ComData groupList() {
+        ComData res = null;
+        PreparedStatement stmt = null;        
+        ResultSet set = null;
+
+        try {
+            stmt = bdd.prepareStatement(sqlGroupList);
+            set = stmt.executeQuery();
+            if(set.first()) {
+                res = new ComData(ComType.GROUPS_OK);
+                do {
+                    res.getGroups().add( new Group(
+                            set.getString("name"),
+                            set.getString("info")
+                    ));
+                } while (set.next());
+            } else {
+                res = new ComData(ComType.GROUPS_KO);
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+        return res;
+    }
+
+    /**
+     * 
+     * @param data
+     * @return
+     */
+    public ComData ticketsList(ComData data) {
+        ComData res = null;
+        PreparedStatement stmtT = null;
+        PreparedStatement stmtG = null;
+        PreparedStatement stmtC = null;
+        ResultSet setT = null;
+        ResultSet setG = null;
+        ResultSet setC = null;
+
+        try {
+            stmtT = bdd.prepareStatement(sqlTicketList);
+            stmtT.setInt(1, data.getLogin().getId());
+            stmtT.setInt(2, data.getLogin().getId());
+            setT = stmtT.executeQuery();
+
+            if(setT.first()) {
+                stmtG = bdd.prepareStatement(sqlGetGroup);
+                stmtC = bdd.prepareStatement(sqlCountUnreadMessages);
+                res = new ComData(ComType.TICKETS_LIST_OK);
+                do {
+                    setG = stmtG.executeQuery();
+                    setG.first();
+
+                    stmtC.setInt(1, data.getLogin().getId());
+                    stmtC.setInt(2, setT.getInt("id"));
+                    setC = stmtC.executeQuery();
+                    setC.first();
+
+                    res.getTickets().add( new Ticket(
+                            setT.getInt("id"),
+                            setT.getString("name"),
+                            new java.util.Date(setT.getDate("date").getTime()), 
+                            new Group(
+                                    setG.getString("name"),
+                                    setG.getString("info")
+                            ),
+                            setC.getInt(1)
+                    ));
+                } while (setT.next());
+            } else {
+                res = new ComData(ComType.TICKETS_LIST_KO);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 }

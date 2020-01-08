@@ -29,10 +29,6 @@ public enum ComType {
     NEW_TICKET_OK,
     NEW_TICKET_KO,
 
-    MESSAGES_RQ,
-    MESSAGES_OK,
-    MESSAGES_KO,
-
     NEW_MESSAGE_CLI,
     NEW_MESSAGE_SRV,
     NEW_MESSAGE_OK,
@@ -43,6 +39,4 @@ public enum ComType {
     STATUSES_KO,
 
     EV_MESSAGE_STATUS
-
-
 }
