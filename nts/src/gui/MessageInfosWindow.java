@@ -137,11 +137,13 @@ public class MessageInfosWindow {
 	 * @see MessageInfosWindow#setMainWindowProperties()
      * @see MessageInfosWindow#setMainPanelProperties()
      * @see MessageInfosWindow#setMessageAreaProperties()
+     * @see MessageInfosWindow#setStatusTableProperties()
 	 */
 	private void setProperties() {
         setMainWindowProperties();
         setMainPanelProperties();
         setMessageAreaProperties();
+        setStatusTableProperties();
     }
     
     /** Define the mainWindow Properties */
@@ -165,6 +167,22 @@ public class MessageInfosWindow {
 		messageArea.setLineWrap(true);
         messageArea.setWrapStyleWord(true);
         messageArea.setDisabledTextColor(Color.BLACK);     
+    }
+
+    private void setStatusTableProperties() {
+        statusTable.setShowGrid(true);
+
+        statusTable.getColumnModel().getColumn(0).setHeaderValue(
+                "Utilisateurs");
+        statusTable.getColumnModel().getColumn(1).setHeaderValue(
+                "Status");
+
+        statusTable.getColumnModel().getColumn(0).setCellRenderer(
+                new StatusTableCellRenderer());                
+        statusTable.getColumnModel().getColumn(0).setCellRenderer(
+                new StatusTableCellRenderer());
+
+        statusTable.setEnabled(false);
     }
     
     // *****************************************************************
