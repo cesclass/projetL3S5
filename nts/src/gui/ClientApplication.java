@@ -2,12 +2,15 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
+import communications.Message;
+import communications.Status;
 import communications.Ticket;
 import interfaces.UserInterface;
 
@@ -103,8 +106,8 @@ public class ClientApplication {
 
 	/**
 	 * Call all buildSWING methods to build graphic elements
-	 * @see ClientApplication.buildSWINGContainers()
-	 * @see ClientApplication.buildSWINGContents()
+	 * @see ClientApplication#buildSWINGContainers()
+	 * @see ClientApplication#buildSWINGContents()
 	 */
 	private void buildSWINGElements() {
 		buildSWINGContents();
@@ -139,11 +142,9 @@ public class ClientApplication {
 		disconectButton = new JButton("Déconnexion");
 		sendButton = new JButton("Envoyer");
 
-		// Tree
+		// DataStructures
 		TicketTreeModel model = new TicketTreeModel(ui.getTicketManager());
 		ticketTree = new JTree(model);
-
-		// Table
 		messageTable = new JTable();
 	}
 	
@@ -224,6 +225,7 @@ public class ClientApplication {
 	// * LAYOUT
 	// *
 	// *****************************************************************
+	
 	/**
 	 * Call all setLayout methods to define SWING layouts
 	 * @see ClientApplication#setMainPanelLayout()
@@ -368,12 +370,14 @@ public class ClientApplication {
 	 * @see ClientApplication#addEventListenerTicketTree()
 	 * @see ClientApplication#addEventListenerDisconnectButton()
 	 * @see ClientApplication#addEventListenerSendButton()
+	 * @see ClientApplication#addEventListenerMessageTable()
 	 */
 	private void addEventListeners() {
 		addEventListenerNewTicketButton();
 		addEventListenerTicketTree();
 		addEventListenerDisconnectButton();
 		addEventListenerSendButton();
+		addEventListenerMessageTable();
 	}
 
 	/**
@@ -498,6 +502,44 @@ public class ClientApplication {
 					}
 				}
 			}
+		});
+	}
+
+	/**
+	 * Add a new Event listener on messageTable
+	 * It will open a MessageInfoWindow
+	 */
+	private void addEventListenerMessageTable() {
+		ClientApplication app = this;
+
+		this.messageTable.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = messageTable.rowAtPoint(e.getPoint());
+
+				if (row%2 == 0) {
+					TableModel model = messageTable.getModel();
+
+					// TODO Ask statuses to the server
+					ArrayList<Status> statuses = new ArrayList<>();
+
+					Message message = (Message) model.getValueAt(row, 0);
+					
+					new MessageInfosWindow(app, message, statuses);
+				}
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
 		});
 	}
 }
