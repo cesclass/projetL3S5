@@ -169,6 +169,7 @@ public class MessageInfosWindow {
         messageArea.setDisabledTextColor(Color.BLACK);     
     }
 
+    /** Define the statusTable Properties */
     private void setStatusTableProperties() {
         statusTable.setShowGrid(true);
 
