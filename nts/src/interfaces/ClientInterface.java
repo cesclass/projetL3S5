@@ -59,9 +59,6 @@ public class ClientInterface implements Runnable {
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            reader = null;
-            writer = null;
         }
     }
 
@@ -74,9 +71,16 @@ public class ClientInterface implements Runnable {
         switch (req.getType()) {
             case CONNECT_RQ:
                 return login(req);
+            
+            case DISCONNECT_CLI:
+                return logout();
+
+            case GROUPS_RQ:
+                return groupList();
 
             case TICKETS_LIST_RQ:
                 return ticketList(req);
+
                 
             default:
                 return new ComData(ComType.ERROR_INVALID_REQUEST);
@@ -94,23 +98,47 @@ public class ClientInterface implements Runnable {
             if(clientTable.containsKey(res.getLogin().getId())) {
                 return new ComData(ComType.ERROR_ALREADY_CONNECTED);
             } else {
+                this.clientID = res.getLogin();
                 synchronized(this) {
-                    this.clientID = res.getLogin();
                     clientTable.put(new Integer(clientID.getId()), client);
                 }
             }
         }
         return res;
     }
+
+    /**
+     * 
+     * @return
+     */
+    private ComData logout() {
+        synchronized(this) {
+            clientTable.remove(new Integer(clientID.getId()));
+        }
+        working = false;
+        return new ComData(ComType.DISCONNECT_SRV);
+    }
     
+    /**
+     * 
+     * @return
+     */
+    private ComData groupList() {
+        // TODO groupList dbm.(SELECT * FROM groups)
+        return null;
+    }
+
     /**
      * 
      * @param req
      * @return
      */
     private ComData ticketList(ComData req) {
+        // TODO ticketList dbm.(SELECT * FROM ticket WHERE "user")
         return null;
     }
+
+
     
-    
+
 }

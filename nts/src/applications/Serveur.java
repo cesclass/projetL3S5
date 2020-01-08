@@ -10,7 +10,7 @@ public class Serveur {
     public static void main(String[] args) throws IOException {
 
         new Thread(new Runnable() {
-            private int port = 9999;
+            private int port = 55842;
             private ServerSocket server = null;
             private Socket client = null;
 
