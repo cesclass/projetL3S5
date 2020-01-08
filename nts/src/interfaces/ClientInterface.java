@@ -128,8 +128,10 @@ public class ClientInterface implements Runnable {
      * @return
      */
     private ComData logout() {
-        synchronized(this) {
-            clientTable.remove(new Integer(clientID.getId()));
+        if(clientID != null) {
+            synchronized(this) {
+                clientTable.remove(new Integer(clientID.getId()));
+            }
         }
         working = false;
         return new ComData(ComType.DISCONNECT_CLI);
