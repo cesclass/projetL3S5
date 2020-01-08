@@ -2,7 +2,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -97,6 +97,40 @@ public class ClientApplication {
 	public void updateUI() {
 		ticketTree.updateUI();
 		messageTable.updateUI();
+	}
+
+	/** 
+	 * Receive messages from server for a specific Ticket 
+	 * @param ticket
+	 */
+	public void recvMessages(Ticket ticket) {
+		// Set messageTable model
+		TableModel tableModel = new MessagesTableModel(
+				ticket.getMessageManager());
+		messageTable.setModel(tableModel);
+
+		// Set cell renderer
+		messageTable.getColumnModel().getColumn(0)
+				.setCellRenderer(new MessagesTableCellRenderer());
+
+		// Set messageTable headers to null
+		messageTable.getColumnModel().getColumn(0)
+				.setHeaderValue(null);
+
+		// Set Rows sizes to fit the text inside
+		for (int i = 0; i < messageTable.getRowCount(); i++) {
+			int taille = messageTable.getValueAt(i, 0)
+					.toString().split("<br>").length;
+			messageTable.setRowHeight(i, (taille + 1) * 16);
+		}
+
+		// Enable to send messages
+		textArea.setEnabled(true);
+		sendButton.setEnabled(true);
+	}
+
+	public void recvStatuses(Message message, List<Status> statuses) {
+		new MessageInfosWindow(this, message, statuses);
 	}
 
 	// *****************************************************************
@@ -418,29 +452,8 @@ public class ClientApplication {
 					Ticket ticket = (Ticket) selPath.getLastPathComponent();
 					ui.selectTicket(ticket);
 
-					// Set messageTable model
-					TableModel tableModel = new MessagesTableModel(
-							ticket.getMessageManager());
-					messageTable.setModel(tableModel);
-
-					// Set cell renderer
-					messageTable.getColumnModel().getColumn(0)
-							.setCellRenderer(new MessagesTableCellRenderer());
-
-					// Set messageTable headers to null
-					messageTable.getColumnModel().getColumn(0)
-							.setHeaderValue(null);
-
-					// Set Rows sizes to fit the text inside
-					for (int i = 0; i < messageTable.getRowCount(); i++) {
-						int taille = messageTable.getValueAt(i, 0)
-								.toString().split("<br>").length;
-						messageTable.setRowHeight(i, (taille + 1) * 16);
-					}
-
-					// Enable to send messages
-					textArea.setEnabled(true);
-					sendButton.setEnabled(true);
+					// pull messages from server
+					ui.pullMessages(ticket);
 				}
 			}
 
@@ -515,8 +528,6 @@ public class ClientApplication {
 	 * It will open a MessageInfoWindow
 	 */
 	private void addEventListenerMessageTable() {
-		ClientApplication app = this;
-
 		this.messageTable.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -524,13 +535,9 @@ public class ClientApplication {
 
 				if (row%2 == 0) {
 					TableModel model = messageTable.getModel();
-
-					// TODO Ask statuses to the server
-					ArrayList<Status> statuses = new ArrayList<>();
-
 					Message message = (Message) model.getValueAt(row, 0);
-					
-					new MessageInfosWindow(app, message, statuses);
+
+					ui.pullStatus(message);
 				}
 			}
 
