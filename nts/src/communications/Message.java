@@ -126,7 +126,7 @@ public class Message {
 
     @Override
     public String toString() {
-    	String chaine = "<html>";
+    	String chaine = "<html><p style=\"padding: 5px\">";
     	int count = MAX_CHAR;
     	String tab[] = this.content.split("\n");
     	
@@ -138,7 +138,7 @@ public class Message {
 	    		*/
 	    		if(mot.length() > MAX_CHAR) {
 	    			chaine = splitString(chaine, mot);
-	    		}else { //Default behavior
+	    		}else { //Default behaviour
 					int currentSize = mot.length();
 					
 					if(count < currentSize) {
@@ -157,7 +157,8 @@ public class Message {
     		}
     		chaine += "<br>";
     	}
-    	chaine += "</html>";
+        chaine += "</p></html>";
+        
     	return chaine;
     }
 

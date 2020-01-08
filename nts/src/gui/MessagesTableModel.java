@@ -29,8 +29,10 @@ public class MessagesTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return rowIndex%2 == 0 ?
                 mm.getMessage(rowIndex/2) :
-                mm.getMessage((rowIndex-1)/2).getAuthor() + ", "
+                "<html><p style=\"padding: 5px\">"
+                + mm.getMessage((rowIndex-1)/2).getAuthor() + ", "
                 + (new SimpleDateFormat("dd/MM/YYYY HH:mm"))
-                        .format(mm.getMessage((rowIndex-1)/2).getDate());
+                        .format(mm.getMessage((rowIndex-1)/2).getDate())
+                + "</p></html>";
     }
 }
