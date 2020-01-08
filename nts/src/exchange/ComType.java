@@ -12,6 +12,7 @@ public enum ComType {
 
     DISCONNECT_CLI,
     DISCONNECT_SRV,
+    DISCONNECT_RP,
     
     GROUPS_RQ,
     GROUPS_RP,
