@@ -253,21 +253,20 @@ public class DBManager {
         PreparedStatement stmtC = null;
         PreparedStatement stmtU = null;
         ResultSet setC = null;
-        StatusType status = data.getMessages().get(0).getStatus().name();
+        StatusType status = data.getMessages().get(0).getStatus();
+        int message_id = data.getMessages().get(0).getId();
 
         try {
             stmtC = bdd.prepareStatement(sqlCountSameStatus);
-            stmtC.setInt(1, data.getMessages().get(0).getId());
-            stmtC.setString(2, );
+            stmtC.setInt(1, message_id);
+            stmtC.setString(2, status.name());
             setC = stmtC.executeQuery();
             setC.first();
             if(setC.getInt(1) == 1) {
                 stmtU = bdd.prepareStatement(sqlUpdateMsgStatus);
-                stmtU.setString(1, data.getMessages().get(0).getStatus().name());
-                stmtU.setInt(2, data.getMessages().get(0).getId());
+                stmtU.setString(1, status.name());
+                stmtU.setInt(2, message_id);
                 stmtU.executeUpdate();
-
-                stmtU = 
 
             }
         } catch (SQLException e) {
