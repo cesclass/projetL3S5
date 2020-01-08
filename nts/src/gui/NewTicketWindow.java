@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -144,6 +145,7 @@ public class NewTicketWindow {
     private void setProperties() {
         setNewTicketFrameProperties();
         setNewTicketPanelProperties();
+        setNewTicketTextAreaProperties();
     }
 
     /** Define the newTicketFrame SWING Properties */
@@ -158,6 +160,11 @@ public class NewTicketWindow {
     private void setNewTicketPanelProperties() {
         newTicketPanel.setBorder(BorderFactory
                 .createMatteBorder(1, 1, 1, 1, Color.BLACK));
+    }
+    
+    /** Define the newTicketTextArea SWING Properties */
+    private void setNewTicketTextAreaProperties() {
+    	messageArea.setFont(new Font("monospaced", Font.PLAIN, 12));
     }
 
     // *****************************************************************
