@@ -27,15 +27,21 @@ public class Login {
 	// *
     // *****************************************************************
 	
-	
-	JFrame frame;
-	JButton button;
-	JLabel title;
-	JLabel login;
-	JLabel password;
-	JTextField id;
-	JPasswordField mdp;
-	Box box;
+	// Containers
+	private JFrame frame;
+	private Box box;
+
+	// Labels
+	private JLabel title;
+	private JLabel login;
+	private JLabel password;
+
+	// TextFields
+	private JTextField id;
+	private JPasswordField mdp;
+
+	// button
+	private JButton button;
 
     // *****************************************************************
 	// *
