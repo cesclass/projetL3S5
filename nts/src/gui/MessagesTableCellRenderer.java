@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -19,6 +20,8 @@ public class MessagesTableCellRenderer extends DefaultTableCellRenderer {
                 new DefaultTableCellRenderer();
         Component c = defaultRenderer.getTableCellRendererComponent(
                 table, value, isSelected, hasFocus, row, column);
+        
+        c.setFont(new Font("monospaced", Font.PLAIN, 12));
 
         if (row%2 == 0) {
             if (((Message) value).getStatus() == null) {
