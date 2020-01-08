@@ -146,6 +146,7 @@ public class NewTicketWindow {
         setNewTicketFrameProperties();
         setNewTicketPanelProperties();
         setNewTicketTextAreaProperties();
+        setNewTicketTitleFieldProperties();
     }
 
     /** Define the newTicketFrame SWING Properties */
@@ -165,6 +166,11 @@ public class NewTicketWindow {
     /** Define the newTicketTextArea SWING Properties */
     private void setNewTicketTextAreaProperties() {
     	messageArea.setFont(new Font("monospaced", Font.PLAIN, 12));
+    }
+    
+    /** Define the newTicketTitleField SWING Properties */
+    private void setNewTicketTitleFieldProperties() {
+    	titleField.setFont(new Font("monospaced", Font.PLAIN, 12));
     }
 
     // *****************************************************************
