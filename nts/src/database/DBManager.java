@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.*;
+import java.util.*;
 
 import communications.*;
 import exchange.*;
@@ -49,6 +50,17 @@ public class DBManager {
     private static String sqlStatuses = 
             "SELECT * FROM statuses "+
             "WHERE statuses.message_id = ?";
+    private static String sqlUpdateStatus =
+            "UPDATE statuses SET statuses.status = ? "+
+            "WHERE statuses.message_id = ? "+
+            "AND statuses.user_id = ? ";
+    private static String sqlCountSameStatus = 
+            "SELECT COUNT(statuses.message_id) FROM statuses "+
+            "WHERE statuses.message_id = ? "+
+            "AND statuses.status != ?";
+    private static String sqlUpdateMsgStatus =
+            "UPDATE messages SET messages.status = ? "+
+            "WHERE messages.id = ?";
     
 
     public DBManager() {
@@ -216,10 +228,17 @@ public class DBManager {
      */
     public ComData updateStatus(ComData data) {
         ComData res = new ComData(ComType.UPDATE_STATUS_RP);
-        PreparedStatement stmtS = null;
-        PreparedStatement stmtU = null;
-        ResultSet setS = null;
-        ResultSet setU = null;
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = bdd.prepareStatement(sqlUpdateStatus);
+            stmt.setString(1, data.getMessages().get(0).getStatus().name());
+            stmt.setInt(2, data.getMessages().get(0).getId());
+            stmt.setInt(3, data.getLogin().getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return res;
     }
@@ -229,7 +248,27 @@ public class DBManager {
      * @param req
      * @return
      */
-    public ComData updateMsgStatus(ComData data) {
+    public List<Integer> updateMsgStatus(ComData data) {
+        ComData res = new ComData(ComType.UPDATE_STATUS_RP);
+        PreparedStatement stmtC = null;
+        PreparedStatement stmtU = null;
+        ResultSet setC = null;
+
+        try {
+            stmtC = bdd.prepareStatement(sqlCountSameStatus);
+            stmtC.setInt(1, data.getMessages().get(0).getId());
+            stmtC.setString(2, data.getMessages().get(0).getStatus().name());
+            setC = stmtC.executeQuery();
+            setC.first();
+            if(setC.getInt(1) == 1) {
+                stmtU = bdd.prepareStatement(sqlUpdateMsgStatus);
+                stmtU.setString(1, data.getMessages().get(0).getStatus().name());
+                stmtU.setInt(2, data.getMessages().get(0).getId());
+                stmtU.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
@@ -255,6 +294,7 @@ public class DBManager {
             while (setS.next()) {
                 stmtU.setInt(1, setS.getInt("user_id"));
                 setU = stmtU.executeQuery();
+                setU.first();
                 res.getStatuses().add(new Status(
                         new User(
                                 setU.getString("first_name"), 
