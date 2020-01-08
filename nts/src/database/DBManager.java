@@ -253,11 +253,12 @@ public class DBManager {
         PreparedStatement stmtC = null;
         PreparedStatement stmtU = null;
         ResultSet setC = null;
+        StatusType status = data.getMessages().get(0).getStatus().name();
 
         try {
             stmtC = bdd.prepareStatement(sqlCountSameStatus);
             stmtC.setInt(1, data.getMessages().get(0).getId());
-            stmtC.setString(2, data.getMessages().get(0).getStatus().name());
+            stmtC.setString(2, );
             setC = stmtC.executeQuery();
             setC.first();
             if(setC.getInt(1) == 1) {
@@ -265,6 +266,9 @@ public class DBManager {
                 stmtU.setString(1, data.getMessages().get(0).getStatus().name());
                 stmtU.setInt(2, data.getMessages().get(0).getId());
                 stmtU.executeUpdate();
+
+                stmtU = 
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -286,6 +290,7 @@ public class DBManager {
         ResultSet setU = null;
 
         try {
+            res.getMessages().add(data.getMessages().get(0));
             stmtU = bdd.prepareStatement(sqlGetUser);
             stmtS = bdd.prepareStatement(sqlStatuses);
             stmtS.setInt(1, data.getMessages().get(0).getId());
