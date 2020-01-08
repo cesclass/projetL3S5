@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -149,6 +150,7 @@ public class ServerApplication {
 		displayArea.setWrapStyleWord(true);
 		displayArea.setBorder(BorderFactory
 				.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		displayArea.setFont(new Font("monospaced", Font.PLAIN, 12));
 	}
 
 	/**
@@ -159,6 +161,7 @@ public class ServerApplication {
 				.createMatteBorder(1, 0, 0, 0, Color.BLACK));
 		promptField.setBorder(BorderFactory
 				.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		promptField.setFont(new Font("monospaced", Font.PLAIN, 12));
 	}
 	
 
