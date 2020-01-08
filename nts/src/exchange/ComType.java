@@ -4,6 +4,7 @@ public enum ComType {
     ERROR_WITHOUT_REASON,
     ERROR_ALREADY_CONNECTED,
     ERROR_INVALID_REQUEST,
+    ERROR_SQL_EXCEPT,
 
     CONNECT_RQ,
     CONNECT_OK,
@@ -18,7 +19,6 @@ public enum ComType {
     
     TICKETS_LIST_RQ,
     TICKETS_LIST_OK,
-    TICKETS_LIST_KO,
     
     TICKET_RQ,
     TICKET_OK,

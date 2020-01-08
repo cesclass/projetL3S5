@@ -80,13 +80,14 @@ public class ClientInterface implements Runnable {
                 return logout();
 
             case GROUPS_RQ:
-                return groupList();
+                return dbm.groupList();
 
-            case TICKETS_LIST_RQ:
-                return ticketsList(req);
+            case TICKETS_LIST_RQ: 
+                return dbm.ticketsList(req);
             
             case TICKET_RQ:
-                return ticket(req);
+                // return dbm.ticket(req);
+                return null;
 
             case NEW_TICKET_CLI:
                 return newTicket(req);
@@ -132,32 +133,6 @@ public class ClientInterface implements Runnable {
         }
         working = false;
         return new ComData(ComType.DISCONNECT_CLI);
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    private ComData groupList() {
-        return dbm.groupList();
-    }
-
-    /**
-     * 
-     * @param req
-     * @return
-     */
-    private ComData ticketsList(ComData req) {
-        return dbm.ticketsList(req);
-    }
-
-    /**
-     * 
-     * @param req
-     * @return
-     */
-    private ComData ticket(ComData req) {
-        return null;
     }
 
     /**

@@ -24,7 +24,7 @@ public class DBManager {
     private static String sqlGroupList = 
             "SELECT * FROM groups";
     private static String sqlGetGroup =
-            "SELECT * FROM groups"+
+            "SELECT * FROM groups "+
             "WHERE groups.name = ?";
     private static String sqlTicketList = 
             "SELECT * FROM tickets " +
@@ -40,6 +40,9 @@ public class DBManager {
                 "WHERE messages.ticket_id = ? "+
                 "AND messages.status != 'READ') "+
             "AND statuses.status IN ('WAITING','RECEIVED')";
+    // private static String sqlGetTicket =
+    //         "SELECT * FROM tickets "+
+    //         "WHERE tickets.id = ?";
     
 
     public DBManager() {
@@ -95,16 +98,12 @@ public class DBManager {
         try {
             stmt = bdd.prepareStatement(sqlGroupList);
             set = stmt.executeQuery();
-            if(set.first()) {
-                res = new ComData(ComType.GROUPS_OK);
-                do {
-                    res.getGroups().add( new Group(
-                            set.getString("name"),
-                            set.getString("info")
-                    ));
-                } while (set.next());
-            } else {
-                res = new ComData(ComType.GROUPS_KO);
+            res = new ComData(ComType.GROUPS_OK);
+            while(set.next()) {
+                res.getGroups().add( new Group(
+                        set.getString("name"),
+                        set.getString("info")
+                ));
             }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -133,32 +132,29 @@ public class DBManager {
             stmtT.setInt(2, data.getLogin().getId());
             setT = stmtT.executeQuery();
 
-            if(setT.first()) {
+            res = new ComData(ComType.TICKETS_LIST_OK);
+
+            while(setT.next()) {
                 stmtG = bdd.prepareStatement(sqlGetGroup);
+                setG = stmtG.executeQuery();
+                setG.first();
+                
                 stmtC = bdd.prepareStatement(sqlCountUnreadMessages);
-                res = new ComData(ComType.TICKETS_LIST_OK);
-                do {
-                    setG = stmtG.executeQuery();
-                    setG.first();
+                stmtC.setInt(1, data.getLogin().getId());
+                stmtC.setInt(2, setT.getInt("id"));
+                setC = stmtC.executeQuery();
+                setC.first();
 
-                    stmtC.setInt(1, data.getLogin().getId());
-                    stmtC.setInt(2, setT.getInt("id"));
-                    setC = stmtC.executeQuery();
-                    setC.first();
-
-                    res.getTickets().add( new Ticket(
-                            setT.getInt("id"),
-                            setT.getString("name"),
-                            new java.util.Date(setT.getDate("date").getTime()), 
-                            new Group(
-                                    setG.getString("name"),
-                                    setG.getString("info")
-                            ),
-                            setC.getInt(1)
-                    ));
-                } while (setT.next());
-            } else {
-                res = new ComData(ComType.TICKETS_LIST_KO);
+                res.getTickets().add( new Ticket(
+                        setT.getInt("id"),
+                        setT.getString("name"),
+                        new java.util.Date(setT.getDate("date").getTime()), 
+                        new Group(
+                                setG.getString("name"),
+                                setG.getString("info")
+                        ),
+                        setC.getInt(1)
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,4 +162,16 @@ public class DBManager {
         return res;
     }
 
+    // public ComData ticket(ComData data) {
+    //     ComData res = null;
+    //     PreparedStatement stmtT = null;
+    //     PreparedStatement stmtG = null;
+    //     PreparedStatement stmtC = null;
+    //     ResultSet setT = null;
+    //     ResultSet setG = null;
+    //     ResultSet setC = null;
+    //     data.getTickets().get(0);
+
+    //     return res;
+    // }
 }
