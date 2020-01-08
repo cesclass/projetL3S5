@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -166,7 +167,8 @@ public class MessageInfosWindow {
 		messageArea.setRows(5);
 		messageArea.setLineWrap(true);
         messageArea.setWrapStyleWord(true);
-        messageArea.setDisabledTextColor(Color.BLACK);     
+        messageArea.setDisabledTextColor(Color.BLACK);
+        messageArea.setFont(new Font("monospaced", Font.PLAIN, 12));
     }
 
     /** Define the statusTable Properties */
@@ -185,6 +187,8 @@ public class MessageInfosWindow {
 
         statusTable.setEnabled(false);
     }
+
+    
     
     // *****************************************************************
 	// *
