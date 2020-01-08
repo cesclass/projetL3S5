@@ -82,7 +82,7 @@ public class ClientInterface implements Runnable {
             case GROUPS_RQ:
                 return dbm.groupList();
 
-            case TICKETS_LIST_RQ: 
+            case TICKET_LIST_RQ: 
                 return dbm.ticketsList(req);
             
             case TICKET_RQ:
@@ -110,7 +110,7 @@ public class ClientInterface implements Runnable {
      */
     private ComData login(ComData req) {
         ComData res = dbm.login(req);
-        if(res.getType() == ComType.CONNECT_OK) {
+        if(res.getType() == ComType.CONNECT_RP) {
             if(clientTable.containsKey(res.getLogin().getId())) {
                 return new ComData(ComType.ERROR_ALREADY_CONNECTED);
             } else {

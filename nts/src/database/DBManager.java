@@ -76,9 +76,9 @@ public class DBManager {
                         set.getString("last_name")
                 );
 
-                res = new ComData(ComType.CONNECT_OK, login, user);
+                res = new ComData(ComType.CONNECT_RP, login, user);
             } else {
-                res = new ComData(ComType.CONNECT_KO);
+                res = new ComData(ComType.ERROR_BAD_LOGIN);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class DBManager {
         try {
             stmt = bdd.prepareStatement(sqlGroupList);
             set = stmt.executeQuery();
-            res = new ComData(ComType.GROUPS_OK);
+            res = new ComData(ComType.GROUPS_RP);
             while(set.next()) {
                 res.getGroups().add( new Group(
                         set.getString("name"),
@@ -132,7 +132,7 @@ public class DBManager {
             stmtT.setInt(2, data.getLogin().getId());
             setT = stmtT.executeQuery();
 
-            res = new ComData(ComType.TICKETS_LIST_OK);
+            res = new ComData(ComType.TICKET_LIST_RP);
 
             while(setT.next()) {
                 stmtG = bdd.prepareStatement(sqlGetGroup);
