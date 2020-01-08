@@ -25,24 +25,24 @@ public class DBManager {
             "SELECT * FROM groups";
     private static String sqlGetGroup =
             "SELECT * FROM groups "+
-            "WHERE groups.name = ?";
+            "WHERE groups.id = ?";
     private static String sqlTicketList = 
             "SELECT * FROM tickets " +
             "WHERE tickets.author_id = ? " +
             "OR tickets.group_id IN (" +
-                "SELECT members.group_id FROM members" +
+                "SELECT members.group_id FROM members " +
                 "WHERE members.user_id = ?)";
     private static String sqlCountUnreadMessages = 
             "SELECT COUNT(statuses.message_id) FROM statuses "+
             "WHERE statuses.user_id = ? "+
-            "AND statuses.message_id IN ("+
+            "AND statuses.message_id IN ( "+
                 "SELECT messages.id FROM messages "+
                 "WHERE messages.ticket_id = ? "+
                 "AND messages.status != 'READ') "+
             "AND statuses.status IN ('WAITING','RECEIVED')";
-    // private static String sqlGetTicket =
-    //         "SELECT * FROM tickets "+
-    //         "WHERE tickets.id = ?";
+    private static String sqlGetTicket =
+            "SELECT * FROM tickets "+
+            "WHERE tickets.id = ?";
     
 
     public DBManager() {
@@ -91,14 +91,14 @@ public class DBManager {
      * @return
      */
     public ComData groupList() {
-        ComData res = null;
+        ComData res = new ComData(ComType.GROUPS_RP);
         PreparedStatement stmt = null;        
         ResultSet set = null;
 
         try {
             stmt = bdd.prepareStatement(sqlGroupList);
             set = stmt.executeQuery();
-            res = new ComData(ComType.GROUPS_RP);
+
             while(set.next()) {
                 res.getGroups().add( new Group(
                         set.getString("name"),
@@ -118,7 +118,7 @@ public class DBManager {
      * @return
      */
     public ComData ticketsList(ComData data) {
-        ComData res = null;
+        ComData res = new ComData(ComType.TICKET_LIST_RP);
         PreparedStatement stmtT = null;
         PreparedStatement stmtG = null;
         PreparedStatement stmtC = null;
@@ -132,10 +132,9 @@ public class DBManager {
             stmtT.setInt(2, data.getLogin().getId());
             setT = stmtT.executeQuery();
 
-            res = new ComData(ComType.TICKET_LIST_RP);
-
             while(setT.next()) {
                 stmtG = bdd.prepareStatement(sqlGetGroup);
+                stmtG.setInt(1, setT.getInt("group_id"));
                 setG = stmtG.executeQuery();
                 setG.first();
                 
@@ -162,16 +161,25 @@ public class DBManager {
         return res;
     }
 
-    // public ComData ticket(ComData data) {
-    //     ComData res = null;
-    //     PreparedStatement stmtT = null;
-    //     PreparedStatement stmtG = null;
-    //     PreparedStatement stmtC = null;
-    //     ResultSet setT = null;
-    //     ResultSet setG = null;
-    //     ResultSet setC = null;
-    //     data.getTickets().get(0);
+    public ComData ticket(ComData data) {
+        ComData res = new ComData(ComType.TICKET_RP);
+        PreparedStatement stmt = null;
+        ResultSet set = null;
 
-    //     return res;
-    // }
+        try {
+            stmt = bdd.prepareStatement(sqlGetTicket);
+            stmt.setInt(1, data.getTickets().get(0).getId());
+            set = stmt.executeQuery();
+            while(set.next()) {
+                res.getMessages().add(new Message())
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        data.getTickets().get(0);
+
+        return res;
+    }
 }
