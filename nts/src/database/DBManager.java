@@ -42,7 +42,7 @@ public class DBManager {
             "AND statuses.status IN ('WAITING','RECEIVED')";
     private static String sqlGetTicket =
             "SELECT * FROM messages "+
-            "WHERE tickets.id = ?";
+            "WHERE messages.id = ?";
     private static String sqlGetUser = 
             "SELECT users.first_name, users.last_name FROM users "+
             "WHERE users.id = ?";
