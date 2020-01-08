@@ -1,6 +1,6 @@
 package user;
 
-public class User {
+public class User implements Comparable<User> {
     private String firstName;
     private String lastName;
 
@@ -27,6 +27,11 @@ public class User {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return lastName + " " + firstName;
+    }
+
+    @Override
+    public int compareTo(User u) {
+        return toString().compareToIgnoreCase(u.toString());
     }
 }

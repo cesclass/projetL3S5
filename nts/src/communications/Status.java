@@ -5,7 +5,7 @@ import user.User;
 /**
  * Status is a Message status for a specific User 
  */
-public class Status {
+public class Status implements Comparable<Status> {
     // *****************************************************************
 	// *
 	// * ATTRIBUTES
@@ -53,5 +53,24 @@ public class Status {
      */
     public StatusType getStatus() {
         return status;
+    }
+
+    @Override
+    public int compareTo(Status s) {
+        if (status != s.getStatus()) {
+            if (status == StatusType.WAITING) {
+                return -1;
+            } else if (s.getStatus() == StatusType.WAITING) {
+                return 1;
+            } else if (status == StatusType.RECEIVED 
+                    && s.getStatus() != StatusType.WAITING)
+            {
+                return -1;
+            } else {
+                return 1;
+            }
+        } else {
+            return user.compareTo(s.getUser());
+        }
     }
 }
