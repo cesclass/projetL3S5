@@ -13,7 +13,7 @@ public class StatusTableModel extends AbstractTableModel{
 
     List<Status> statuses;
 
-    public StatusTableModel(ArrayList<Status> statuses) {
+    public StatusTableModel(List<Status> statuses) {
         // Sort by Status natural order
         this.statuses = new ArrayList<>(new TreeSet<>(statuses));
     }

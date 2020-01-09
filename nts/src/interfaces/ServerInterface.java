@@ -3,6 +3,7 @@ package interfaces;
 import java.io.*;
 import java.net.Socket;
 
+import communications.Message;
 import communications.Ticket;
 import exchange.*;
 import gui.ClientApplication;
@@ -63,6 +64,7 @@ public class ServerInterface implements Runnable {
         try {
             while (working) {
                 recv = reader.readLine();
+                System.err.println(recv);
                 handling(Serializer.deserialize(recv));
             }
         } catch (Exception e) {
@@ -90,6 +92,20 @@ public class ServerInterface implements Runnable {
                     ui.addTicket(ticket);
                 }
                 ((ClientApplication) app).updateUI();
+                break;
+
+            case TICKET_RP:
+                for (Message message : data.getMessages()) {
+                    data.getTickets().get(0).addMessage(message);
+                }
+                ((ClientApplication) app).recvMessages(
+                        data.getTickets().get(0));
+                break;
+
+            case STATUSES_RP:
+                ((ClientApplication) app).recvStatuses(
+                        data.getMessages().get(0),
+                        data.getStatuses());
                 break;
 
             case DISCONNECT_SRV:
@@ -133,6 +149,22 @@ public class ServerInterface implements Runnable {
         String tikRQ_s = Serializer.serialize(tikRQ);
 
         send(tikRQ_s);
+    }
+    
+    public void pullMessages(ComLogin cl, Ticket ticket) {
+        ComData mesRQ = new ComData(ComType.TICKET_RQ, cl);
+        mesRQ.getTickets().add(ticket);
+        String mesRQ_s = Serializer.serialize(mesRQ);
+
+        send(mesRQ_s);
+    }
+    
+    public void pullStatus(ComLogin cl, Message message) {
+        ComData staRQ = new ComData(ComType.STATUSES_RQ, cl);
+        staRQ.getMessages().add(message);
+        String staRQ_s = Serializer.serialize(staRQ);
+
+        send(staRQ_s);
 	}
 
     private void send(String data) {
@@ -143,5 +175,5 @@ public class ServerInterface implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }	
 }

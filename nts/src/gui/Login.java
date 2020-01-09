@@ -118,7 +118,7 @@ public class Login {
 
 	/** Build all SWING containers */
 	private void buildSWINGContainers() {
-		frame = new JFrame("Login");
+		frame = new JFrame("neOCampus ticket service - Login");
 		box = new Box(BoxLayout.Y_AXIS);
 	}
 

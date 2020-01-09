@@ -91,7 +91,7 @@ public class ServerApplication {
 	 * Build all SWING containers
 	 */
 	private void buildSWINGContainers() {
-		mainWindow = new JFrame("Administration - neOCampus ticket service");
+		mainWindow = new JFrame("neOCampus ticket service - Administration");
         mainPanel = new JPanel();
         displayPanel = new JPanel();
         promptPanel = new JPanel();

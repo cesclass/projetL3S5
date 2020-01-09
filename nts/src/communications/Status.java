@@ -58,16 +58,20 @@ public class Status implements Comparable<Status> {
     @Override
     public int compareTo(Status s) {
         if (status != s.getStatus()) {
-            if (status == StatusType.WAITING) {
-                return -1;
-            } else if (s.getStatus() == StatusType.WAITING) {
+            if (status == StatusType.WAITING
+                    || s.getStatus() == StatusType.AUTHOR)
+            {
                 return 1;
+            } else if (s.getStatus() == StatusType.WAITING
+                    || status == StatusType.AUTHOR) 
+            {
+                return -1;
             } else if (status == StatusType.RECEIVED 
                     && s.getStatus() != StatusType.WAITING)
             {
-                return -1;
-            } else {
                 return 1;
+            } else {
+                return -1;
             }
         } else {
             return user.compareTo(s.getUser());

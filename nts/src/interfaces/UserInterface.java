@@ -99,6 +99,24 @@ public class UserInterface {
     /** Use serverInterface to request all Tickets */
     public void pullTickets() {
         serverInterface.pullTickets(comLogin);
+    }
+    
+    /** 
+     * Use serverInterface to request all Messages 
+     * for a specific Ticket 
+     * @param ticket
+     */
+    public void pullMessages(Ticket ticket) {
+        serverInterface.pullMessages(comLogin, ticket);
+    }
+    
+    /**
+     * Use serverInterface to request all Statuses
+     * for a specific Message
+     * @param message
+     */
+    public void pullStatus(Message message) {
+        serverInterface.pullStatus(comLogin, message);
 	}
 
     /** Use serverInterface to disconnect a User */

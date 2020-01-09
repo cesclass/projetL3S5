@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -50,7 +50,7 @@ public class MessageInfosWindow {
     /** Message currently selected */
     private Message message;
     /** Statuses for each users */
-    private ArrayList<Status> statuses;
+    private List<Status> statuses;
 
     // *****************************************************************
 	// *
@@ -62,12 +62,12 @@ public class MessageInfosWindow {
      * Constructor for MessageInfosWindow
      * @param parent : Main window of Client application
      * @param message currently selected
-     * @param statuses for each users
+     * @param statuses2 for each users
      */
 	public MessageInfosWindow(
             ClientApplication parent, 
             Message message, 
-            ArrayList<Status> statuses) 
+            List<Status> statuses) 
     {
         this.parent = parent;
         this.message = message;
@@ -182,7 +182,7 @@ public class MessageInfosWindow {
 
         statusTable.getColumnModel().getColumn(0).setCellRenderer(
                 new StatusTableCellRenderer());                
-        statusTable.getColumnModel().getColumn(0).setCellRenderer(
+        statusTable.getColumnModel().getColumn(1).setCellRenderer(
                 new StatusTableCellRenderer());
 
         statusTable.setEnabled(false);
