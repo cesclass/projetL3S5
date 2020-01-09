@@ -152,6 +152,11 @@ public class ClientInterface implements Runnable {
         return res;
     }
 
+    /**
+     * 
+     * @param req
+     * @return
+     */
     private ComData ticket(ComData req) {
         ComData res = dbm.ticket(req);
         new Thread(new Updater(req, res)).start();
@@ -175,9 +180,9 @@ public class ClientInterface implements Runnable {
      * @return
      */
     private ComData newMessage(ComData req) {
-        // ComData res = dbm.newMessage(req);
-
-        return null;
+        ComData res = dbm.newMessage(req);
+        new Thread(new Updater(req, res)).start();
+        return res;
     }
 
     private class Updater implements Runnable {
@@ -199,6 +204,10 @@ public class ClientInterface implements Runnable {
                 
                 case TICKET_RQ:
                     updateOnLoad();
+                    break;
+                
+                case NEW_MESSAGE_CLI:
+                    spreadMessage();
                     break;
 
                 default:
@@ -225,13 +234,17 @@ public class ClientInterface implements Runnable {
                 if(!users.contains(clientID.getId())) {
                     users.add(clientID.getId());
                 }
+                
                 ComData update = dbm.updateMsgStatus(
                         ticket, clientID.getId(), 
                         StatusType.WAITING, StatusType.RECEIVED
                 );
-                for(Integer uid : users) {
-                    if(clientTable.containsKey(uid)) {
-                        sending(clientTable.get(uid), update);
+
+                if(update.getMessages().size() > 0) {
+                    for(Integer uid : users) {
+                        if(clientTable.containsKey(uid)) {
+                            sending(clientTable.get(uid), update);
+                        }
                     }
                 }
             }
@@ -243,15 +256,51 @@ public class ClientInterface implements Runnable {
             if(!users.contains(clientID.getId())) {
                 users.add(clientID.getId());
             }
+
             ComData update = dbm.updateMsgStatus(
                     ticket, clientID.getId(), 
                     StatusType.RECEIVED, StatusType.READ
             );
-            for(Integer uid : users) {
-                if(clientTable.containsKey(uid)) {
-                    sending(clientTable.get(uid), update);
+
+            if(update.getMessages().size() > 0) {
+                for(Integer uid : users) {
+                    if(clientTable.containsKey(uid)) {
+                        sending(clientTable.get(uid), update);
+                    }
                 }
             }
+        }
+
+        private void spreadMessage() {
+            Ticket ticket = res.getTickets().get(0);
+            Message msg = res.getMessages().get(0);
+            List<Integer> users = dbm.ticketUsersID(ticket);
+            users.remove(new Integer(clientID.getId()));
+
+            ComData newmsg = new ComData(ComType.NEW_MESSAGE_SRV);
+            newmsg.getTickets().add(ticket);
+            newmsg.getMessages().add(msg);
+
+            for(Integer uid : users) {
+                if(clientTable.containsKey(uid)) {
+                    sending(clientTable.get(uid), newmsg);
+                    dbm.userRecvMsg(uid.intValue(), msg.getId());
+                }
+            }
+
+            ComData update = dbm.updateMsgStatus(
+                    ticket, clientID.getId(), 
+                    StatusType.WAITING, StatusType.RECEIVED
+            );
+
+            if(update.getMessages().size() > 0) {
+                for(Integer uid : users) {
+                    if(clientTable.containsKey(uid)) {
+                        sending(clientTable.get(uid), update);
+                    }
+                }
+            }
+
         }
 
     }

@@ -91,6 +91,36 @@ public class DBManager {
             "AND (SELECT COUNT(statuses.status) FROM statuses "+
                 "WHERE statuses.message_id = ? "+
                 "AND statuses.status = ? ) = 0 ";
+
+    /**
+     * <pre>
+     * Date date, String content, int authorID, int ticketID
+     * </pre>
+     */
+    private final static String SQL_NEW_MESSAGE =
+            "INSERT INTO messages (date, content, author_id, ticket_id)"+
+            "VALUES (? , ? , ? , ? ) ";
+    
+    /**
+     * <pre>
+     * Date date, int ticketID
+     * </pre>
+     */
+    private final static String SQL_NEW_MSG_IN_TICKET =
+            "UPDATE tickets SET tickets.date = ? "+
+            "WHERE tickets.id = ? ";
+
+    /**
+     * <pre>
+     * int messageID, int userID
+     * </pre>
+     */
+    private final static String SQL_NEW_MSG_IN_STATUS =
+            "INSERT INTO statuses (message_id, user_id) "+
+            "VALUES ( ? , ? )";
+
+    
+    // *****************************************************************
             
     public DBManager() {
         try {
@@ -253,6 +283,86 @@ public class DBManager {
     /**
      * 
      * @param data
+     * @return 
+     */
+    public ComData newMessage(ComData data) {
+        Message msg = data.getMessages().get(0);
+        Ticket tck = data.getTickets().get(0);
+
+        ComData res = new ComData(ComType.NEW_MESSAGE_RP);
+        PreparedStatement stmtM = null;
+        PreparedStatement stmtUT = null;
+        PreparedStatement stmtGT = null;
+        PreparedStatement stmtU = null;
+        PreparedStatement stmtS = null;
+        PreparedStatement stmt = null;
+        ResultSet set = null;
+        int newMsgId = -1;
+        int tckAuthorID = -1;
+
+        try {
+            res.getTickets().add(tck);
+            stmtM = bdd.prepareStatement(SQL_NEW_MESSAGE, 
+                    PreparedStatement.RETURN_GENERATED_KEYS
+            );
+            stmtM.setDate(1, new java.sql.Date(msg.getDate().getTime()));
+            stmtM.setString(2, msg.getContent());
+            stmtM.setInt(3, data.getLogin().getId());
+            stmtM.setInt(4, tck.getId());
+            stmtM.executeUpdate();
+
+            set = stmtM.getGeneratedKeys();
+            set.first();
+            newMsgId = (int) set.getDouble("id");
+
+            stmtUT = bdd.prepareStatement(SQL_NEW_MSG_IN_TICKET);
+            stmtUT.setDate(1, new java.sql.Date(msg.getDate().getTime()));
+            stmtUT.setInt(2, tck.getId());
+            stmtUT.executeUpdate();
+
+            stmtGT = bdd.prepareStatement(SQL_GET_TICKET);
+            stmtGT.setInt(1, tck.getId());
+            set = stmtGT.executeQuery();
+            set.first();
+            tckAuthorID = set.getInt("author_id");
+
+            stmtU = bdd.prepareStatement(SQL_GET_USERS_FROM_GROUP);
+            stmtU.setInt(1, set.getInt("group_id"));
+            set = stmtU.executeQuery();
+
+            stmtS = bdd.prepareStatement(SQL_NEW_MSG_IN_STATUS);
+            stmtS.setInt(1, newMsgId);
+            stmtS.setInt(2, tckAuthorID);
+            stmtS.executeUpdate();
+
+            while(set.next()) {
+                stmtS.setInt(2, set.getInt("user_id"));
+                stmtS.executeUpdate();
+            }
+
+            stmt = bdd.prepareStatement(SQL_UPDATE_STATUS);
+            stmt.setString(1, StatusType.AUTHOR.name());
+            stmt.setInt(2, newMsgId);
+            stmt.setInt(3, data.getLogin().getId());
+            
+            res.getMessages().add(new Message(
+                newMsgId, 
+                msg.getDate(), 
+                msg.getAuthor(), 
+                msg.getContent(), 
+                StatusType.WAITING
+            ));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    /**
+     * 
+     * @param data
      * @return
      */
     public ComData statuses(ComData data) {
@@ -293,12 +403,14 @@ public class DBManager {
         PreparedStatement stmtU = null;
         ResultSet setT = null;
         ResultSet setU = null;
+        Integer ticketAuthor = null;
 
         try {
             stmtT = bdd.prepareStatement(SQL_GET_TICKET);
             stmtT.setInt(1, t.getId());
             setT = stmtT.executeQuery();
             setT.first();
+            ticketAuthor = new Integer(setT.getInt("author_id"));
 
             stmtU = bdd.prepareStatement(SQL_GET_USERS_FROM_GROUP);
             stmtU.setInt(1, setT.getInt("group_id"));
@@ -307,7 +419,11 @@ public class DBManager {
             while(setU.next()) {
                 users.add(new Integer(setU.getInt("user_id")));
             }
-            
+
+            if(!users.contains(ticketAuthor)) {
+                users.add(ticketAuthor);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -315,6 +431,14 @@ public class DBManager {
         return users;
     }
 
+    /**
+     * 
+     * @param ticket
+     * @param userID
+     * @param oldStatus
+     * @param newStatus
+     * @return
+     */
     public ComData updateMsgStatus(Ticket ticket, Integer userID, 
             StatusType oldStatus, StatusType newStatus) 
     {
@@ -365,5 +489,17 @@ public class DBManager {
 
         System.out.println(Serializer.serialize(update));
         return update;
+    }
+
+    public void userRecvMsg(int userID, int messageID) {
+        try {
+            PreparedStatement stmt = bdd.prepareStatement(SQL_UPDATE_STATUS);
+            stmt.setString(1, StatusType.RECEIVED.name());
+            stmt.setInt(2, messageID);
+            stmt.setInt(3, userID);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
