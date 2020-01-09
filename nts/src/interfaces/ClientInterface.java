@@ -48,11 +48,13 @@ public class ClientInterface implements Runnable {
             while(working) {
                 recvStr = reader.readLine();
                 if(recvStr != null) {
+                    serverLogger(recvStr, true);
                     recvObj = Serializer.deserialize(recvStr);
         
                     emitObj = handling(recvObj);
         
                     emitStr = Serializer.serialize(emitObj);
+                    serverLogger(emitStr, false);
                     writer.write(emitStr);
                     writer.newLine();
                     writer.flush();
@@ -104,6 +106,14 @@ public class ClientInterface implements Runnable {
 
             default:
                 return new ComData(ComType.ERROR_INVALID_REQUEST);
+        }
+    }
+
+    private void serverLogger(String str, boolean isInput) {
+        if(isInput) {
+            System.out.println("INPUT : " + str + "\n");
+        } else {
+            System.out.println("OUTPUT : " + str + "\n");
         }
     }
 

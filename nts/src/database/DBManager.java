@@ -631,8 +631,7 @@ public class DBManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println(Serializer.serialize(update));
+        
         return update;
     }
 
