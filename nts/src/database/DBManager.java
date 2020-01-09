@@ -18,24 +18,57 @@ public class DBManager {
     private final static String ID = "neocampus";
     private final static String PWD = "neocampus";
 
+    /**
+     * <pre>
+     * String userLogin, String userPassword
+     * </pre>
+     */
     private final static String SQL_LOGIN = 
             "SELECT * FROM users "+
             "WHERE users.login = ? "+
             "AND users.password = ? ";
+    
+    /**
+     * 
+     */
     private final static String SQL_GROUP_LIST = 
             "SELECT * FROM groups ";
+    
+    /**
+     * <pre>
+     * int groupID
+     * </pre>
+     */
     private final static String SQL_GET_GROUP =
             "SELECT * FROM groups "+
             "WHERE groups.id = ? ";
+    
+    /**
+     * <pre>
+     * String groupName
+     * </pre>
+     */
     private final static String SQL_GET_GROUP_BY_NAME =
             "SELECT * FROM groups "+
             "WHERE groups.name = ? ";
+    
+    /**
+     * <pre>
+     * int userID, int userID
+     * </pre>
+     */
     private final static String SQL_TICKET_LIST = 
             "SELECT * FROM tickets "+
             "WHERE tickets.author_id = ? "+
             "OR tickets.group_id IN ( "+
                 "SELECT members.group_id FROM members "+
                 "WHERE members.user_id = ?) ";
+
+    /**
+     * <pre>
+     * int userID, int ticketID
+     * </pre>
+     */
     private final static String SQL_COUNT_UNREAD_MESSAGES = 
             "SELECT COUNT(statuses.message_id) FROM statuses "+
             "WHERE statuses.user_id = ? "+
@@ -44,12 +77,30 @@ public class DBManager {
                 "WHERE messages.ticket_id = ? "+
                 "AND messages.status != 'READ') "+
             "AND statuses.status IN ('WAITING','RECEIVED') ";
+
+    /**
+     * <pre>
+     * int ticketID
+     * </pre>
+     */
     private final static String SQL_GET_MESSAGES =
             "SELECT * FROM messages "+
             "WHERE messages.ticket_id = ? ";
+    
+    /**
+     * <pre>
+     * int userID
+     * </pre>
+     */
     private final static String SQL_GET_USER = 
             "SELECT users.first_name, users.last_name FROM users "+
             "WHERE users.id = ? ";
+    
+    /**
+     * <pre>
+     * int messageID
+     * </pre>
+     */
     private final static String SQL_GET_STATUSES = 
             "SELECT * FROM statuses "+
             "WHERE statuses.message_id = ? ";
@@ -167,7 +218,11 @@ public class DBManager {
     }
 
     /**
-     * 
+     * <p>
+     * Search the couple (login, password) in the database. 
+     * Return <code>User</code> if this couple exist and 
+     * <code>Error</code> in other case.
+     * </p>
      * @param data
      * @return
      */
