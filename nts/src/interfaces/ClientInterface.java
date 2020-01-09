@@ -171,8 +171,11 @@ public class ClientInterface implements Runnable {
     private ComData newTicket(ComData req) {
         ComData res1 = dbm.newTicket(req);
         ComData res2 = dbm.newMessage(res1);
-
-        return null;
+        ComData res = new ComData(ComType.NEW_TICKET_RP);
+        res.getTickets().add(res1.getTickets().get(0));
+        res.getMessages().add(res2.getMessages().get(0));
+        new Thread(new Updater(req, res)).start();
+        return res;
     }
 
     /**
@@ -191,6 +194,11 @@ public class ClientInterface implements Runnable {
         private ComData req = null;
         private ComData res = null;
 
+        /**
+         * 
+         * @param req
+         * @param res
+         */
         public Updater(ComData req, ComData res) {
             this.req = req;
             this.res = res;
@@ -206,7 +214,9 @@ public class ClientInterface implements Runnable {
                 case TICKET_RQ:
                     updateOnLoad();
                     break;
-                
+
+                case NEW_TICKET_CLI:
+                    spreadTicket();
                 case NEW_MESSAGE_CLI:
                     spreadMessage();
                     break;
@@ -216,6 +226,11 @@ public class ClientInterface implements Runnable {
             }
         }
 
+        /**
+         * 
+         * @param sock
+         * @param data
+         */
         private void sending(Socket sock, ComData data) {
             BufferedWriter wsock = null;
             try {
@@ -229,6 +244,9 @@ public class ClientInterface implements Runnable {
             }
         }
 
+        /**
+         * 
+         */
         private void updateOnLogin() {
             for(Ticket ticket : res.getTickets()) {
                 List<Integer> users = dbm.ticketUsersID(ticket);
@@ -251,6 +269,9 @@ public class ClientInterface implements Runnable {
             }
         }
 
+        /**
+         * 
+         */
         private void updateOnLoad() {
             Ticket ticket = res.getTickets().get(0);
             List<Integer> users = dbm.ticketUsersID(ticket);
@@ -272,6 +293,43 @@ public class ClientInterface implements Runnable {
             }
         }
 
+        /**
+         * 
+         */
+        private void spreadTicket() {
+            Ticket ticket = res.getTickets().get(0);
+            Message msg = res.getMessages().get(0);
+            List<Integer> users = dbm.ticketUsersID(ticket);
+            users.remove(new Integer(clientID.getId()));
+
+            ComData newtck = new ComData(ComType.NEW_TICKET_SRV);
+            newtck.getTickets().add(ticket);
+            newtck.getMessages().add(msg);
+
+            for(Integer uid : users) {
+                if(clientTable.containsKey(uid)) {
+                    sending(clientTable.get(uid), newtck);
+                    dbm.userRecvMsg(uid.intValue(), msg.getId());
+                }
+            }
+
+            ComData update = dbm.updateMsgStatus(
+                    ticket, clientID.getId(), 
+                    StatusType.WAITING, StatusType.RECEIVED
+            );
+
+            if(update.getMessages().size() > 0) {
+                for(Integer uid : users) {
+                    if(clientTable.containsKey(uid)) {
+                        sending(clientTable.get(uid), update);
+                    }
+                }
+            }
+        }
+
+        /**
+         * 
+         */
         private void spreadMessage() {
             Ticket ticket = res.getTickets().get(0);
             Message msg = res.getMessages().get(0);

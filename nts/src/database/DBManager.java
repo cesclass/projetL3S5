@@ -27,6 +27,9 @@ public class DBManager {
     private final static String SQL_GET_GROUP =
             "SELECT * FROM groups "+
             "WHERE groups.id = ? ";
+    private final static String SQL_GET_GROUP_BY_NAME =
+            "SELECT * FROM groups "+
+            "WHERE groups.name = ? ";
     private final static String SQL_TICKET_LIST = 
             "SELECT * FROM tickets "+
             "WHERE tickets.author_id = ? "+
@@ -131,8 +134,14 @@ public class DBManager {
             "INSERT INTO statuses (message_id, user_id) "+
             "VALUES ( ? , ? )";
     
+    /**
+     * <pre>
+     * String name, Date date, int authorID, int groupID
+     * </pre>
+     */
     private final static String SQL_NEW_TICKET =
-            "";
+            "INSERT INTO tickets ('name','date','author_id','group_id') "+
+            "VALUES ( ? , ? , ? , ? ) ";
 
     
     // *****************************************************************
@@ -297,15 +306,42 @@ public class DBManager {
 
     public ComData newTicket(ComData data) {
         Ticket tck = data.getTickets().get(0);
-        ComData res = new ComData(ComType.NEW_TICKET_CLI);
+        ComData res = new ComData(ComType.NEW_TICKET_RP);
 
-        PreparedStatement stmt = null;
+        PreparedStatement stmtG = null;
+        PreparedStatement stmtT = null;
+        ResultSet setG = null;
+        ResultSet setT = null;
+        int newTicketID = -1;
 
         try {
-            stmt = bdd.prepareStatement(SQL_NEW_TICKET);
-
-
+            stmtG = bdd.prepareStatement(SQL_GET_GROUP_BY_NAME);
+            stmtG.setString(1, tck.getGroup().getName());
             
+            setG = stmtG.executeQuery();
+            setG.first();
+
+            stmtT = bdd.prepareStatement(SQL_NEW_TICKET, 
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            stmtT.setString(1, tck.getName());
+            stmtT.setDate(2, new java.sql.Date(tck.getDate().getTime()));
+            stmtT.setInt(3, data.getLogin().getId());
+            stmtT.setInt(4, setG.getInt("id"));
+            stmtT.executeUpdate();
+            
+            setT = stmtT.getGeneratedKeys();
+            setT.first();
+
+            newTicketID = (int) setT.getDouble(1);
+
+            res.getTickets().add( new Ticket(
+                    newTicketID, 
+                    tck.getName(), 
+                    tck.getDate(), 
+                    tck.getGroup(), 
+                    1
+            ));
+            res.getMessages().add(data.getMessages().get(0));
         } catch (SQLException e) {
             e.printStackTrace();
         }
