@@ -8,9 +8,9 @@ public class TestJDBC {
 	static PreparedStatement myStmt = null;
 	static ResultSet myRs = null;
 
-	static String bdd = "jdbc:mysql://cyandev.ovh:3306/nts";
-	static String id = "neocampus";
-	static String mdp = "neocampus";
+	static String bdd = "jdbc:mysql://127.0.0.1:3306/nts";
+	static String id = "root";
+	static String mdp = "";
 
 	public static void main(String[] args) throws SQLException {
 
