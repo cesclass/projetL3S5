@@ -53,9 +53,21 @@ public class DBManager {
     private final static String SQL_GET_STATUSES = 
             "SELECT * FROM statuses "+
             "WHERE statuses.message_id = ? ";
+
+    /**
+     * <pre>
+     * int ticketID
+     * </pre>
+     */
     private final static String SQL_GET_TICKET =
             "SELECT * FROM tickets "+
             "WHERE tickets.id = ? ";
+
+    /**
+     * <pre>
+     * int groupID
+     * </pre>
+     */
     private final static String SQL_GET_USERS_FROM_GROUP =
             "SELECT members.user_id FROM members "+
             "WHERE members.group_id = ? ";
@@ -88,7 +100,7 @@ public class DBManager {
      * String newStatus, int messageID, int messageID
      * </pre>
      */
-    private final static String SQL_UPDATE_MESSAGE_STATUS_W_R =
+    private final static String SQL_UPDATE_MSG_STATUS_W =
             "UPDATE messages SET messages.status = ? "+
             "WHERE messages.id = ? "+
             "AND (SELECT COUNT(statuses.status) FROM statuses "+
@@ -100,12 +112,12 @@ public class DBManager {
      * String newStatus, int messageID, int messageID
      * </pre>
      */
-    private final static String SQL_UPDATE_MESSAGE_STATUS_WR_R =
+    private final static String SQL_UPDATE_MSG_STATUS_WR =
             "UPDATE messages SET messages.status = ? "+
             "WHERE messages.id = ? "+
             "AND (SELECT COUNT(statuses.status) FROM statuses "+
                 "WHERE statuses.message_id = ? "+
-                "AND statuses.status IN ('WAITING', 'RECEIVED') = 0 ";
+                "AND statuses.status IN ('WAITING', 'RECEIVED')) = 0 ";
 
     /**
      * <pre>
@@ -522,7 +534,7 @@ public class DBManager {
         update.getTickets().add(ticket);
 
         String SQL_UPDATE_MESSAGE_STATUS = (oldStatus == StatusType.WAITING) ?
-            SQL_UPDATE_MESSAGE_STATUS_W_R : SQL_UPDATE_MESSAGE_STATUS_WR_R;
+            SQL_UPDATE_MSG_STATUS_W : SQL_UPDATE_MSG_STATUS_WR;
 
         PreparedStatement stmtS = null;
         PreparedStatement stmtUS = null;
