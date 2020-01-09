@@ -12,6 +12,7 @@ import communications.Message;
 import communications.Status;
 import communications.Ticket;
 import interfaces.UserInterface;
+import user.Group;
 
 /** Main window of Client application */
 public class ClientApplication {
@@ -149,6 +150,15 @@ public class ClientApplication {
 	 */
 	public void recvStatuses(Message message, List<Status> statuses) {
 		new MessageInfosWindow(this, message, statuses);
+	}
+
+	/**
+	 * Create a newTicketWindow and disable this window
+	 * @param groups for Ticket creation
+	 */
+	public void recvGroups(List<Group> groups) {
+		new NewTicketWindow(this, ui, groups);
+		mainWindow.setEnabled(false);
 	}
 
 	// *****************************************************************
@@ -438,16 +448,13 @@ public class ClientApplication {
 
 	/**
 	 * Add a new Event listener on newTicketButton
-	 * It will open a NewTicketWindow and disabled this window
+	 * It will pull groups for Ticket creation
 	 */
 	private void addEventListenerNewTicketButton() {
-		ClientApplication app = this;
-
 		this.newTicketButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new NewTicketWindow(app, ui);
-				mainWindow.setEnabled(false);
+				ui.pullGroups();
 			}
 		});
 	}

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -57,6 +58,8 @@ public class NewTicketWindow {
     ClientApplication parent;
     /** UserInterface allows to communicate with the User/application */
     UserInterface ui;
+    /** Groups for Ticket creation */
+    List<Group> groups;
 
     // *****************************************************************
 	// *
@@ -68,10 +71,16 @@ public class NewTicketWindow {
      * Constructor for NewTicketWindow
      * @param parent Main window of Client application
      * @param ui (UserInterface)
+     * @param groups for Ticket creation
      */
-    public NewTicketWindow(ClientApplication parent, UserInterface ui) {
+    public NewTicketWindow(
+            ClientApplication parent, 
+            UserInterface ui,
+            List<Group> groups) 
+    {
         this.parent = parent;
         this.ui = ui;
+        this.groups = groups;
 
         buildSWINGElements();
         setProperties();
@@ -90,6 +99,7 @@ public class NewTicketWindow {
 
     /**
      * Call all buildSWING methods to build graphic elements
+     * @param groups for Ticket creation
      * @see NewTicketWindow.buildSWINGContainers()
      * @see NewTicketWindow.buildSWINGContents()
      */
@@ -119,7 +129,7 @@ public class NewTicketWindow {
         messageLabel = new JLabel("Message");
 
         // ComboBox
-        groupCombo = new JComboBox<>(new Vector<Group>(ui.getAllGroups()));
+        groupCombo = new JComboBox<>(new Vector<Group>(groups));
 
         // TextField/Area
         titleField = new JTextField();

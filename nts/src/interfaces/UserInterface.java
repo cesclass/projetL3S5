@@ -1,7 +1,6 @@
 package interfaces;
 
 import java.util.List;
-import java.util.Set;
 
 import communications.Message;
 import communications.Ticket;
@@ -214,7 +213,7 @@ public class UserInterface {
      * Return all Groups in the TicketManager
      * @return Group Set
      */
-	public Set<Group> getAllGroups() {
-		return ticketManager.getAllGroups();
+	public void pullGroups() {
+		serverInterface.pullGroups(comLogin);
 	}
 }
