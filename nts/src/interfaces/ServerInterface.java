@@ -98,7 +98,9 @@ public class ServerInterface implements Runnable {
 
             case TICKET_RP:
                 for (Message message : data.getMessages()) {
-                    data.getTickets().get(0).addMessage(message);
+                    ui.recvMessages(
+                            data.getTickets().get(0),
+                            message);
                 }
                 ((ClientApplication) app).recvMessages(
                         data.getTickets().get(0));
@@ -113,15 +115,17 @@ public class ServerInterface implements Runnable {
             case NEW_MESSAGE_RP:
             case NEW_MESSAGE_SRV:
                 ui.recvMessages(
-                        data.getTickets().get(0), 
+                        data.getTickets().get(0),
                         data.getMessages().get(0));
+                data.getTickets().get(0).addMessage(data.getMessages().get(0));
                 ((ClientApplication) app).recvMessages(
                         data.getTickets().get(0));
                 break;
 
             // SERVER CASES
             case UPDATE_STATUS_SRV:
-                ui.recvStatuses(data.getTickets().get(0),
+                ui.recvStatuses(
+                        data.getTickets().get(0),
                         data.getMessages());
                 ((ClientApplication) app).updateTableUI();
                 break;

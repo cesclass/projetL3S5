@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
@@ -98,12 +97,25 @@ public class ClientApplication {
 		ticketTree.updateUI();
 	}
 
+	/** Update messageTable */
+	public void updateTableUI() {
+
+	}
+
 	/** 
 	 * Messages are received from server for a specific Ticket 
 	 * It will update messageTable accordingly
 	 * @param ticket
 	 */
 	public void recvMessages(Ticket ticket) {
+		// get Ticket
+		int index = ui.getTicketManager().getTicketNum(
+				ticket.getGroup(),
+				ticket);
+		ticket = ui.getTicketManager().getTicket(
+				ticket.getGroup(), 
+				index);
+
 		// Set messageTable model
 		TableModel tableModel = new MessagesTableModel(
 				ticket.getMessageManager());

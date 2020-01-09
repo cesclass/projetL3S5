@@ -21,8 +21,8 @@ public class NewTicketWindow {
     // *****************************************************************
     
     // Containers
-    private JFrame newTicketFrame;
-    private JPanel newTicketPanel;
+    private JFrame mainWindow;
+    private JPanel mainPanel;
     private JPanel groupPanel;
     private JPanel titlePanel;
     private JPanel messagePanel;
@@ -78,8 +78,8 @@ public class NewTicketWindow {
         setLayout();
         addEventListeners();
 
-        newTicketFrame.pack();
-        newTicketFrame.setVisible(true);
+        mainWindow.pack();
+        mainWindow.setVisible(true);
     }
 
     // *****************************************************************
@@ -100,8 +100,8 @@ public class NewTicketWindow {
 
     /** Build all SWING containers */
     private void buildSWINGContainers() {
-        newTicketFrame = new JFrame();
-        newTicketPanel = new JPanel();
+        mainWindow = new JFrame();
+        mainPanel = new JPanel();
         groupPanel = new JPanel();
         titlePanel = new JPanel();
         messagePanel = new JPanel();
@@ -139,27 +139,29 @@ public class NewTicketWindow {
     /**
      * Call all setProperties methods
      *  to define SWING properties
-     * @see NewTicketWindow#setNewTicketFrameProperties()
-     * @see NewTicketWindow#setNewTicketPanelProperties()
+     * @see NewTicketWindow#setMainWindowProperties()
+     * @see NewTicketWindow#setMainPanelProperties()
+     * @see NewTicketWindow#setNewTicketTextAreaProperties()
+     * @see NewTicketWindow#setNewTicketTitleFieldProperties()
      */
     private void setProperties() {
-        setNewTicketFrameProperties();
-        setNewTicketPanelProperties();
+        setMainWindowProperties();
+        setMainPanelProperties();
         setNewTicketTextAreaProperties();
         setNewTicketTitleFieldProperties();
     }
 
-    /** Define the newTicketFrame SWING Properties */
-    private void setNewTicketFrameProperties() {
-        newTicketFrame.setContentPane(newTicketPanel);
-        newTicketFrame.setMinimumSize(new Dimension(500, 400));
-        newTicketFrame.setUndecorated(true);
-        newTicketFrame.setLocationRelativeTo(null);
+    /** Define the mainWindow SWING Properties */
+    private void setMainWindowProperties() {
+        mainWindow.setContentPane(mainPanel);
+        mainWindow.setMinimumSize(new Dimension(500, 400));
+        mainWindow.setUndecorated(true);
+        mainWindow.setLocationRelativeTo(null);
     }
 
-    /** Define the newTicketPanel SWING Properties */
-    private void setNewTicketPanelProperties() {
-        newTicketPanel.setBorder(BorderFactory
+    /** Define the mainPanel SWING Properties */
+    private void setMainPanelProperties() {
+        mainPanel.setBorder(BorderFactory
                 .createMatteBorder(1, 1, 1, 1, Color.BLACK));
     }
     
@@ -181,24 +183,24 @@ public class NewTicketWindow {
 
     /**
      * Call all setLayout methods to define SWING layouts
-     * @see NewTicketWindow.setNewTicketPanelLayout()
+     * @see NewTicketWindow.setMainPanelLayout()
      * @see NewTicketWindow.setGroupPanelLayout()
      * @see NewTicketWindow.setTitlePanelLayout()
      * @see NewTicketWindow.setMessagePanelLayout()
      * @see NewTicketWindow.setButtonsPanelLayout()
      */
     private void setLayout() {
-        setNewTicketPanelLayout();
+        setMainPanelLayout();
         setGroupPanelLayout();
         setTitlePanelLayout();
         setMessagePanelLayout();
         setButtonsPanelLayout();
     }
 
-    /** Define the newTicketPanel SWING Layout */
-    private void setNewTicketPanelLayout() {
-        GroupLayout layout = new GroupLayout(newTicketPanel);
-        newTicketPanel.setLayout(layout);
+    /** Define the mainPanel SWING Layout */
+    private void setMainPanelLayout() {
+        GroupLayout layout = new GroupLayout(mainPanel);
+        mainPanel.setLayout(layout);
 
         // Add padding
         layout.setAutoCreateGaps(true);
@@ -371,8 +373,8 @@ public class NewTicketWindow {
             	if(!title.isEmpty() && !msg.isEmpty()) {
             		// Ticket creation
             		ui.createTicket((Group) groupCombo.getSelectedItem(),
-            						title, 
-            						msg);
+                            title, 
+                            msg);
             		
             		// Clear title/message fields
             		titleField.setText("");
@@ -382,11 +384,11 @@ public class NewTicketWindow {
                     parent.updateTreeUI();
 
                     parent.getMainWindow().setEnabled(true);
-                    newTicketFrame.dispose();
+                    mainWindow.dispose();
                 } else {
                     // Show error message dialog
             		JOptionPane.showMessageDialog(
-                            newTicketFrame, 
+                            mainWindow, 
                             "<html><b>titre</b> ou <b>message</b> vide</html>", 
                             "Erreur", 
                             JOptionPane.ERROR_MESSAGE);
@@ -405,7 +407,7 @@ public class NewTicketWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getMainWindow().setEnabled(true);
-                newTicketFrame.dispose();
+                mainWindow.dispose();
             }
     	});
     }
