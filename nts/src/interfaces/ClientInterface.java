@@ -217,6 +217,8 @@ public class ClientInterface implements Runnable {
 
                 case NEW_TICKET_CLI:
                     spreadTicket();
+                    break;
+                    
                 case NEW_MESSAGE_CLI:
                     spreadMessage();
                     break;
