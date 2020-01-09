@@ -101,11 +101,11 @@ public class DBManager {
      * </pre>
      */
     private final static String SQL_UPDATE_MESSAGE_STATUS_WR_R =
-                "UPDATE messages SET messages.status = ? "+
-                "WHERE messages.id = ? "+
-                "AND (SELECT COUNT(statuses.status) FROM statuses "+
-                    "WHERE statuses.message_id = ? "+
-                    "AND statuses.status IN ('WAITING', 'RECEIVED') = 0 ";
+            "UPDATE messages SET messages.status = ? "+
+            "WHERE messages.id = ? "+
+            "AND (SELECT COUNT(statuses.status) FROM statuses "+
+                "WHERE statuses.message_id = ? "+
+                "AND statuses.status IN ('WAITING', 'RECEIVED') = 0 ";
 
     /**
      * <pre>
@@ -140,7 +140,7 @@ public class DBManager {
      * </pre>
      */
     private final static String SQL_NEW_TICKET =
-            "INSERT INTO tickets ('name','date','author_id','group_id') "+
+            "INSERT INTO tickets (name, date, author_id, group_id) "+
             "VALUES ( ? , ? , ? , ? ) ";
 
     
@@ -306,7 +306,7 @@ public class DBManager {
 
     public ComData newTicket(ComData data) {
         Ticket tck = data.getTickets().get(0);
-        ComData res = new ComData(ComType.NEW_TICKET_RP);
+        ComData res = new ComData(ComType.NEW_TICKET_RP, data.getLogin());
 
         PreparedStatement stmtG = null;
         PreparedStatement stmtT = null;
@@ -405,8 +405,10 @@ public class DBManager {
             stmtS.executeUpdate();
 
             while(set.next()) {
-                stmtS.setInt(2, set.getInt("user_id"));
-                stmtS.executeUpdate();
+                if(set.getInt("user_id") != tckAuthorID) {
+                    stmtS.setInt(2, set.getInt("user_id"));
+                    stmtS.executeUpdate();
+                }
             }
 
             stmt = bdd.prepareStatement(SQL_UPDATE_STATUS);

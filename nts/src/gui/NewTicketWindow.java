@@ -375,13 +375,6 @@ public class NewTicketWindow {
             		ui.createTicket((Group) groupCombo.getSelectedItem(),
                             title, 
                             msg);
-            		
-            		// Clear title/message fields
-            		titleField.setText("");
-                    messageArea.setText("");
-                    
-                    // GUI update (to correctly show the TicketTree)
-                    parent.updateTreeUI();
 
                     parent.getMainWindow().setEnabled(true);
                     mainWindow.dispose();

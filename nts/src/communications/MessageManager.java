@@ -55,7 +55,9 @@ public class MessageManager implements Iterable<Message> {
      * @param message to add
      */
     public void addMessage(Message message) {
-        messages.add(message);
+        if (!messages.contains(message)) {
+            messages.add(message);
+        }
     }
 
     /**

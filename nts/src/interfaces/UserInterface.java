@@ -157,7 +157,8 @@ public class UserInterface {
         Message message = new Message(this.user, firstMessage);
         Ticket ticket = new Ticket(name, group, message);
 
-        ticketManager.addTicket(ticket);
+        serverInterface.pushTicket(
+                comLogin, ticket, message);
     }
 
     /**
@@ -181,8 +182,7 @@ public class UserInterface {
     }
 
     /**
-     * Add Message in its Ticket,
-     * all two received from server
+     * Add Message in its Ticket, all two received from server
      * @param ticket
      * @param messages to add
      */
@@ -190,6 +190,16 @@ public class UserInterface {
         int numTicket = ticketManager.getTicketNum(ticket.getGroup(), ticket);
         ticketManager.getTicket(ticket.getGroup(), numTicket)
                 .addMessage(message);
+    }
+    
+    /**
+     * Add new Ticket and its Message, all two received from server
+     * @param ticket
+     * @param messages to add
+     */
+	public void recvTicket(Ticket ticket, Message message) {
+        ticket.addMessage(message);
+        ticketManager.addTicket(ticket);
 	}
 
     /**
