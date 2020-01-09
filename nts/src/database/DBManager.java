@@ -10,62 +10,91 @@ import user.*;
 public class DBManager {
     private Connection bdd = null;
 
-    // private static String url = "jdbc:mysql://127.0.0.1:3306/nts";
-    // private static String user = "root";
-    // private static String password = "";
+    // private final static String URL = "jdbc:mysql://127.0.0.1:3306/nts";
+    // private final static String ID = "root";
+    // private final static String PWD = "";
 
-    private static String url = "jdbc:mysql://cyandev.ovh:3306/nts";
-    private static String user = "neocampus";
-    private static String password = "neocampus";
+    private final static String URL = "jdbc:mysql://cyandev.ovh:3306/nts";
+    private final static String ID = "neocampus";
+    private final static String PWD = "neocampus";
 
-    private static String sqlLogin = 
-            "SELECT * FROM users "  +
-            "WHERE users.login = ? " +
-            "AND users.password = ?";
-    private static String sqlGroupList = 
-            "SELECT * FROM groups";
-    private static String sqlGetGroup =
+    private final static String SQL_LOGIN = 
+            "SELECT * FROM users "+
+            "WHERE users.login = ? "+
+            "AND users.password = ? ";
+    private final static String SQL_GROUP_LIST = 
+            "SELECT * FROM groups ";
+    private final static String SQL_GET_GROUP =
             "SELECT * FROM groups "+
-            "WHERE groups.id = ?";
-    private static String sqlTicketList = 
-            "SELECT * FROM tickets " +
-            "WHERE tickets.author_id = ? " +
-            "OR tickets.group_id IN (" +
-                "SELECT members.group_id FROM members " +
-                "WHERE members.user_id = ?)";
-    private static String sqlCountUnreadMessages = 
+            "WHERE groups.id = ? ";
+    private final static String SQL_TICKET_LIST = 
+            "SELECT * FROM tickets "+
+            "WHERE tickets.author_id = ? "+
+            "OR tickets.group_id IN ( "+
+                "SELECT members.group_id FROM members "+
+                "WHERE members.user_id = ?) ";
+    private final static String SQL_COUNT_UNREAD_MESSAGES = 
             "SELECT COUNT(statuses.message_id) FROM statuses "+
             "WHERE statuses.user_id = ? "+
             "AND statuses.message_id IN ( "+
                 "SELECT messages.id FROM messages "+
                 "WHERE messages.ticket_id = ? "+
                 "AND messages.status != 'READ') "+
-            "AND statuses.status IN ('WAITING','RECEIVED')";
-    private static String sqlGetTicket =
+            "AND statuses.status IN ('WAITING','RECEIVED') ";
+    private final static String SQL_GET_MESSAGES =
             "SELECT * FROM messages "+
-            "WHERE messages.ticket_id = ?";
-    private static String sqlGetUser = 
+            "WHERE messages.ticket_id = ? ";
+    private final static String SQL_GET_USER = 
             "SELECT users.first_name, users.last_name FROM users "+
-            "WHERE users.id = ?";
-    private static String sqlStatuses = 
+            "WHERE users.id = ? ";
+    private final static String SQL_GET_STATUSES = 
             "SELECT * FROM statuses "+
-            "WHERE statuses.message_id = ?";
-    private static String sqlUpdateStatus =
-            "UPDATE statuses SET statuses.status = ? "+
+            "WHERE statuses.message_id = ? ";
+    private final static String SQL_GET_TICKET =
+            "SELECT * FROM tickets "+
+            "WHERE tickets.id = ? ";
+    private final static String SQL_GET_USERS_FROM_GROUP =
+            "SELECT members.user_id FROM members "+
+            "WHERE members.group_id = ? ";
+
+    /**
+     * <pre>
+     * int userID, String oldStatus, int ticketID
+     * </pre>
+     */
+    private final static String SQL_GET_SPECIFIC_MESSAGES = 
+            "SELECT statuses.message_id FROM statuses "+
+            "WHERE statuses.user_id = ? "+
+            "AND statuses.status = ? "+
+            "AND statuses.message_id IN ( "+
+                "SELECT messages.id FROM messages "+
+                "WHERE messages.ticket_id = ?) ";
+    
+    /**
+     * <pre>
+     * String newStatus, int messageID, int userID
+     * </pre>
+     */
+    private final static String SQL_UPDATE_STATUS =
+            "UPDATE statuses SET statuses.status = ?"+ 
             "WHERE statuses.message_id = ? "+
             "AND statuses.user_id = ? ";
-    private static String sqlCountSameStatus = 
-            "SELECT COUNT(statuses.message_id) FROM statuses "+
-            "WHERE statuses.message_id = ? "+
-            "AND statuses.status != ?";
-    private static String sqlUpdateMsgStatus =
-            "UPDATE messages SET messages.status = ? "+
-            "WHERE messages.id = ?";
-    
 
+    /**
+     * <pre>
+     * String newStatus, int messageID, String oldStatus
+     * </pre>
+     */
+    private final static String SQL_UPDATE_MESSAGE_STATUS =
+            "UPDATE messages SET messages.status = ? "+
+            "WHERE (SELECT CONUT(statuses.status) FROM statuses "+
+                "WHERE statuses.message_id = ? "+
+                "AND statuses.status = ? ) = 0 ";
+            
+    
     public DBManager() {
         try {
-            this.bdd = DriverManager.getConnection(url, user, password);
+            this.bdd = DriverManager.getConnection(URL, ID, PWD);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,7 +111,7 @@ public class DBManager {
         ResultSet set = null;
 
         try {
-            stmt = bdd.prepareStatement(sqlLogin);
+            stmt = bdd.prepareStatement(SQL_LOGIN);
             stmt.setString(1, data.getLogin().getLogin());
             stmt.setString(2, data.getLogin().getPassword());
             set = stmt.executeQuery();
@@ -114,7 +143,7 @@ public class DBManager {
         ResultSet set = null;
 
         try {
-            stmt = bdd.prepareStatement(sqlGroupList);
+            stmt = bdd.prepareStatement(SQL_GROUP_LIST);
             set = stmt.executeQuery();
 
             while(set.next()) {
@@ -145,18 +174,18 @@ public class DBManager {
         ResultSet setC = null;
 
         try {
-            stmtT = bdd.prepareStatement(sqlTicketList);
+            stmtT = bdd.prepareStatement(SQL_TICKET_LIST);
             stmtT.setInt(1, data.getLogin().getId());
             stmtT.setInt(2, data.getLogin().getId());
             setT = stmtT.executeQuery();
 
             while(setT.next()) {
-                stmtG = bdd.prepareStatement(sqlGetGroup);
+                stmtG = bdd.prepareStatement(SQL_GET_GROUP);
                 stmtG.setInt(1, setT.getInt("group_id"));
                 setG = stmtG.executeQuery();
                 setG.first();
                 
-                stmtC = bdd.prepareStatement(sqlCountUnreadMessages);
+                stmtC = bdd.prepareStatement(SQL_COUNT_UNREAD_MESSAGES);
                 stmtC.setInt(1, data.getLogin().getId());
                 stmtC.setInt(2, setT.getInt("id"));
                 setC = stmtC.executeQuery();
@@ -193,8 +222,8 @@ public class DBManager {
 
         try {
             res.getTickets().add(data.getTickets().get(0));
-            stmtU = bdd.prepareStatement(sqlGetUser);
-            stmtM = bdd.prepareStatement(sqlGetTicket);
+            stmtU = bdd.prepareStatement(SQL_GET_USER);
+            stmtM = bdd.prepareStatement(SQL_GET_MESSAGES);
             stmtM.setInt(1, data.getTickets().get(0).getId());
             setM = stmtM.executeQuery();
 
@@ -226,61 +255,6 @@ public class DBManager {
      * @param data
      * @return
      */
-    public ComData updateStatus(ComData data) {
-        ComData res = new ComData(ComType.UPDATE_STATUS_RP);
-        PreparedStatement stmt = null;
-
-        try {
-            stmt = bdd.prepareStatement(sqlUpdateStatus);
-            stmt.setString(1, data.getMessages().get(0).getStatus().name());
-            stmt.setInt(2, data.getMessages().get(0).getId());
-            stmt.setInt(3, data.getLogin().getId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return res;
-    }
-
-    /**
-     * 
-     * @param req
-     * @return
-     */
-    public List<Integer> updateMsgStatus(ComData data) {
-        ComData res = new ComData(ComType.UPDATE_STATUS_RP);
-        PreparedStatement stmtC = null;
-        PreparedStatement stmtU = null;
-        ResultSet setC = null;
-        StatusType status = data.getMessages().get(0).getStatus();
-        int message_id = data.getMessages().get(0).getId();
-
-        try {
-            stmtC = bdd.prepareStatement(sqlCountSameStatus);
-            stmtC.setInt(1, message_id);
-            stmtC.setString(2, status.name());
-            setC = stmtC.executeQuery();
-            setC.first();
-            if(setC.getInt(1) == 1) {
-                stmtU = bdd.prepareStatement(sqlUpdateMsgStatus);
-                stmtU.setString(1, status.name());
-                stmtU.setInt(2, message_id);
-                stmtU.executeUpdate();
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    /**
-     * 
-     * @param data
-     * @return
-     */
     public ComData statuses(ComData data) {
         ComData res = new ComData(ComType.STATUSES_RP);
         PreparedStatement stmtS = null;
@@ -290,8 +264,8 @@ public class DBManager {
 
         try {
             res.getMessages().add(data.getMessages().get(0));
-            stmtU = bdd.prepareStatement(sqlGetUser);
-            stmtS = bdd.prepareStatement(sqlStatuses);
+            stmtU = bdd.prepareStatement(SQL_GET_USER);
+            stmtS = bdd.prepareStatement(SQL_GET_STATUSES);
             stmtS.setInt(1, data.getMessages().get(0).getId());
             setS = stmtS.executeQuery();
 
@@ -311,5 +285,81 @@ public class DBManager {
             e.printStackTrace();
         }
         return res;
+    }
+
+    public List<Integer> ticketUsersID(Ticket t) {
+        List<Integer> users = new ArrayList<>();
+        PreparedStatement stmtT = null;
+        PreparedStatement stmtU = null;
+        ResultSet setT = null;
+        ResultSet setU = null;
+
+        try {
+            stmtT = bdd.prepareStatement(SQL_GET_TICKET);
+            stmtT.setInt(1, t.getId());
+            setT = stmtT.executeQuery();
+            setT.first();
+
+            stmtU = bdd.prepareStatement(SQL_GET_USERS_FROM_GROUP);
+            stmtU.setInt(1, setT.getInt("group_id"));
+            setU = stmtU.executeQuery();
+
+            while(setU.next()) {
+                users.add(new Integer(setU.getInt("user_id")));
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    public ComData updateMsgStatus(Ticket ticket, Integer userID, 
+            StatusType oldStatus, StatusType newStatus) 
+    {
+        ComData update = new ComData(ComType.UPDATE_STATUS_SRV);
+        PreparedStatement stmtS = null;
+        PreparedStatement stmtUS = null;
+        PreparedStatement stmtUM = null;
+        ResultSet setS = null;
+        int messageID = 0;
+
+        try {
+            stmtS = bdd.prepareStatement(SQL_GET_SPECIFIC_MESSAGES);
+            stmtS.setInt(1, userID.intValue());
+            stmtS.setString(2, oldStatus.name());
+            stmtS.setInt(3, ticket.getId());
+            setS = stmtS.getResultSet();
+
+            while(setS.next()) {
+                messageID = setS.getInt("message_id");
+
+                stmtUS = bdd.prepareStatement(SQL_UPDATE_STATUS);
+                stmtUS.setString(1, newStatus.name());
+                stmtUS.setInt(2, messageID);
+                stmtUS.setInt(3, userID.intValue());
+
+                if(stmtUS.executeUpdate() == 1) {
+                    stmtUM = bdd.prepareStatement(SQL_UPDATE_MESSAGE_STATUS);
+                    stmtUM.setString(1, newStatus.name());
+                    stmtUM.setInt(2, messageID);
+                    stmtUM.setString(3, oldStatus.name());
+
+                    if(stmtUM.executeUpdate() == 1) {
+                        update.getMessages().add(new Message(
+                                messageID, 
+                                null, null, null, 
+                                newStatus
+                        ));
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return update;
     }
 }

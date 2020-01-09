@@ -34,7 +34,5 @@ public enum ComType {
     STATUSES_RQ,
     STATUSES_RP,
 
-    UPDATE_STATUS_CLI,
-    UPDATE_STATUS_SRV,
-    UPDATE_STATUS_RP
+    UPDATE_STATUS_SRV
 }

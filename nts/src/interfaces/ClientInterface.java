@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import communications.*;
 import database.*;
 import exchange.*;
 
@@ -87,7 +88,7 @@ public class ClientInterface implements Runnable {
                 return dbm.groupList();
 
             case TICKET_LIST_RQ: 
-                return dbm.ticketsList(req);
+                return ticketsList(req);
             
             case TICKET_RQ:
                 return dbm.ticket(req);
@@ -100,9 +101,6 @@ public class ClientInterface implements Runnable {
                 
             case STATUSES_RQ:
                 return dbm.statuses(req);
-                
-            case UPDATE_STATUS_CLI:
-                return updateStatus(req);
 
             default:
                 return new ComData(ComType.ERROR_INVALID_REQUEST);
@@ -148,6 +146,17 @@ public class ClientInterface implements Runnable {
      * @param req
      * @return
      */
+    private ComData ticketsList(ComData req) {
+        ComData res = dbm.ticketsList(req);
+        new Thread(new Updater(req, res)).start();
+        return res;
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
     private ComData newTicket(ComData req) {
         return null;
     }
@@ -161,18 +170,58 @@ public class ClientInterface implements Runnable {
         return null;
     }
 
-    /**
-     * 
-     * @param req
-     * @return
-     */
-    private ComData updateStatus(ComData req) {
-        dbm.updateStatus(req);
-        return null;
+    private class Updater implements Runnable {
+
+        private ComData req = null;
+        private ComData res = null;
+
+        public Updater(ComData req, ComData res) {
+            this.req = req;
+            this.res = res;
+        }
+
+        @Override
+        public void run() {
+            switch (req.getType()) {
+                case TICKET_LIST_RQ:
+                    updateOnLogin();
+                    break;
+
+                default:
+                    break;
+            }
+            
+        }
+
+        private void sending(Socket sock, ComData data) {
+            BufferedWriter wsock = null;
+            try {
+                wsock = new BufferedWriter( new OutputStreamWriter(
+                        sock.getOutputStream()));
+                wsock.write(Serializer.serialize(data));
+                wsock.newLine();
+                wsock.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void updateOnLogin() {
+            for(Ticket ticket : res.getTickets()) {
+                List<Integer> users = dbm.ticketUsersID(ticket);
+                if(!users.contains(clientID.getId())) {
+                    users.add(clientID.getId());
+                }
+                ComData update = dbm.updateMsgStatus(
+                        ticket, clientID.getId(), 
+                        StatusType.WAITING, StatusType.RECEIVED
+                );
+                for(Integer uid : users) {
+                    if(clientTable.containsKey(uid)) {
+                        sending(clientTable.get(uid), update);
+                    }
+                }
+            }
+        }
     }
-
-    private void spreadMsgStatus() {
-
-    }
-
 }
