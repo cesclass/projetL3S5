@@ -82,16 +82,16 @@ public class DBManager {
 
     /**
      * <pre>
-     * String newStatus, int messageID, String oldStatus
+     * String newStatus, int messageID, int messageID, String oldStatus
      * </pre>
      */
     private final static String SQL_UPDATE_MESSAGE_STATUS =
             "UPDATE messages SET messages.status = ? "+
-            "WHERE (SELECT COUNT(statuses.status) FROM statuses "+
+            "WHERE messages.id = ? "+
+            "AND (SELECT COUNT(statuses.status) FROM statuses "+
                 "WHERE statuses.message_id = ? "+
                 "AND statuses.status = ? ) = 0 ";
             
-    
     public DBManager() {
         try {
             this.bdd = DriverManager.getConnection(URL, ID, PWD);
@@ -346,7 +346,8 @@ public class DBManager {
                     stmtUM = bdd.prepareStatement(SQL_UPDATE_MESSAGE_STATUS);
                     stmtUM.setString(1, newStatus.name());
                     stmtUM.setInt(2, messageID);
-                    stmtUM.setString(3, oldStatus.name());
+                    stmtUM.setInt(3, messageID);
+                    stmtUM.setString(4, oldStatus.name());
 
                     if(stmtUM.executeUpdate() == 1) {
                         update.getMessages().add(new Message(
