@@ -379,7 +379,7 @@ public class NewTicketWindow {
                     messageArea.setText("");
                     
                     // GUI update (to correctly show the TicketTree)
-                    parent.updateUI();
+                    parent.updateTreeUI();
 
                     parent.getMainWindow().setEnabled(true);
                     newTicketFrame.dispose();

@@ -93,10 +93,9 @@ public class ClientApplication {
 		return mainWindow;
 	}
 
-	/** Update Graphic user interface */
-	public void updateUI() {
+	/** Update ticketTree */
+	public void updateTreeUI() {
 		ticketTree.updateUI();
-		messageTable.updateUI();
 	}
 
 	/** 
@@ -509,23 +508,6 @@ public class ClientApplication {
 
 					// Clear textArea
 					textArea.setText("");
-
-					// Fire changes
-					AbstractTableModel model = 
-							(AbstractTableModel) messageTable.getModel();
-					model.fireTableRowsInserted(
-						model.getRowCount()-2, 
-						model.getRowCount()-1);
-					
-					// Set Rows sizes to fit the text inside
-					for (int i = model.getRowCount()-2; 
-							i < model.getRowCount();
-							i++) 
-					{
-						int taille = messageTable.getValueAt(i, 0)
-								.toString().split("<br>").length;
-						messageTable.setRowHeight(i, (taille + 1) * 16);
-					}
 				}
 			}
 		});

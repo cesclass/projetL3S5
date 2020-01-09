@@ -93,7 +93,7 @@ public class ServerInterface implements Runnable {
                 for (Ticket ticket : data.getTickets()) {
                     ui.addTicket(ticket);
                 }
-                ((ClientApplication) app).updateUI();
+                ((ClientApplication) app).updateTreeUI();
                 break;
 
             case TICKET_RP:
@@ -109,12 +109,21 @@ public class ServerInterface implements Runnable {
                         data.getMessages().get(0),
                         data.getStatuses());
                 break;
+            
+            case NEW_MESSAGE_RP:
+            case NEW_MESSAGE_SRV:
+                ui.recvMessages(
+                        data.getTickets().get(0), 
+                        data.getMessages().get(0));
+                ((ClientApplication) app).recvMessages(
+                        data.getTickets().get(0));
+                break;
 
             // SERVER CASES
             case UPDATE_STATUS_SRV:
                 ui.recvStatuses(data.getTickets().get(0),
                         data.getMessages());
-
+                ((ClientApplication) app).updateTableUI();
                 break;
 
             case DISCONNECT_SRV:
@@ -174,6 +183,17 @@ public class ServerInterface implements Runnable {
         String staRQ_s = Serializer.serialize(staRQ);
 
         send(staRQ_s);
+    }
+    
+    public void pushMessage(ComLogin cl, Ticket ticket, Message message) {
+        ComData sndRQ = new ComData(ComType.NEW_MESSAGE_CLI, cl);
+        sndRQ.getTickets().add(ticket);
+        sndRQ.getMessages().add(message);
+        String sndRQ_s = Serializer.serialize(sndRQ);
+
+        send(sndRQ_s);
+
+
 	}
 
     private void send(String data) {

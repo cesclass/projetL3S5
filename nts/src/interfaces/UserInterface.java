@@ -129,7 +129,7 @@ public class UserInterface {
     public void recvStatuses(Ticket ticket, List<Message> messages) {
         if (messages != null) {
             Ticket current = ticketManager.getCurrent();
-            if (ticket == current) {
+            if (ticket.equals(current)) {
                 int i;
     
                 for (Message m : current.getMessageManager()) {
@@ -140,8 +140,7 @@ public class UserInterface {
                 }
             }
         }
-
-	}
+    }
 
     /** Use serverInterface to disconnect a User */
     public void disconnect() {
@@ -170,14 +169,28 @@ public class UserInterface {
     }    
 
     /**
-     * Create a message (from the connected User) and add it
-     * to the currently selected Ticket in TicketManager
+     * Create a message (from the connected User,
+     *  for the currently selected Ticket)
+     *  and send it to the server
      * @param content of Message
      */
     public void sendMessage(String content) {
         Message message = new Message(this.user, content);
-        ticketManager.getCurrent().addMessage(message);
+        serverInterface.pushMessage(
+                comLogin, ticketManager.getCurrent(), message);
     }
+
+    /**
+     * Add Message in its Ticket,
+     * all two received from server
+     * @param ticket
+     * @param messages to add
+     */
+    public void recvMessages(Ticket ticket, Message message) {
+        int numTicket = ticketManager.getTicketNum(ticket.getGroup(), ticket);
+        ticketManager.getTicket(ticket.getGroup(), numTicket)
+                .addMessage(message);
+	}
 
     /**
      * Select the Ticket in TicketManager
