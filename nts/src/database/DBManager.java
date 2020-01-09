@@ -319,6 +319,8 @@ public class DBManager {
             StatusType oldStatus, StatusType newStatus) 
     {
         ComData update = new ComData(ComType.UPDATE_STATUS_SRV);
+        update.getTickets().add(ticket);
+
         PreparedStatement stmtS = null;
         PreparedStatement stmtUS = null;
         PreparedStatement stmtUM = null;
@@ -330,7 +332,7 @@ public class DBManager {
             stmtS.setInt(1, userID.intValue());
             stmtS.setString(2, oldStatus.name());
             stmtS.setInt(3, ticket.getId());
-            setS = stmtS.getResultSet();
+            setS = stmtS.executeQuery();
 
             while(setS.next()) {
                 messageID = setS.getInt("message_id");
@@ -349,7 +351,7 @@ public class DBManager {
                     if(stmtUM.executeUpdate() == 1) {
                         update.getMessages().add(new Message(
                                 messageID, 
-                                null, null, null, 
+                                null, null, null,
                                 newStatus
                         ));
                     }
@@ -360,6 +362,7 @@ public class DBManager {
             e.printStackTrace();
         }
 
+        System.out.println(Serializer.serialize(update));
         return update;
     }
 }

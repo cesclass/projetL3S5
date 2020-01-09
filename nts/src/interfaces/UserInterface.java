@@ -127,17 +127,20 @@ public class UserInterface {
      * @param messages List with statuses
      */
     public void recvStatuses(Ticket ticket, List<Message> messages) {
-        Ticket current = ticketManager.getCurrent();
-        if (ticket == current) {
-            int i;
-
-            for (Message m : current.getMessageManager()) {
-                if (messages.contains(m)) {
-                    i = messages.indexOf(m);
-                    m.setStatus(messages.get(i).getStatus());
+        if (messages != null) {
+            Ticket current = ticketManager.getCurrent();
+            if (ticket == current) {
+                int i;
+    
+                for (Message m : current.getMessageManager()) {
+                    if (messages.contains(m)) {
+                        i = messages.indexOf(m);
+                        m.setStatus(messages.get(i).getStatus());
+                    }
                 }
             }
         }
+
 	}
 
     /** Use serverInterface to disconnect a User */
