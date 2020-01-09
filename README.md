@@ -14,7 +14,8 @@ Sur phpMyAdmin :
 Pour lancer le serveur, il est possible de simplement cliquer sur le fichier *Server.jar* mais celui-ci ne possède pas d'interface graphique et risque de s'ouvrir en arrière-plan sans possibilitée de le fermer. Il est donc préférable de l'ouvrir via un terminal
 sous Windows (PowerShell) avec la commande suivante : 
 ```PowerShell
-java -jar Server.jar```
+java -jar Server.jar
+```
 Une fois le serveur lancé, on peux commencer à lancer un (des) client(s)
 
 ## Exécution du client
