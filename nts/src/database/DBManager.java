@@ -82,7 +82,7 @@ public class DBManager {
 
     /**
      * <pre>
-     * String newStatus, int messageID, int messageID, String oldStatus
+     * String newStatus, int messageID, int messageID
      * </pre>
      */
     private final static String SQL_UPDATE_MESSAGE_STATUS_W_R =
@@ -91,7 +91,12 @@ public class DBManager {
             "AND (SELECT COUNT(statuses.status) FROM statuses "+
                 "WHERE statuses.message_id = ? "+
                 "AND statuses.status = 'WAITING' ) = 0 ";
-    
+
+    /**
+     * <pre>
+     * String newStatus, int messageID, int messageID
+     * </pre>
+     */
     private final static String SQL_UPDATE_MESSAGE_STATUS_WR_R =
                 "UPDATE messages SET messages.status = ? "+
                 "WHERE messages.id = ? "+
@@ -125,6 +130,9 @@ public class DBManager {
     private final static String SQL_NEW_MSG_IN_STATUS =
             "INSERT INTO statuses (message_id, user_id) "+
             "VALUES ( ? , ? )";
+    
+    private final static String SQL_NEW_TICKET =
+            "";
 
     
     // *****************************************************************
@@ -287,6 +295,24 @@ public class DBManager {
         return res;
     }
 
+    public ComData newTicket(ComData data) {
+        Ticket tck = data.getTickets().get(0);
+        ComData res = new ComData(ComType.NEW_TICKET_CLI);
+
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = bdd.prepareStatement(SQL_NEW_TICKET);
+
+
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     /**
      * 
      * @param data
@@ -404,6 +430,11 @@ public class DBManager {
         return res;
     }
 
+    /**
+     * 
+     * @param t
+     * @return
+     */
     public List<Integer> ticketUsersID(Ticket t) {
         List<Integer> users = new ArrayList<>();
         PreparedStatement stmtT = null;
@@ -481,7 +512,6 @@ public class DBManager {
                     stmtUM.setString(1, newStatus.name());
                     stmtUM.setInt(2, messageID);
                     stmtUM.setInt(3, messageID);
-                    stmtUM.setString(4, oldStatus.name());
 
                     if(stmtUM.executeUpdate() == 1) {
                         update.getMessages().add(new Message(

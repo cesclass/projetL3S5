@@ -169,7 +169,8 @@ public class ClientInterface implements Runnable {
      * @return
      */
     private ComData newTicket(ComData req) {
-        // ComData res = dbm.newTicket(req);
+        ComData res1 = dbm.newTicket(req);
+        ComData res2 = dbm.newMessage(res1);
 
         return null;
     }
@@ -234,7 +235,7 @@ public class ClientInterface implements Runnable {
                 if(!users.contains(clientID.getId())) {
                     users.add(clientID.getId());
                 }
-                
+
                 ComData update = dbm.updateMsgStatus(
                         ticket, clientID.getId(), 
                         StatusType.WAITING, StatusType.RECEIVED
@@ -300,8 +301,6 @@ public class ClientInterface implements Runnable {
                     }
                 }
             }
-
         }
-
     }
 }
