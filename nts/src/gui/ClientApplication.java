@@ -151,7 +151,7 @@ public class ClientApplication {
 
 	/** Build all SWING containers */
 	private void buildSWINGContainers() {
-		mainWindow = new JFrame();
+		mainWindow = new JFrame("neOCampus ticket service");
 		mainPanel = new JPanel();
 		leftPanel = new JPanel();
 		rightPanel = new JPanel();

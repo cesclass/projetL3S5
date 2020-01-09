@@ -32,6 +32,7 @@ public class StatusTableCellRenderer extends DefaultTableCellRenderer {
                 break;
 
             case READ:
+            case AUTHOR:
                 c.setBackground(new Color(0, 125, 0, 100));
                 break;
 

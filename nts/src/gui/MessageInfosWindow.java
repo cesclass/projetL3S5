@@ -182,7 +182,7 @@ public class MessageInfosWindow {
 
         statusTable.getColumnModel().getColumn(0).setCellRenderer(
                 new StatusTableCellRenderer());                
-        statusTable.getColumnModel().getColumn(0).setCellRenderer(
+        statusTable.getColumnModel().getColumn(1).setCellRenderer(
                 new StatusTableCellRenderer());
 
         statusTable.setEnabled(false);
