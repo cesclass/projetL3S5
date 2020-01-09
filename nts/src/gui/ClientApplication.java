@@ -477,6 +477,8 @@ public class ClientApplication {
 					Ticket ticket = (Ticket) selPath.getLastPathComponent();
 					ui.selectTicket(ticket);
 
+					updateTreeUI();
+
 					// pull messages from server
 					ui.pullMessages(ticket);
 				}

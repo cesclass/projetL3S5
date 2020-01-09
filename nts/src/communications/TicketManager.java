@@ -85,6 +85,7 @@ public class TicketManager {
      * @see Ticket
      */
     public void selectTicket(Ticket ticket) {
+        ticket.setUnread(0);
         current = ticket;
     }
 

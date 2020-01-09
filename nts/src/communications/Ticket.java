@@ -145,4 +145,8 @@ public class Ticket implements Comparable<Ticket> {
                 "");
     }
 
+	public void setUnread(int unreadCount) {
+        this.unreadCount = unreadCount;
+	}
+
 }
