@@ -67,6 +67,7 @@ public class Login {
 		setLayout();
 		this.addEventListeners();
 
+		mainWindow.pack();
 		mainWindow.setVisible(true);
 	}
 

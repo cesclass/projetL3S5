@@ -13,6 +13,7 @@ import javax.swing.*;
 import communications.Message;
 import communications.Status;
 
+/** Message Statuses information window of Client application */
 public class MessageInfosWindow {
     // *****************************************************************
 	// *
@@ -62,7 +63,7 @@ public class MessageInfosWindow {
      * Constructor for MessageInfosWindow
      * @param parent : Main window of Client application
      * @param message currently selected
-     * @param statuses2 for each users
+     * @param statuses for each users
      */
 	public MessageInfosWindow(
             ClientApplication parent, 

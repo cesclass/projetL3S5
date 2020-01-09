@@ -9,9 +9,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+/** Main window of Server application */
 public class ServerApplication {
-	//Constantes
+	// *****************************************************************
+	// *
+	// * CONSTANTS
+	// *
+	// *****************************************************************
+
+	/** Nb max characters for a Login */
 	public final static int MAX_SIZE_LOGIN = 8;
+	/** Nb max characters for a Password */
 	public final static int MAX_SIZE_PASSWORD = 32;
 	public final static int MAX_SIZE_FIRSTNAME = 32;
 	public final static int MAX_SIZE_LASTNAME = 32;
