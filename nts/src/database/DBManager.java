@@ -10,13 +10,13 @@ import user.*;
 public class DBManager {
     private Connection bdd = null;
 
-    // private final static String URL = "jdbc:mysql://127.0.0.1:3306/nts";
-    // private final static String ID = "root";
-    // private final static String PWD = "";
+    private final static String URL = "jdbc:mysql://127.0.0.1:3306/nts";
+    private final static String ID = "root";
+    private final static String PWD = "";
 
-    private final static String URL = "jdbc:mysql://cyandev.ovh:3306/nts";
-    private final static String ID = "neocampus";
-    private final static String PWD = "neocampus";
+    // private final static String URL = "jdbc:mysql://cyandev.ovh:3306/nts";
+    // private final static String ID = "neocampus";
+    // private final static String PWD = "neocampus";
 
     /**
      * <pre>
