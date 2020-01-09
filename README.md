@@ -6,7 +6,7 @@ Ce programme a été pensé pour un système d'exploitation Windows, notament, c
 ## Mise en place de la BDD
 La base de données a été faite avec WAMP Server. Il est donc conseillé de la reconstruire avec ce logiciel.
 Sur phpMyAdmin :
- + Créer la base "nts" avec un inter classement "utf8_unicode_ci"
+ + Créer la base "nts" avec un interclassement "utf8_unicode_ci"
  + Entrer dans cette base et aller dans l'onglet importer
  + Cliquer sur le bouton [choisir un fichier] et sélectionner "nts_full.sql" à la racine du projet- Importer (normalement, il est inutile de changer les paramètres d'importation)
 
