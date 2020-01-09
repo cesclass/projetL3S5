@@ -91,7 +91,7 @@ public class ClientInterface implements Runnable {
                 return ticketsList(req);
             
             case TICKET_RQ:
-                return dbm.ticket(req);
+                return ticket(req);
 
             case NEW_TICKET_CLI:
                 return newTicket(req);
@@ -152,12 +152,20 @@ public class ClientInterface implements Runnable {
         return res;
     }
 
+    private ComData ticket(ComData req) {
+        ComData res = dbm.ticket(req);
+        new Thread(new Updater(req, res)).start();
+        return res;
+    }
+
     /**
      * 
      * @param req
      * @return
      */
     private ComData newTicket(ComData req) {
+        // ComData res = dbm.newTicket(req);
+
         return null;
     }
 
@@ -167,6 +175,8 @@ public class ClientInterface implements Runnable {
      * @return
      */
     private ComData newMessage(ComData req) {
+        // ComData res = dbm.newMessage(req);
+
         return null;
     }
 
@@ -186,11 +196,14 @@ public class ClientInterface implements Runnable {
                 case TICKET_LIST_RQ:
                     updateOnLogin();
                     break;
+                
+                case TICKET_RQ:
+                    updateOnLoad();
+                    break;
 
                 default:
                     break;
             }
-            
         }
 
         private void sending(Socket sock, ComData data) {
@@ -223,5 +236,23 @@ public class ClientInterface implements Runnable {
                 }
             }
         }
+
+        private void updateOnLoad() {
+            Ticket ticket = res.getTickets().get(0);
+            List<Integer> users = dbm.ticketUsersID(ticket);
+            if(!users.contains(clientID.getId())) {
+                users.add(clientID.getId());
+            }
+            ComData update = dbm.updateMsgStatus(
+                    ticket, clientID.getId(), 
+                    StatusType.RECEIVED, StatusType.READ
+            );
+            for(Integer uid : users) {
+                if(clientTable.containsKey(uid)) {
+                    sending(clientTable.get(uid), update);
+                }
+            }
+        }
+
     }
 }

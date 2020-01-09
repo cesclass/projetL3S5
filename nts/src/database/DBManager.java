@@ -87,7 +87,7 @@ public class DBManager {
      */
     private final static String SQL_UPDATE_MESSAGE_STATUS =
             "UPDATE messages SET messages.status = ? "+
-            "WHERE (SELECT CONUT(statuses.status) FROM statuses "+
+            "WHERE (SELECT COUNT(statuses.status) FROM statuses "+
                 "WHERE statuses.message_id = ? "+
                 "AND statuses.status = ? ) = 0 ";
             
