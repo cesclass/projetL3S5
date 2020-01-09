@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.util.List;
 import java.util.Set;
 
 import communications.Message;
@@ -117,6 +118,26 @@ public class UserInterface {
      */
     public void pullStatus(Message message) {
         serverInterface.pullStatus(comLogin, message);
+    }
+    
+    /**
+     * Update statuses for each Message in a specific Ticket
+     * with datas from server
+     * @param ticket
+     * @param messages List with statuses
+     */
+    public void recvStatuses(Ticket ticket, List<Message> messages) {
+        Ticket current = ticketManager.getCurrent();
+        if (ticket == current) {
+            int i;
+
+            for (Message m : current.getMessageManager()) {
+                if (messages.contains(m)) {
+                    i = messages.indexOf(m);
+                    m.setStatus(messages.get(i).getStatus());
+                }
+            }
+        }
 	}
 
     /** Use serverInterface to disconnect a User */

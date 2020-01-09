@@ -74,17 +74,19 @@ public class ServerInterface implements Runnable {
 
     private void handling(ComData data) {
         switch (data.getType()) {
-            case CONNECT_RP:
-                ui.recvConnect(data);
-                app = ((Login) app).successConnect();
-                break;
-
+            // ERROR CASES
             case ERROR_BAD_LOGIN:
                 ((Login) app).errorBadLogin();
                 break;
             
             case ERROR_ALREADY_CONNECTED:
                 ((Login) app).errorAlreadyConnected();
+                break;
+
+            // RESPONSE CASES
+            case CONNECT_RP:
+                ui.recvConnect(data);
+                app = ((Login) app).successConnect();
                 break;
 
             case TICKET_LIST_RP:
@@ -106,6 +108,13 @@ public class ServerInterface implements Runnable {
                 ((ClientApplication) app).recvStatuses(
                         data.getMessages().get(0),
                         data.getStatuses());
+                break;
+
+            // SERVER CASES
+            case UPDATE_STATUS_SRV:
+                ui.recvStatuses(data.getTickets().get(0),
+                        data.getMessages());
+
                 break;
 
             case DISCONNECT_SRV:

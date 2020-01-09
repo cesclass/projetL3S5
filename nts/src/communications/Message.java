@@ -15,7 +15,7 @@ public class Message {
 	// *
     // *****************************************************************
 	/** Max character on a line */
-	public final static int MAX_CHAR = 70;
+	public final static int MAX_LINE_LEN = 70;
 	
 	
     // *****************************************************************
@@ -124,26 +124,33 @@ public class Message {
         return status;
     }
 
+    /**
+     * Mutator for the status attribute
+     * @param status
+     */
+    public void setStatus(StatusType status) {
+        this.status = status;
+	}
+
     @Override
     public String toString() {
     	String chaine = "<html><p style=\"padding: 5px\">";
-    	int count = MAX_CHAR;
+    	int count = MAX_LINE_LEN;
     	String tab[] = this.content.split("\n");
     	
     	for(String sousChaine : tab) {
     		for(String mot : sousChaine.split(" ")) {
-	    		/*
-	    		Case when the character size is bigger 
-	    		than the maximum number of character on a line
-	    		*/
-	    		if(mot.length() > MAX_CHAR) {
-	    			chaine = splitString(chaine, mot);
-	    		}else { //Default behaviour
+	    		// When the word length is bigger 
+	    		// than the maximum number of character for a line
+	    		if(mot.length() > MAX_LINE_LEN) {
+                    chaine = splitString(chaine, mot);
+                // Default behaviour
+	    		} else { 
 					int currentSize = mot.length();
 					
 					if(count < currentSize) {
 						chaine += "<br>";
-						count = MAX_CHAR;
+						count = MAX_LINE_LEN;
 					}
 					
 					chaine += mot;
@@ -162,13 +169,14 @@ public class Message {
     	return chaine;
     }
 
+    /** toString sub-method to cut big words */
 	private String splitString(String chaine, String mot) {
 		char temp[] = mot.toCharArray();
-		int count = MAX_CHAR;
+		int count = MAX_LINE_LEN;
 		for(char c : temp) {
 			if(count == 1) {
 				chaine += "-" + "<br>";
-				count = MAX_CHAR;
+				count = MAX_LINE_LEN;
 			}
 			chaine += c;
 			count--;

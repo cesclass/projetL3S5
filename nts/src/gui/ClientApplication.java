@@ -100,7 +100,8 @@ public class ClientApplication {
 	}
 
 	/** 
-	 * Receive messages from server for a specific Ticket 
+	 * Messages are received from server for a specific Ticket 
+	 * It will update messageTable accordingly
 	 * @param ticket
 	 */
 	public void recvMessages(Ticket ticket) {
@@ -129,6 +130,12 @@ public class ClientApplication {
 		sendButton.setEnabled(true);
 	}
 
+	/**
+	 * Message statuses for each authorized User are received
+	 * It will open a new MessageInfosWindow and show them
+	 * @param message
+	 * @param statuses for each User
+	 */
 	public void recvStatuses(Message message, List<Status> statuses) {
 		new MessageInfosWindow(this, message, statuses);
 	}
@@ -436,7 +443,7 @@ public class ClientApplication {
 
 	/**
 	 * Add a new Event listener on ticketTree
-	 * It will update messageTable to show selected Ticket Messages
+	 * It will pull Messages from selected Ticket from server
 	 */
 	private void addEventListenerTicketTree() {
 		this.ticketTree.addMouseListener(new MouseListener() {
@@ -473,7 +480,8 @@ public class ClientApplication {
 	
 	/**
 	 * Add a new Event listener on disconnectButton
-	 * It will open a Login window and close this window
+	 * It will disconnect from: server, open a Login window 
+	 * and close this window
 	 */
 	private void addEventListenerDisconnectButton() {
 		this.disconectButton.addActionListener(new ActionListener() {
@@ -555,6 +563,10 @@ public class ClientApplication {
 		});
 	}
 
+	/**
+	 * Add a new Event listener on mainWindow
+	 * It will disconnect from server and close the application
+	 */
 	private void addEventListenerMainWindow() {
 		mainWindow.addWindowListener(new WindowAdapter() {
 			@Override
