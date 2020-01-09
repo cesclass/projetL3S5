@@ -111,6 +111,10 @@ public class ServerInterface implements Runnable {
                         data.getMessages().get(0),
                         data.getStatuses());
                 break;
+
+            case GROUPS_RP:
+                ((ClientApplication) app).recvGroups(data.getGroups());
+                break;
             
             case NEW_MESSAGE_RP:
             case NEW_MESSAGE_SRV:
@@ -197,6 +201,13 @@ public class ServerInterface implements Runnable {
 
         send(staRQ_s);
     }
+
+    public void pullGroups(ComLogin cl) {
+        ComData grpRQ = new ComData(ComType.GROUPS_RQ, cl);
+        String grpRQ_s = Serializer.serialize(grpRQ);
+
+        send(grpRQ_s);
+	}
     
     public void pushMessage(ComLogin cl, Ticket ticket, Message message) {
         ComData sndRQ = new ComData(ComType.NEW_MESSAGE_CLI, cl);
