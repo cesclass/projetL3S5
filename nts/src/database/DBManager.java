@@ -313,7 +313,7 @@ public class DBManager {
 
             set = stmtM.getGeneratedKeys();
             set.first();
-            newMsgId = (int) set.getDouble("id");
+            newMsgId = (int) set.getDouble(1);
 
             stmtUT = bdd.prepareStatement(SQL_NEW_MSG_IN_TICKET);
             stmtUT.setDate(1, new java.sql.Date(msg.getDate().getTime()));
