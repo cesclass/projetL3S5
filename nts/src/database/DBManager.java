@@ -85,12 +85,19 @@ public class DBManager {
      * String newStatus, int messageID, int messageID, String oldStatus
      * </pre>
      */
-    private final static String SQL_UPDATE_MESSAGE_STATUS =
+    private final static String SQL_UPDATE_MESSAGE_STATUS_W_R =
             "UPDATE messages SET messages.status = ? "+
             "WHERE messages.id = ? "+
             "AND (SELECT COUNT(statuses.status) FROM statuses "+
                 "WHERE statuses.message_id = ? "+
-                "AND statuses.status = ? ) = 0 ";
+                "AND statuses.status = 'WAITING' ) = 0 ";
+    
+    private final static String SQL_UPDATE_MESSAGE_STATUS_WR_R =
+                "UPDATE messages SET messages.status = ? "+
+                "WHERE messages.id = ? "+
+                "AND (SELECT COUNT(statuses.status) FROM statuses "+
+                    "WHERE statuses.message_id = ? "+
+                    "AND statuses.status IN ('WAITING', 'RECEIVED') = 0 ";
 
     /**
      * <pre>
@@ -444,6 +451,9 @@ public class DBManager {
     {
         ComData update = new ComData(ComType.UPDATE_STATUS_SRV);
         update.getTickets().add(ticket);
+
+        String SQL_UPDATE_MESSAGE_STATUS = (oldStatus == StatusType.WAITING) ?
+            SQL_UPDATE_MESSAGE_STATUS_W_R : SQL_UPDATE_MESSAGE_STATUS_WR_R;
 
         PreparedStatement stmtS = null;
         PreparedStatement stmtUS = null;
