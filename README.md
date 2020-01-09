@@ -8,7 +8,8 @@ La base de données a été faite avec WAMP Server. Il est donc conseillé de la
 Sur phpMyAdmin :
  + Créer la base "nts" avec un interclassement "utf8_unicode_ci"
  + Entrer dans cette base et aller dans l'onglet importer
- + Cliquer sur le bouton [choisir un fichier] et sélectionner "nts_full.sql" à la racine du projet- Importer (normalement, il est inutile de changer les paramètres d'importation)
+ + Cliquer sur le bouton [choisir un fichier] et sélectionner "nts_full.sql" à la racine du projet
+ + Importer (normalement, il est inutile de changer les paramètres d'importation)
 
 ## Exécution du serveur
 Pour lancer le serveur, il est possible de simplement cliquer sur le fichier *Server.jar* mais celui-ci ne possède pas d'interface graphique et risque de s'ouvrir en arrière-plan sans possibilitée de le fermer. Il est donc préférable de l'ouvrir via un terminal
