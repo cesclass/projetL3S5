@@ -1,13 +1,13 @@
 package gui;
 
 import java.awt.event.*;
-import java.awt.BorderLayout;
 import java.awt.Font;
 
 import javax.swing.*;
 
 import interfaces.UserInterface;
 
+/** Login window of Client application */
 public class Login {
 	// *****************************************************************
 	// *
@@ -16,33 +16,40 @@ public class Login {
 	// *****************************************************************
 
 	/** Width of the window */
-	public final static int SIZEX = 275;
+	public final static int SIZEX = 300;
 	/** Height of the window */
-	public final static int SIZEY = 150;
+	public final static int SIZEY = 185;
 
 	// *****************************************************************
 	// *
-	// * ATTRIBUTES
+	// * ATTRIBUTES (SWING)
 	// *
 	// *****************************************************************
 
 	// Containers
-	private JFrame frame;
-	private Box box;
-
+	private JFrame mainWindow;
+	private JPanel mainPanel;
+	private JPanel loginPanel;
+	
 	// Labels
-	private JLabel title;
-	private JLabel login;
-	private JLabel password;
+	private JLabel titleLabel;
+	private JLabel loginLabel;
+	private JLabel passwordLabel;
 
-	// TextFields
-	private JTextField id;
-	private JPasswordField mdp;
+	// (Text/Password)Fields
+	private JTextField loginField;
+	private JPasswordField passwordField;
 
-	// button
-	private JButton button;
+	// Button
+	private JButton connectButton;
 
-	// data
+	// *****************************************************************
+	// *
+	// * ATTRIBUTE (DATA)
+	// *
+	// *****************************************************************
+
+	/** UserInterface allows to communicate with the User/application */
 	private UserInterface ui;
 
 	// *****************************************************************
@@ -54,22 +61,13 @@ public class Login {
 	/** Constructor for standard Login window */
 	public Login() {
 		ui = new UserInterface(this);
-		showWindow(createWindow());
-	}
 
-	/**
-	 * Creation of the window
-	 * 
-	 * @return main frame
-	 */
-	private JFrame createWindow() {
 		buildSWINGElements();
-
-		setMainFrame();
-
-		// On ajoute les évènements
+		setProperties();
+		setLayout();
 		this.addEventListeners();
-		return frame;
+
+		mainWindow.setVisible(true);
 	}
 
 	// *****************************************************************
@@ -78,25 +76,45 @@ public class Login {
 	// *
 	// *****************************************************************
 
+	/** 
+	 * Successfully connected
+	 * It will open a new ClientApplication window and close this window
+	 */
 	public ClientApplication successConnect() {
 		ClientApplication app = new ClientApplication(ui);
-		frame.dispose();
+		mainWindow.dispose();
 
 		return app;
 	}
 
+	/**
+	 * Connexion error : bad login
+	 * It will open a bad login error and clear fields
+	 */
 	public void errorBadLogin() {
-		JOptionPane.showMessageDialog(frame, "<html> <b>login</b>" + " ou <b>password</b> incorrect.</html>", "Erreur",
-				JOptionPane.ERROR_MESSAGE);
-		id.setText("");
-		mdp.setText("");
+		JOptionPane.showMessageDialog(mainWindow, 
+				"<html><b>login</b>" 
+				+ " ou <b>password</b> incorrect.</html>"
+				, "Erreur", JOptionPane.ERROR_MESSAGE);
+		// Clear fields
+		loginField.setText("");
+		passwordField.setText("");
 	}
 
+	/**
+	 * Connexion error : already connected
+	 * It will open a bad login error and clear fields
+	 */
 	public void errorAlreadyConnected() {
-		JOptionPane.showMessageDialog(frame, "<html> <b>" + id.getText() + "</b>" + " est déjà connecté.</html>",
+		JOptionPane.showMessageDialog(mainWindow, 
+				"<html><b>" 
+				+ loginField.getText() 
+				+ "</b>" 
+				+ " est déjà connecté.</html>",
 				"Erreur", JOptionPane.ERROR_MESSAGE);
-		id.setText("");
-		mdp.setText("");
+		// Clear fields
+		loginField.setText("");
+		passwordField.setText("");
 	}
 
 	// *****************************************************************
@@ -107,9 +125,8 @@ public class Login {
 
 	/**
 	 * Call all buildSWING methods to build graphic elements
-	 * 
-	 * @see Login.buildSWINGContainers()
-	 * @see Login.buildSWINGContents()
+	 * @see Login#buildSWINGContainers()
+	 * @see Login#buildSWINGContents()
 	 */
 	private void buildSWINGElements() {
 		buildSWINGContainers();
@@ -118,18 +135,24 @@ public class Login {
 
 	/** Build all SWING containers */
 	private void buildSWINGContainers() {
-		frame = new JFrame("neOCampus ticket service - Login");
-		box = new Box(BoxLayout.Y_AXIS);
+		mainWindow = new JFrame("Login");
+		mainPanel = new JPanel();
+		loginPanel = new JPanel();
 	}
 
 	/** Build all SWING contents */
 	private void buildSWINGContents() {
-		button = new JButton("Connexion");
-		title = new JLabel("neOCampus ticket service");
-		login = new JLabel("login");
-		password = new JLabel("password");
-		id = new JTextField();
-		mdp = new JPasswordField();
+		// Labels
+		titleLabel = new JLabel("neOCampus ticket service");
+		loginLabel = new JLabel("login");
+		passwordLabel = new JLabel("password");
+
+		// (Text/Password)Fields
+		loginField = new JTextField();
+		passwordField = new JPasswordField();
+
+		// Button
+		connectButton = new JButton("Connexion");
 	}
 
 	// *****************************************************************
@@ -138,126 +161,111 @@ public class Login {
 	// *
 	// *****************************************************************
 
-	/** Set the main frame properties */
-	private void setMainFrame() {
-		// On initialise la taille de la fenêtre
-		frame.setSize(SIZEX, SIZEY);
-		// Mise en place de l'évènement de fermeture de la fenêtre
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Positionnement au centre du titre
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setVerticalAlignment(JLabel.CENTER);
-
-		frame = setFrameLayout();
-
-		// Paramétrage position
-		frame.setLocationRelativeTo(null);
-
-		// On empêche la l'agrandissement et rétrécissement de la fenêtre
-		frame.setResizable(false);
-
-		// Mise en place de la police/taille d'écriture
-		title.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 20));
-		login.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
-		password.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 15));
+	/**
+	 * Call all setProperties methods
+	 * 	to define SWING elements properties
+	 * @see Login#setMainWindowProperties()
+	 * @see Login#setTitleLabelProperties()
+	 */
+	private void setProperties() {
+		setMainWindowProperties();
+		setTitleLabelProperties();
 	}
 
-	/**
-	 * Creation of the central Box
-	 * 
-	 * @return the central Box
-	 */
-	private Box createCenterBox() {
-		// Creation de Box et de Panel
-		JPanel logPanel = new JPanel();
+	/** Set the main mainWindow properties */
+	private void setMainWindowProperties() {
+		mainWindow.setContentPane(mainPanel);
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		setCenter(box, logPanel);
-
-		return box;
+		// Position/Size properties
+		mainWindow.setLocationRelativeTo(null);
+		mainWindow.setSize(SIZEX, SIZEY);
+		mainWindow.setResizable(false);
 	}
 
-	/**
-	 * Set the Box properties
-	 * 
-	 * @param the box
-	 * @param the panel who contain the component for the login
-	 */
-	private void setCenter(Box root, JPanel logPanel) {
-		setLogPanelLayout(logPanel);
-
-		// Creation de glue
-		root.add(Box.createVerticalGlue());
-		root.add(logPanel);
-		root.add(Box.createVerticalGlue());
+	/** Set the titleLabel Properties */
+	private void setTitleLabelProperties() {
+		titleLabel.setFont(new java.awt.Font(Font.SANS_SERIF, Font.BOLD, 20));
 	}
 
 	// *****************************************************************
 	// *
-	// * Layout
+	// * LAYOUT
 	// *
 	// *****************************************************************
-
+	
 	/**
-	 * Set up of the main panel layout
-	 * 
-	 * @return the main frame
+	 * Call all setLayout methods to define SWING layouts
+	 * @see Login#setMainPanelLayout()
+	 * @see Login#setLoginPanelLayout()
 	 */
-	private JFrame setFrameLayout() {
+	private void setLayout() {
+		setMainPanelLayout();
+		setLoginPanelLayout();
+	}
+
+	/** Define the mainWindow SWING Properties */
+	private void setMainPanelLayout() {
 		// Creation Border Layout
-		BorderLayout layout = new BorderLayout();
+		GroupLayout layout = new GroupLayout(mainPanel);
+		mainPanel.setLayout(layout);
 
-		// Creation de panel
-		JPanel root = new JPanel(layout);
-		Box centerBox = createCenterBox();
-		frame.setContentPane(root);
+		// Create gaps
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
 
-		// Comportement Border Layout
-		root.add(title, BorderLayout.PAGE_START);
-		root.add(centerBox, BorderLayout.CENTER);
-		root.add(button, BorderLayout.PAGE_END);
-
-		return frame;
-	}
-
-	/**
-	 * Set up of the center Box layout
-	 * 
-	 * @param panel who contain the component for the login
-	 */
-	private void setLogPanelLayout(JPanel logPanel) {
-		GroupLayout layout = new GroupLayout(logPanel);
-		logPanel.setLayout(layout);
-
-		// Comportement Horizontal
+		// Horizontal group
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-		hGroup.addGroup(
-				layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addComponent(login).addComponent(password));
-		hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(id).addComponent(mdp));
+		hGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.CENTER)
+				.addComponent(titleLabel)
+				.addComponent(loginPanel)
+				.addComponent(connectButton));
 		layout.setHorizontalGroup(hGroup);
 
-		// Comportement Vertical
+		// Vertical groups
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-		vGroup.addGroup(
-				layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(login).addComponent(id));
-		vGroup.addGroup(
-				layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(password).addComponent(mdp));
+		vGroup.addGroup(layout.createParallelGroup()
+				.addComponent(titleLabel));
+		vGroup.addGroup(layout.createParallelGroup()
+				.addComponent(loginPanel));
+		vGroup.addGroup(layout.createParallelGroup()
+				.addComponent(connectButton));
 		layout.setVerticalGroup(vGroup);
 	}
 
-	// *****************************************************************
-	// *
-	// * VIEW
-	// *
-	// *****************************************************************
+	/** Define the loginPanel SWING Properties */
+	private void setLoginPanelLayout() {
+		GroupLayout layout = new GroupLayout(loginPanel);
+		loginPanel.setLayout(layout);
 
-	/**
-	 * Set the window visible
-	 * 
-	 * @param the main frame
-	 */
-	private void showWindow(JFrame frame) {
-		frame.setVisible(true);
+		// Create gaps
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+
+		// Horizontal groups
+		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
+		hGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.TRAILING)
+				.addComponent(loginLabel)
+				.addComponent(passwordLabel));
+		hGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.LEADING)
+				.addComponent(loginField)
+				.addComponent(passwordField));
+		layout.setHorizontalGroup(hGroup);
+
+		// Vertical groups
+		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
+		vGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.BASELINE)
+				.addComponent(loginLabel)
+				.addComponent(loginField));
+		vGroup.addGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.BASELINE)
+				.addComponent(passwordLabel)
+				.addComponent(passwordField));
+		layout.setVerticalGroup(vGroup);
 	}
 
 	// *****************************************************************
@@ -266,24 +274,30 @@ public class Login {
 	// *
 	// *****************************************************************
 
-	/** Set up of all the events */
+	/**
+	 * Call all addEventListener methods to define event
+	 * @see Login#addEventListenerConnectButton()
+	 */
 	private void addEventListeners() {
-		this.addEventListenerOpenMainWindow();
+		addEventListenerConnectButton();
 		addEventListenerMainWindow();
 	}
 
-	/** Add an event on the connection button */
-	private void addEventListenerOpenMainWindow() {
-		this.button.addActionListener(new ActionListener() {
+	/**
+	 * Add a new Event listener on connectButton
+	 * It will check informations and try to connect to server
+	 */
+	private void addEventListenerConnectButton() {
+		this.connectButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				if (id.getText().isEmpty() || String.valueOf(mdp.getPassword()).isEmpty()) {
-					JOptionPane.showMessageDialog(frame,
-							"<html>Veuillez renseigner un <b>login</b>" + " ET <b>password</b>.</html>", "Erreur",
+				if (loginField.getText().isEmpty() || String.valueOf(passwordField.getPassword()).isEmpty()) {
+					JOptionPane.showMessageDialog(mainWindow,
+							"<html>Veuillez renseigner un <b>loginLabel</b>" + " ET <b>passwordLabel</b>.</html>", "Erreur",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					String log = id.getText();
-					String pwd = String.valueOf(mdp.getPassword());
+					String log = loginField.getText();
+					String pwd = String.valueOf(passwordField.getPassword());
 
 					ui.emmitConnect(log, pwd);
 				}
@@ -291,13 +305,16 @@ public class Login {
 		});
 	}
 
-	/** Add an event on window closing to disconnect from server */
+	/**
+	 * Add a new Event listener on mainWindow
+	 * It will disconnect from server and close the application
+	 */
 	private void addEventListenerMainWindow() {
-		frame.addWindowListener(new WindowAdapter() {
+		mainWindow.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				ui.disconnect();
-				frame.dispose();
+				mainWindow.dispose();
 			}
 		});
 	}
